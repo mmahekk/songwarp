@@ -1,4 +1,6 @@
 package interface_adapter.view_traverse;
 
-public class ViewTraverseViewModel {
+import interface_adapter.ViewModel;
+
+public class ViewTraverseViewModel extends ViewModel {
 }

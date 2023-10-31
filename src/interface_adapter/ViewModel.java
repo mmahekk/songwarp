@@ -1,4 +1,4 @@
 package interface_adapter;
 
-abstract class ViewModel {
+public abstract class ViewModel {
 }

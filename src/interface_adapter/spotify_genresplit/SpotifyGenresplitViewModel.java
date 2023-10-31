@@ -1,4 +1,6 @@
 package interface_adapter.spotify_genresplit;
 
-public class SpotifyGenresplitViewModel {
+import interface_adapter.ViewModel;
+
+public class SpotifyGenresplitViewModel extends ViewModel {
 }

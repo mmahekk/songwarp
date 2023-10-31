@@ -1,4 +1,6 @@
 package interface_adapter.spotify_match;
 
-public class SpotifyMatchViewModel {
+import interface_adapter.ViewModel;
+
+public class SpotifyMatchViewModel extends ViewModel {
 }

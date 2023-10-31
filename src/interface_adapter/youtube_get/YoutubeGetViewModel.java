@@ -1,4 +1,6 @@
 package interface_adapter.youtube_get;
 
-public class YoutubeGetViewModel {
+import interface_adapter.ViewModel;
+
+public class YoutubeGetViewModel extends ViewModel {
 }

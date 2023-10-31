@@ -1,4 +1,6 @@
 package interface_adapter.view_traverse;
 
-public class ViewTraversePresenter {
+import use_case.view_traverse.ViewTraverseOutputBoundary;
+
+public class ViewTraversePresenter implements ViewTraverseOutputBoundary {
 }

@@ -1,4 +1,6 @@
 package interface_adapter.view_playlist;
 
-public class ViewPlaylistPresenter {
+import use_case.view_playlist.ViewPlaylistOutputBoundary;
+
+public class ViewPlaylistPresenter implements ViewPlaylistOutputBoundary {
 }

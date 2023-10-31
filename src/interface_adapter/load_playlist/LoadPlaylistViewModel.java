@@ -1,4 +1,6 @@
 package interface_adapter.load_playlist;
 
-public class LoadPlaylistViewModel {
+import interface_adapter.ViewModel;
+
+public class LoadPlaylistViewModel extends ViewModel {
 }

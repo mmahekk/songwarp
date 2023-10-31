@@ -1,4 +1,6 @@
 package interface_adapter.playlist_genresplit;
 
-public class PlaylistGenresplitPresenter {
+import use_case.playlist_genresplit.PlaylistGenresplitOutputBoundary;
+
+public class PlaylistGenresplitPresenter implements PlaylistGenresplitOutputBoundary {
 }

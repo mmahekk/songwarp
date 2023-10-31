@@ -1,4 +1,6 @@
 package interface_adapter.playlist_genresplit;
 
-public class PlaylistGenresplitViewModel {
+import interface_adapter.ViewModel;
+
+public class PlaylistGenresplitViewModel extends ViewModel {
 }

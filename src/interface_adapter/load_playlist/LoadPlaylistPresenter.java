@@ -1,4 +1,6 @@
 package interface_adapter.load_playlist;
 
-public class LoadPlaylistPresenter {
+import use_case.load_playlist.LoadPlaylistOutputBoundary;
+
+public class LoadPlaylistPresenter implements LoadPlaylistOutputBoundary {
 }

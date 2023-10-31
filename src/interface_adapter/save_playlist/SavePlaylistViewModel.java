@@ -1,4 +1,6 @@
 package interface_adapter.save_playlist;
 
-public class SavePlaylistViewModel {
+import interface_adapter.ViewModel;
+
+public class SavePlaylistViewModel extends ViewModel {
 }

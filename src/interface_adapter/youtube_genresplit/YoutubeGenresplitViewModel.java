@@ -1,4 +1,6 @@
 package interface_adapter.youtube_genresplit;
 
-public class YoutubeGenresplitViewModel {
+import interface_adapter.ViewModel;
+
+public class YoutubeGenresplitViewModel extends ViewModel {
 }

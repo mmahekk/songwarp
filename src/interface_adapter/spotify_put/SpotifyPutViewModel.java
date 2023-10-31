@@ -1,4 +1,6 @@
 package interface_adapter.spotify_put;
 
-public class SpotifyPutViewModel {
+import interface_adapter.ViewModel;
+
+public class SpotifyPutViewModel extends ViewModel {
 }

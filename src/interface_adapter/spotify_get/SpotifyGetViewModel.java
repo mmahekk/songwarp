@@ -1,4 +1,6 @@
 package interface_adapter.spotify_get;
 
-public class SpotifyGetViewModel {
+import interface_adapter.ViewModel;
+
+public class SpotifyGetViewModel extends ViewModel {
 }

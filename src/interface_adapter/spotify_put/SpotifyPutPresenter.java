@@ -1,4 +1,6 @@
 package interface_adapter.spotify_put;
 
-public class SpotifyPutPresenter {
+import use_case.spotify_put.SpotifyPutOutputBoundary;
+
+public class SpotifyPutPresenter implements SpotifyPutOutputBoundary {
 }

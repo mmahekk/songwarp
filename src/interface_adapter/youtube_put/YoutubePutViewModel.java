@@ -1,4 +1,6 @@
 package interface_adapter.youtube_put;
 
-public class YoutubePutViewModel {
+import interface_adapter.ViewModel;
+
+public class YoutubePutViewModel extends ViewModel {
 }

@@ -1,4 +1,6 @@
 package interface_adapter.spotify_match;
 
-public class SpotifyMatchPresenter {
+import use_case.spotify_match.SpotifyMatchOutputBoundary;
+
+public class SpotifyMatchPresenter implements SpotifyMatchOutputBoundary {
 }
