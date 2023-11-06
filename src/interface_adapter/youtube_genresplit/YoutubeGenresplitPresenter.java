@@ -1,0 +1,6 @@
+package interface_adapter.youtube_genresplit;
+
+import use_case.youtube_genresplit.YoutubeGenresplitOutputBoundary;
+
+public class YoutubeGenresplitPresenter implements YoutubeGenresplitOutputBoundary {
+}
