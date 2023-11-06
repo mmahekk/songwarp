@@ -1,6 +1,6 @@
 package entity;
 
-public class YoutubeSong extends Song implements YoutubeInterface {
+public class YoutubeSong extends Song implements YoutubeSongInterface {
 
     private final String youtubeID;
 

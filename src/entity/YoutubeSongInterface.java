@@ -1,5 +1,5 @@
 package entity;
 
-public interface YoutubeInterface {
+public interface YoutubeSongInterface {
     String getYoutubeID();
 }
