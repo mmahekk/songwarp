@@ -40,8 +40,8 @@ public class YouTubeDataAPIExample {
     private static HttpURLConnection getHttpURLConnection() throws IOException {
         String apiKey = "AIzaSyDSuUFqX_f7v1LI8OTYjvkCjTbzzOfj4b4";
         String playlistId = "PLQ6xshOf41Nk3Ff_D9GyOpVCBZ7zc8NN5";
-        String apiUsed = "https://www.googleapis.com/youtube/v3/"
-        String apiRequest = "playlistItems?playlistId="
+        String apiUsed = "https://www.googleapis.com/youtube/v3/";
+        String apiRequest = "playlistItems?playlistId=";
 
         // Construct the URL for the API request
         String apiUrl = apiUsed + apiRequest + playlistId + "&key=" + apiKey + "&part=snippet";
