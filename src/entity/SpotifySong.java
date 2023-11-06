@@ -2,20 +2,26 @@ package entity;
 
 import java.util.ArrayList;
 
-public class SpotifySong extends Song implements SpotifyInterface {
-    private final String spotifyURL;
+public class SpotifySong extends Song implements SpotifySongInterface {
+    
+    private final int duration;
+    private final String spotifyID;
     private final ArrayList<String> genre;
 
-    public SpotifySong(String title, String author, int duration, String spotifyURL, ArrayList<String> genre) {
-        super(title, author, duration);
-        this.spotifyURL = spotifyURL;
+    public SpotifySong(String title, String author, int duration, String spotifyID, ArrayList<String> genre, String date) {
+        super(title, author, date);
+        this.duration = duration;
+        this.spotifyID = spotifyID;
         this.genre = genre;
     }
 
-    public String getSpotifyURL() {
-        return this.spotifyURL;
+    public String getSpotifyID() {
+        return this.spotifyID;
     }
     public ArrayList<String> getGenre() {
         return this.genre;
+    }
+    public int getDuration() {
+        return this.duration;
     }
 }

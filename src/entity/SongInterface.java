@@ -4,5 +4,5 @@ public interface SongInterface {
 
     String getName();
     String getAuthor();
-    int getDuration();
+    String getDate();
 }
