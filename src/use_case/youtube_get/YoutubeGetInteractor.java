@@ -29,9 +29,9 @@ public class YoutubeGetInteractor implements YoutubeGetInputBoundary {
             // store instance in project temp save file (DAO request 3)
             fileWriter.writePlaylistFile(youtubePlaylist);
 
-//            // invoke presenter
-//            YoutubeGetOutputData youtubeGetOutputData = new YoutubeGetOutputData(youtubePlaylist, false);
-//            youtubeGetPresenter.prepareSuccessView(youtubeGetOutputData);
+            // invoke presenter
+            YoutubeGetOutputData youtubeGetOutputData = new YoutubeGetOutputData(youtubePlaylist, false);
+            youtubeGetPresenter.prepareSuccessView(youtubeGetOutputData);
 
         } else {
             // TODO: implement this situation
