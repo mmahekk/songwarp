@@ -4,7 +4,7 @@ abstract class Song implements SongInterface {
 
     private final String name;
     private final String author;
-    private final String  date;
+    private final String date;
 
     public Song(String name, String author, String date) {
         this.name = name;
