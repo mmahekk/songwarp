@@ -14,10 +14,10 @@ public class YoutubePlaylist extends Playlist implements YoutubePlaylistInterfac
         return super.getList();
     }
 
-    @Override
-    public int getDuration() {
-        return super.getDuration();
-    }
+//    @Override
+//    public int getDuration() {
+//        return super.getDuration();
+//    }
 
     @Override
     public String getGenre() {

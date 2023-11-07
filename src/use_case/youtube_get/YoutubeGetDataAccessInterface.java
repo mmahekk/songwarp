@@ -4,5 +4,5 @@ import entity.YoutubePlaylist;
 
 public interface YoutubeGetDataAccessInterface {
     String getPlaylistJSON(String youtubePlaylistID);  // makes request to youtube to get a playlist json
-    YoutubePlaylist buildYoutubePlaylist(String youtubePlaylistJSON);
+    YoutubePlaylist buildYoutubePlaylist(String youtubePlaylistJSON, String playlistId);
 }

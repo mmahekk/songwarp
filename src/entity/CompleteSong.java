@@ -1,5 +1,7 @@
 package entity;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class CompleteSong extends Song {
@@ -20,14 +22,29 @@ public class CompleteSong extends Song {
     }
 
     public String getSpotifyId() {
-        return this.spotifyId;
+        return this.spotifyID;
     }
 
     public String getYoutubeId() {
-        return this.youtubeId;
+        return this.youtubeID;
     }
 
     public ArrayList<String> getGenres() {
         return this.genre;
+    }
+
+    @Override
+    public JSONObject convertToJSON() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.append("name", this.getName());
+        jsonObject.append("author", this.getAuthor());
+        jsonObject.append("date", this.getDate());
+        jsonObject.append("spotifyID", spotifyID);
+        jsonObject.append("youtubeID", youtubeID);
+        jsonObject.append("youtubeTitle", youtubeTitle);
+        jsonObject.append("youtubeChannel", youtubeChannel);
+        jsonObject.append("genres", genre);
+        jsonObject.append("type", "CompleteSong");
+        return jsonObject;
     }
 }

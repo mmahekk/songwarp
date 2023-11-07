@@ -1,5 +1,7 @@
 package entity;
 
+import org.json.JSONObject;
+
 abstract class Song implements SongInterface {
 
     private final String name;
@@ -22,5 +24,14 @@ abstract class Song implements SongInterface {
     @Override
     public String getDate() {
         return this.date;
+    }
+
+    @Override
+    public JSONObject convertToJSON() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.append("name", name);
+        jsonObject.append("author", author);
+        jsonObject.append("date", date);
+        return jsonObject;
     }
 }
