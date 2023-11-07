@@ -19,4 +19,15 @@ public class CompleteSong extends Song {
         this.genre = genre;
     }
 
+    public String getSpotifyId() {
+        return this.spotifyId;
+    }
+
+    public String getYoutubeId() {
+        return this.youtubeId;
+    }
+
+    public ArrayList<String> getGenres() {
+        return this.genre;
+    }
 }

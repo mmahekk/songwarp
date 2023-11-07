@@ -1,6 +1,9 @@
 package data_access;
 
 import entity.YoutubePlaylist;
+import entity.YoutubeSong;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import use_case.youtube_get.YoutubeGetDataAccessInterface;
 
 import java.io.BufferedReader;
@@ -42,10 +45,11 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
         String apiKey = "AIzaSyDSuUFqX_f7v1LI8OTYjvkCjTbzzOfj4b4";
         String playlistId = "PLQ6xshOf41Nk3Ff_D9GyOpVCBZ7zc8NN5";
         String apiUsed = "https://www.googleapis.com/youtube/v3/";
-        String apiRequest = "playlistItems?playlistId=";
+        String apiRequest = "playlistItems?";
+        String configurations = "part=snippet&maxResults=50";
 
         // Construct the URL for the API request
-        String apiUrl = apiUsed + apiRequest + playlistId + "&key=" + apiKey + "&part=snippet";
+        String apiUrl = apiUsed + apiRequest + configurations + "&playlistId=" + playlistId + "&key=" + apiKey;
 
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -55,7 +59,32 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
 
     @Override
     public YoutubePlaylist buildYoutubePlaylist(String youtubePlaylistJSON) {
-        // TODO: to be implemented
-        return null;
+        // convert JSON string to JSON object
+        JSONObject jsonObject = new JSONObject(youtubePlaylistJSON);
+        String name = "unknown name";
+        JSONArray songList = jsonObject.getJSONArray("items");
+        String playlistId = songList.getJSONObject(0).getString("playlistId");
+
+        // create empty youtubePlaylist object
+        YoutubePlaylist youtubePlaylist = new YoutubePlaylist("um", null, playlistId);
+
+        for (int i = 0; i < songList.length(); i++) {
+            JSONObject entry = songList.getJSONObject(i);
+            JSONObject snippet = entry.getJSONObject("snippet");
+
+            if (snippet.has("videoOwnerChannelTitle")) {
+                String title = snippet.getString("title");
+                String channel = snippet.getString("videoOwnerChannelTitle");
+                String date = snippet.getString("publishedAt");
+                JSONObject extraInfo = snippet.getJSONObject("resourceId");
+                String id = extraInfo.getString("videoId");
+
+                YoutubeSong song = new YoutubeSong(title, channel, date, id);
+                youtubePlaylist.addSong(song);
+            } else {
+                System.out.println("There was a deleted video here");
+            }
+        }
+        return youtubePlaylist;
     }
 }

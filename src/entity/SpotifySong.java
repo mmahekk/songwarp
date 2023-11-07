@@ -7,7 +7,6 @@ public class SpotifySong extends Song implements SpotifySongInterface {
     private final int duration;
     private final String spotifyID;
     private final ArrayList<String> genre;
-
     public SpotifySong(String title, String author, int duration, String spotifyID, ArrayList<String> genre, String date) {
         super(title, author, date);
         this.duration = duration;
