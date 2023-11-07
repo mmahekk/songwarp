@@ -18,15 +18,16 @@ public class YoutubeGetInteractor implements YoutubeGetInputBoundary {
         String id = youtubeGetInputData.getId();
 
         // get json file from youtube api
-        String jsonFile = youtubeGetDataAccessObject.getPlaylistJSON(id);
+        String jsonFile = youtubeGetDataAccessObject.getPlaylistJSON(id); // (DAO request 1)
 
         if (!(jsonFile).startsWith("FAILED")) {
-            // build youtubePlaylist object from json
+            // build youtubePlaylist object from json (DAO request 2)
             YoutubePlaylist youtubePlaylist = youtubeGetDataAccessObject.buildYoutubePlaylist(jsonFile);
 
-            // store instance in project temp save file
+            // store instance in project temp save file (DAO request 3)
             // TODO: add save playlist invoke, using FileUserDataAccessObject and the youtubePlaylist made in previous line
 
+            // invoke presenter
             YoutubeGetOutputData youtubeGetOutputData = new YoutubeGetOutputData(youtubePlaylist, false);
             youtubeGetPresenter.prepareSuccessView(youtubeGetOutputData);
 

@@ -2,11 +2,11 @@ package entity;
 import java.util.ArrayList;
 
 public class YoutubePlaylist extends Playlist implements YoutubePlaylistInterface {
-    private final String youtubeURL;
+    private final String youtubeID;
 
-    public YoutubePlaylist(String name, String genre, String youtubeURL) {
+    public YoutubePlaylist(String name, String genre, String youtubeID) {
         super(name, genre);
-        this.youtubeURL = youtubeURL;
+        this.youtubeID = youtubeID;
     }
 
     @Override
@@ -46,8 +46,7 @@ public class YoutubePlaylist extends Playlist implements YoutubePlaylistInterfac
         return youtubeSongs;
     }
 
-    @Override
-    public String getYoutubeURL() {
-        return youtubeURL;
+    public String getYoutubeID() {
+        return youtubeID;
     }
 }

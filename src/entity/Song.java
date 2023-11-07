@@ -4,12 +4,12 @@ abstract class Song implements SongInterface {
 
     private final String name;
     private final String author;
-    private final int duration;
+    private final String  date;
 
-    public Song(String name, String author, int duration) {
+    public Song(String name, String author, String date) {
         this.name = name;
         this.author = author;
-        this.duration = duration;
+        this.date = date;
     }
     @Override
     public String getName() {
@@ -20,7 +20,7 @@ abstract class Song implements SongInterface {
         return this.author;
     }
     @Override
-    public int getDuration() {
-        return this.duration;
+    public String getDate() {
+        return this.date;
     }
 }
