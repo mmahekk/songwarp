@@ -1,5 +1,6 @@
 package entity;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -58,10 +59,12 @@ public abstract class Playlist implements PlaylistInterface {
 
     public JSONObject convertToJSON() {
         JSONObject jsonObject = new JSONObject();
-        for (int i = 0; i < songs.size(); i++) {
-            JSONObject song = songs.get(i).convertToJSON();
-            jsonObject.append(String.valueOf(i), song);
+        JSONArray songList = new JSONArray();
+        for (Song value : songs) {
+            JSONObject song = value.convertToJSON();
+            songList.put(song);
         }
+        jsonObject.append("items", songList);
         jsonObject.append("type", this.getClass().getName());
         return jsonObject;
     }
