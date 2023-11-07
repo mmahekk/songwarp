@@ -58,12 +58,11 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
     }
 
     @Override
-    public YoutubePlaylist buildYoutubePlaylist(String youtubePlaylistJSON) {
+    public YoutubePlaylist buildYoutubePlaylist(String youtubePlaylistJSON, String playlistId) {
         // convert JSON string to JSON object
         JSONObject jsonObject = new JSONObject(youtubePlaylistJSON);
         String name = "unknown name";
         JSONArray songList = jsonObject.getJSONArray("items");
-        String playlistId = songList.getJSONObject(0).getString("playlistId");
 
         // create empty youtubePlaylist object
         YoutubePlaylist youtubePlaylist = new YoutubePlaylist("um", null, playlistId);
@@ -79,7 +78,7 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
                 JSONObject extraInfo = snippet.getJSONObject("resourceId");
                 String id = extraInfo.getString("videoId");
 
-                YoutubeSong song = new YoutubeSong(title, channel, date, id);
+                YoutubeSong song = new YoutubeSong(title, channel, id, date);
                 youtubePlaylist.addSong(song);
             } else {
                 System.out.println("There was a deleted video here");

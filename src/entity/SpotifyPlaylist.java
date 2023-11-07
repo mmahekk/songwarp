@@ -15,10 +15,9 @@ public class SpotifyPlaylist extends Playlist implements SpotifyPlaylistInterfac
         return super.getList();
     }
 
-    @Override
-    public int getDuration() {
-        return super.getDuration();
-    }
+//    public int getDuration() {
+//        return super.getDuration();
+//    }
 
     @Override
     public String getName() {

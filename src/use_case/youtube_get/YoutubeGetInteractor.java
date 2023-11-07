@@ -1,15 +1,17 @@
 package use_case.youtube_get;
 
+import data_access.TempPlaylistDataAccessObject;
 import entity.YoutubePlaylist;
-import interface_adapter.youtube_get.YoutubeGetPresenter;
 
 public class YoutubeGetInteractor implements YoutubeGetInputBoundary {
     final YoutubeGetDataAccessInterface youtubeGetDataAccessObject;
+    final TempPlaylistDataAccessObject fileWriter;
     final YoutubeGetOutputBoundary youtubeGetPresenter;
 
     public YoutubeGetInteractor(YoutubeGetDataAccessInterface youtubeGetDataAccessInterface,
-                           YoutubeGetOutputBoundary youtubeGetOutputBoundary) {
+                                TempPlaylistDataAccessObject fileWriter, YoutubeGetOutputBoundary youtubeGetOutputBoundary) {
         this.youtubeGetDataAccessObject = youtubeGetDataAccessInterface;
+        this.fileWriter = fileWriter;
         this.youtubeGetPresenter = youtubeGetOutputBoundary;
     }
 
@@ -22,14 +24,14 @@ public class YoutubeGetInteractor implements YoutubeGetInputBoundary {
 
         if (!(jsonFile).startsWith("FAILED")) {
             // build youtubePlaylist object from json (DAO request 2)
-            YoutubePlaylist youtubePlaylist = youtubeGetDataAccessObject.buildYoutubePlaylist(jsonFile);
+            YoutubePlaylist youtubePlaylist = youtubeGetDataAccessObject.buildYoutubePlaylist(jsonFile, id);
 
             // store instance in project temp save file (DAO request 3)
-            // TODO: add save playlist invoke, using FileUserDataAccessObject and the youtubePlaylist made in previous line
+            fileWriter.writePlaylistFile(youtubePlaylist);
 
-            // invoke presenter
-            YoutubeGetOutputData youtubeGetOutputData = new YoutubeGetOutputData(youtubePlaylist, false);
-            youtubeGetPresenter.prepareSuccessView(youtubeGetOutputData);
+//            // invoke presenter
+//            YoutubeGetOutputData youtubeGetOutputData = new YoutubeGetOutputData(youtubePlaylist, false);
+//            youtubeGetPresenter.prepareSuccessView(youtubeGetOutputData);
 
         } else {
             // TODO: implement this situation

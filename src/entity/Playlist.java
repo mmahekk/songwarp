@@ -1,5 +1,7 @@
 package entity;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public abstract class Playlist implements PlaylistInterface {
@@ -18,14 +20,14 @@ public abstract class Playlist implements PlaylistInterface {
         return songs;
     }
 
-    @Override
-    public int getDuration() {
-        int totalDuration = 0;
-        for (Song song : songs) {
-            totalDuration += song.getDuration();
-        }
-        return totalDuration;
-    }
+//    @Override
+//    public int getDuration() {
+//        int totalDuration = 0;
+//        for (Song song : songs) {
+//            totalDuration += song.getDuration();
+//        }
+//        return totalDuration;
+//    }
 
     @Override
     public String getName() {
@@ -52,5 +54,15 @@ public abstract class Playlist implements PlaylistInterface {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public JSONObject convertToJSON() {
+        JSONObject jsonObject = new JSONObject();
+        for (int i = 0; i < songs.size(); i++) {
+            JSONObject song = songs.get(i).convertToJSON();
+            jsonObject.append(String.valueOf(i), song);
+        }
+        jsonObject.append("type", this.getClass().getName());
+        return jsonObject;
     }
 }
