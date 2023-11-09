@@ -65,7 +65,7 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
         JSONArray songList = jsonObject.getJSONArray("items");
 
         // create empty youtubePlaylist object
-        YoutubePlaylist youtubePlaylist = new YoutubePlaylist("um", null, playlistId);
+        YoutubePlaylist youtubePlaylist = new YoutubePlaylist(name, null, playlistId);
 
         for (int i = 0; i < songList.length(); i++) {
             JSONObject entry = songList.getJSONObject(i);
