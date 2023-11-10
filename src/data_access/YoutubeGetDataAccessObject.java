@@ -16,7 +16,7 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
     @Override
     public String getPlaylistJSON(String youtubePlaylistID) {
         try {
-            HttpURLConnection connection = getHttpURLConnection();
+            HttpURLConnection connection = getHttpURLConnection(youtubePlaylistID);
 
             int responseCode = connection.getResponseCode();
             if (responseCode == 200) {
@@ -41,9 +41,8 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
         return null;
     }
 
-    private static HttpURLConnection getHttpURLConnection() throws IOException {
+    private static HttpURLConnection getHttpURLConnection(String playlistId) throws IOException {
         String apiKey = "AIzaSyDSuUFqX_f7v1LI8OTYjvkCjTbzzOfj4b4";
-        String playlistId = "PLQ6xshOf41Nk3Ff_D9GyOpVCBZ7zc8NN5";
         String apiUsed = "https://www.googleapis.com/youtube/v3/";
         String apiRequest = "playlistItems?";
         String configurations = "part=snippet&maxResults=50";
