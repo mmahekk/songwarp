@@ -30,13 +30,11 @@ public class YoutubeGetInteractor implements YoutubeGetInputBoundary {
             fileWriter.writePlaylistFile(youtubePlaylist);
 
             // invoke presenter
-            YoutubeGetOutputData youtubeGetOutputData = new YoutubeGetOutputData(youtubePlaylist, false);
+            YoutubeGetOutputData youtubeGetOutputData = new YoutubeGetOutputData(youtubePlaylist);
             youtubeGetPresenter.prepareSuccessView(youtubeGetOutputData);
 
         } else {
-            // TODO: implement this situation
-            // failed HTTP request, so we must now save the playlist and inform the user
-            // failed HTTP request may be due to passing the api call quota (youtube API has a 10,000 quota a day)
+            youtubeGetPresenter.prepareFailView("Failed to get playlist.");
         }
     }
 }

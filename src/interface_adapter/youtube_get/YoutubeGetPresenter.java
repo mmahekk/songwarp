@@ -15,9 +15,6 @@ public class YoutubeGetPresenter implements YoutubeGetOutputBoundary {
 
     @Override
     public void prepareSuccessView(YoutubeGetOutputData response) {
-        //TODO: I need to fix this... I'm a little confused as to what I'm supposed to do.
-        // I just copied the code from CAcoding, but I don't know what state changes to invoke other than
-        // a view page change. And now, I'm starting to wonder if we even need all the state classes for every use case
         YoutubeGetState youtubeGetState = youtubeGetViewModel.getState();
         youtubeGetState.setPlaylist(response.getPlaylist());
         this.youtubeGetViewModel.setState(youtubeGetState);
@@ -30,7 +27,7 @@ public class YoutubeGetPresenter implements YoutubeGetOutputBoundary {
     @Override
     public void prepareFailView(String error) {
         YoutubeGetState youtubeGetState = youtubeGetViewModel.getState();
-        youtubeGetState.setPlaylistGetError(error);
+        youtubeGetState.setError(error);
         youtubeGetViewModel.firePropertyChanged();
     }
 }
