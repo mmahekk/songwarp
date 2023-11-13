@@ -4,7 +4,9 @@ import entity.YoutubePlaylist;
 
 public class YoutubeGetState {
     private YoutubePlaylist playlist;
-    public void setPlaylistGetError(String error) {
+    private String error;
+    public void setError(String error) {
+        this.error = error;
     }
 
     public void setPlaylist(YoutubePlaylist playlist) {
@@ -13,5 +15,9 @@ public class YoutubeGetState {
 
     public YoutubePlaylist getPlaylist() {
         return playlist;
+    }
+
+    public String getError() {
+        return error;
     }
 }
