@@ -23,7 +23,7 @@ public class SpotifyGetUseCaseFactory {
                                      SpotifyGetDataAccessInterface SpotifyGetDataAccessObject) {
 
         try {
-            SpotifyGetController SpotifyGetController =createSpotifyGetUseCase(ViewManagerModel, SpotifyGetViewModel, SpotifyGetDataAccessObject);
+            SpotifyGetController SpotifyGetController = createSpotifyGetUseCase(ViewManagerModel, SpotifyGetViewModel, SpotifyGetDataAccessObject);
             return new InitialView();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "could not get Spotify playlist");
