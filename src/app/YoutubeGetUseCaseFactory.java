@@ -23,7 +23,7 @@ public class YoutubeGetUseCaseFactory {
                                      YoutubeGetDataAccessInterface YoutubeGetDataAccessObject) {
 
         try {
-            YoutubeGetController youtubeGetController =createYoutubeGetUseCase(ViewManagerModel, YoutubeGetViewModel, YoutubeGetDataAccessObject);
+            YoutubeGetController youtubeGetController = createYoutubeGetUseCase(ViewManagerModel, YoutubeGetViewModel, YoutubeGetDataAccessObject);
             return new InitialView();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "could not get youtube playlist");
