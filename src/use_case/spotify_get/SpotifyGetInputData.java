@@ -1,10 +1,5 @@
 package use_case.spotify_get;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
 public class SpotifyGetInputData {
 
     final private String url;
