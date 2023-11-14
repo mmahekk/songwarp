@@ -1,6 +1,7 @@
 package extra_functions;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class YoutubeTitleInfoExtract {
     public static String[] youtubeTitleInfoExtract(String title, String channel) {
@@ -9,6 +10,9 @@ public class YoutubeTitleInfoExtract {
         channel = extractAuthorFromChannel(channel.toLowerCase());;
         String name;
         String author = null;
+        if (title.contains(channel)) {
+            author = channel;
+        }
         String name_alt = null;
         String author_alt = null;
 
@@ -28,6 +32,20 @@ public class YoutubeTitleInfoExtract {
         }
 
         // extract name and author
+        if (splitTitle.length > 2) {
+            List<String> filteredList = new ArrayList<>();
+
+            // Iterate through the array and filter strings not completely in brackets
+            for (String str : splitTitle) {
+                String potential = str.trim();
+                if (!potential.matches("\\[.*\\]") && !potential.matches("\\(.*\\)")) {
+                    filteredList.add(str);
+                }
+            }
+            // Convert the list back to an array
+            splitTitle = filteredList.toArray(new String[0]);
+        }
+
         if (splitTitle.length == 0) {
             name = title;
             author = channel;
@@ -37,7 +55,9 @@ public class YoutubeTitleInfoExtract {
             if (name.contains("#@#")) {
                 String holdVal = name;
                 name = holdVal.split("#@#")[0];
-                author = holdVal.split("#@#")[1];
+                if (author == null) {
+                    author = holdVal.split("#@#")[1];
+                }
             }
             if (name_alt.contains("#@#")) {
                 String holdVal = name_alt;
@@ -61,7 +81,7 @@ public class YoutubeTitleInfoExtract {
         }
 
         String[] return_val = new String[4];
-        String[] bracketsExcess = {" [", " (", ")", "]"};
+        String[] bracketsExcess = {"[", "(", ")", "]"};
         for (String str : bracketsExcess) {
             name = name.replace(str, "");
         }
@@ -73,7 +93,7 @@ public class YoutubeTitleInfoExtract {
     }
 
     private static String extractAuthorFromChannel(String channel) {
-        String[] excessStrings = {"VEVO", "official", "Official", " - Topic"};
+        String[] excessStrings = {"vevo", "official", " - topic"};
         for (String excessString : excessStrings) {
             if (channel.endsWith(excessString)) {
                 channel = channel.replace(excessString, "");
@@ -95,13 +115,13 @@ public class YoutubeTitleInfoExtract {
     private static String extractNameFromTitle(String title) {
         String remixAuthor = null;
         String[] excessStrings = {
-                "lyrics", " 4k ", "hd", "lyrical", "audio", "version", "animated",
-                "lyric", "OST", "feat. ", "ft.", "music video", "official", "video"};
+                "lyrics", " 4k ", "hd", "lyrical", "audio", "version", "animated", "edit", "release",
+                "lyric", "ost", "feat. ", "ft.", "music video", "official", "video", "soundtrack"};
         for (String str: excessStrings) {
             title = title.replace(str, "");
         }
         String[] splitTitle = splitStringWithBrackets(title);
-        String[] newAuthorIndicators = {"remix", "remastered", "relift", "tribute", "cover"};
+        String[] newAuthorIndicators = {"remix", "remastered", "relift", "tribute", "cover", "bootleg", "remake"};
 
         for (String s : splitTitle) {
             for (String str : newAuthorIndicators) {
@@ -113,7 +133,7 @@ public class YoutubeTitleInfoExtract {
         if (remixAuthor != null && !remixAuthor.isEmpty()) {
             return splitTitle[0] + "#@# " + remixAuthor;
         } else {
-            return title;
+            return splitTitle[0];
         }
     }
 
@@ -124,7 +144,7 @@ public class YoutubeTitleInfoExtract {
 
         if (openIndex != -1 && closeIndex != -1) {
             // Extract the parts based on the indexes
-            String notInBrackets = str.substring(0, openIndex).trim();
+            String notInBrackets = str.substring(0, openIndex).trim() + str.substring(closeIndex).trim();
             String inBrackets = str.substring(openIndex + 1, closeIndex).trim();
 
             return new String[]{notInBrackets, inBrackets};
