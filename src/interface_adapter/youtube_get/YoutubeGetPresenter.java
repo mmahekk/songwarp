@@ -1,22 +1,25 @@
 package interface_adapter.youtube_get;
 
+import interface_adapter.GetPlaylistState;
+import interface_adapter.GetPlaylistViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.youtube_get.YoutubeGetOutputBoundary;
 import use_case.youtube_get.YoutubeGetOutputData;
 
 public class YoutubeGetPresenter implements YoutubeGetOutputBoundary {
-    private final YoutubeGetViewModel youtubeGetViewModel;
+    private final GetPlaylistViewModel youtubeGetViewModel;
     private ViewManagerModel viewManagerModel;
 
-    public YoutubeGetPresenter(ViewManagerModel viewManagerModel, YoutubeGetViewModel youtubeGetViewModel) {
+    public YoutubeGetPresenter(ViewManagerModel viewManagerModel, GetPlaylistViewModel youtubeGetViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.youtubeGetViewModel = youtubeGetViewModel;
     }
 
     @Override
     public void prepareSuccessView(YoutubeGetOutputData response) {
-        YoutubeGetState youtubeGetState = youtubeGetViewModel.getState();
+        GetPlaylistState youtubeGetState = youtubeGetViewModel.getState();
         youtubeGetState.setPlaylist(response.getPlaylist());
+        youtubeGetState.setError(null);
         this.youtubeGetViewModel.setState(youtubeGetState);
         this.youtubeGetViewModel.firePropertyChanged();
 
@@ -26,7 +29,7 @@ public class YoutubeGetPresenter implements YoutubeGetOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
-        YoutubeGetState youtubeGetState = youtubeGetViewModel.getState();
+        GetPlaylistState youtubeGetState = youtubeGetViewModel.getState();
         youtubeGetState.setError(error);
         youtubeGetViewModel.firePropertyChanged();
     }

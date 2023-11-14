@@ -19,7 +19,7 @@ public class TestYoutubeGet {
     public void setup() {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         YoutubeGetViewModel viewModel = new YoutubeGetViewModel();
-        TempPlaylistDataAccessObject fileWriter = new TempPlaylistDataAccessObject();
+        TempPlaylistDataAccessObject fileWriter = new TempPlaylistDataAccessObject("temp.json");
         YoutubeGetDataAccessInterface dataAccessObject = new YoutubeGetDataAccessObject();
         YoutubeGetOutputBoundary outputBoundary = new YoutubeGetPresenter(viewManagerModel, viewModel);
         testUrl = "https://www.youtube.com/playlist?list=PLQ6xshOf41Nk3Ff_D9GyOpVCBZ7zc8NN5";

@@ -34,8 +34,8 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
                 JSONObject jsonObject = new JSONObject(response.toString());
                 return jsonObject;
             } else {
-                String response = "FAILED HTTP request with response code: " + responseCode;
-                return new JSONObject(response);
+                System.out.println("FAILED HTTP request with response code: " + responseCode);
+                return null;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,14 +102,10 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
                             firstItems.put(newItems.getJSONObject(i));
                         }
                     }
-
-
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
         return firstItems;
     }
