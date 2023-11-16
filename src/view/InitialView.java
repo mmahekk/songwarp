@@ -2,10 +2,10 @@ package view;
 
 import interface_adapter.GetPlaylistState;
 import interface_adapter.GetPlaylistViewModel;
+
 import interface_adapter.load_playlist.LoadPlaylistController;
 import interface_adapter.spotify_get.SpotifyGetController;
 import interface_adapter.youtube_get.YoutubeGetController;
-import interface_adapter.youtube_get.YoutubeGetState;
 
 import javax.swing.*;
 import java.awt.*;

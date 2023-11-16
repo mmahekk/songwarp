@@ -1,7 +1,4 @@
 package interface_adapter;
-
-import interface_adapter.youtube_get.YoutubeGetState;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 

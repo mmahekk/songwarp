@@ -68,7 +68,12 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
      */
     @Override
     public JSONArray getAllPlaylist(JSONObject jsonObject, String playlistID) {
-        String nextPageToken = jsonObject.getString("nextPageToken");
+        String nextPageToken;
+        if (jsonObject.has("nextPageToken")) {
+            nextPageToken = jsonObject.getString("nextPageToken");
+        } else {
+            nextPageToken = null;
+        }
         JSONArray firstItems = jsonObject.getJSONArray("items");
         while (nextPageToken != null) {
             System.out.println(nextPageToken);

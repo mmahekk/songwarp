@@ -3,7 +3,7 @@ package interface_adapter;
 import entity.CompletePlaylist;
 import entity.Playlist;
 
-public class GetPlaylistState {
+public class ProcessPlaylistState {
     private Playlist playlist;
     private CompletePlaylist incompletePlaylist;
     private String error;
