@@ -25,7 +25,6 @@ public class SpotifyGetInteractor implements SpotifyGetInputBoundary {
 
         String id = spotifyGetInputData.getId();
 
-
         JSONObject jsonFile = spotifyGetDataAccessObject.getPlaylistJSON(id);
 
         if (!jsonFile.has("error")) {
@@ -39,7 +38,9 @@ public class SpotifyGetInteractor implements SpotifyGetInputBoundary {
             SpotifyGetOutputData spotifyGetOutputData = new SpotifyGetOutputData(spotifyPlaylist, false);
             spotifyGetPresenter.prepareSuccessView(spotifyGetOutputData);
         } else {
-            spotifyGetPresenter.prepareFailView("http Error 400");
+            String errorMessage = "Error: " + jsonFile.getJSONObject("error").getString("message");
+            spotifyGetPresenter.prepareFailView(errorMessage);
+            System.out.println(errorMessage);
         }
     }
 }
