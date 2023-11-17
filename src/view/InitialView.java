@@ -54,15 +54,15 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
         buttons.add(loadPlaylist);
 
         youtubeGet.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        GetPlaylistState currentState = getPlaylistViewModel.getState();
-                        if (e.getSource().equals(youtubeGet)) {
-                            youtubeGetController.execute(currentState.getUrlInput());
-                        }
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GetPlaylistState currentState = getPlaylistViewModel.getState();
+                    if (e.getSource().equals(youtubeGet)) {
+                        youtubeGetController.execute(currentState.getUrlInput());
                     }
                 }
+            }
         );
         // This makes a new KeyListener implementing class, instantiates it, and
         // makes it listen to keystrokes in the usernameInputField.

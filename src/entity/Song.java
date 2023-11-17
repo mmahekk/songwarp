@@ -2,7 +2,7 @@ package entity;
 
 import org.json.JSONObject;
 
-abstract class Song implements SongInterface {
+public abstract class Song implements SongInterface {
 
     private final String name;
     private final String author;

@@ -12,7 +12,8 @@ public class CompleteSong extends Song {
     private final ArrayList<String> genre;
 
     public CompleteSong(String title, String author, String spotifyID, 
-                        String youtubeID, ArrayList<String> genre, String date, String youtubeTitle, String youtubeChannel) {
+                        String youtubeID, ArrayList<String> genre, String date,
+                        String youtubeTitle, String youtubeChannel) {
         super(title, author, date);
         this.spotifyID = spotifyID;
         this.youtubeID = youtubeID;
