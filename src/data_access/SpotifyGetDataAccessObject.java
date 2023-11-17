@@ -1,6 +1,5 @@
 package data_access;
 
-
 import entity.SpotifyPlaylist;
 import entity.SpotifySong;
 import org.json.JSONArray;
@@ -8,52 +7,22 @@ import org.json.JSONObject;
 import use_case.spotify_get.SpotifyGetDataAccessInterface;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+
+import static data_access.APIs.SpotifyAPI.getSpotifyAccess;
+import static data_access.APIs.SpotifyAPI.spotifyAPIRequest;
 
 public class SpotifyGetDataAccessObject implements SpotifyGetDataAccessInterface {
     public JSONObject getPlaylistJSON(String spotifyPlaylistID){
         try {
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://api.spotify.com/v1/playlists/" + spotifyPlaylistID))
-                    .header("Authorization", "Bearer " + getAccess())
-                    .build();
-
-            HttpResponse<String> response = client.send(request,
-                    HttpResponse.BodyHandlers.ofString());
-
-            return new JSONObject(response.body());
+            String response = spotifyAPIRequest("getPlaylist", spotifyPlaylistID);
+            assert response != null;
+            return new JSONObject(response);
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
         return null;
 
-    }
-
-    public static String getAccess() throws IOException, InterruptedException {
-        try {
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .header("Content-Type", "application/x-www-form-urlencoded")
-                    .uri(URI.create("https://accounts.spotify.com/api/token"))
-                    .POST(HttpRequest.BodyPublishers.ofString("grant_type=client_credentials&client_id=11d73b5dea134ad89de266eee9b4db5d&client_secret=5341f28addc940dc83860492caaffdd9"))
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            // Parse the JSON response
-            JSONObject jsonResponse = new JSONObject(response.body());
-            String accessToken = jsonResponse.getString("access_token");
-
-            return accessToken;
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public SpotifyPlaylist buildSpotifyPlaylist(JSONObject spotifyPlaylistJSON, String playlistId) {

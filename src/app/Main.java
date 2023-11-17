@@ -1,7 +1,6 @@
 package app;
 
-import data_access.TempPlaylistDataAccessObject;
-import data_access.YoutubeGetDataAccessObject;
+import data_access.TempFileWriterDataAccessObject;
 import data_access.YoutubeMatchDataAccessObject;
 import interface_adapter.GetPlaylistViewModel;
 import interface_adapter.ProcessPlaylistViewModel;
@@ -41,8 +40,8 @@ public class Main {
         ProcessPlaylistViewModel processPlaylistViewModel = new ProcessPlaylistViewModel();
 
         // temporary file writers
-        TempPlaylistDataAccessObject fileWriter = new TempPlaylistDataAccessObject("temp.json");
-        TempPlaylistDataAccessObject backupFileWriter = new TempPlaylistDataAccessObject("backup.json");
+        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("temp.json");
+        TempFileWriterDataAccessObject backupFileWriter = new TempFileWriterDataAccessObject("backup.json");
 
         InitialView initialView = GetPlaylistUseCaseFactory.create(
             viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);

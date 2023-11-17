@@ -1,17 +1,17 @@
 package use_case.youtube_get;
 
-import data_access.TempPlaylistDataAccessObject;
+import data_access.TempFileWriterDataAccessObject;
 import entity.YoutubePlaylist;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class YoutubeGetInteractor implements YoutubeGetInputBoundary {
     final YoutubeGetDataAccessInterface youtubeGetDataAccessObject;
-    final TempPlaylistDataAccessObject fileWriter;
+    final TempFileWriterDataAccessObject fileWriter;
     final YoutubeGetOutputBoundary youtubeGetPresenter;
 
     public YoutubeGetInteractor(YoutubeGetDataAccessInterface youtubeGetDataAccessInterface,
-                                TempPlaylistDataAccessObject fileWriter, YoutubeGetOutputBoundary youtubeGetOutputBoundary) {
+                                TempFileWriterDataAccessObject fileWriter, YoutubeGetOutputBoundary youtubeGetOutputBoundary) {
         this.youtubeGetDataAccessObject = youtubeGetDataAccessInterface;
         this.fileWriter = fileWriter;
         this.youtubeGetPresenter = youtubeGetOutputBoundary;

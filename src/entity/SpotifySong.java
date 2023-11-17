@@ -27,7 +27,8 @@ public class SpotifySong extends Song implements SpotifySongInterface {
         jsonObject.append("name", this.getName());
         jsonObject.append("author", this.getAuthor());
         jsonObject.append("date", this.getDate());
-        jsonObject.append("spotifyID", spotifyID);
+        jsonObject.append("spotifyID", this.getSpotifyID());
+        jsonObject.append("duration", this.getDuration());
         jsonObject.append("type", "SpotifySong");
         return jsonObject;
     }

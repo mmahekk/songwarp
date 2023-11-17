@@ -21,7 +21,7 @@ public class YoutubeSong extends Song implements YoutubeSongInterface {
         jsonObject.append("name", this.getName());
         jsonObject.append("author", this.getAuthor());
         jsonObject.append("date", this.getDate());
-        jsonObject.append("youtubeID", youtubeID);
+        jsonObject.append("youtubeID", this.getYoutubeID());
         jsonObject.append("type", "YoutubeSong");
         return jsonObject;
     }

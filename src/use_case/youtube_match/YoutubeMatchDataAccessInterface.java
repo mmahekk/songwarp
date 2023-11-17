@@ -7,8 +7,10 @@ import entity.YoutubePlaylist;
 import entity.YoutubeSong;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 public interface YoutubeMatchDataAccessInterface {
-    SpotifySong findSpotifySongMatch(YoutubeSong song);
+    SpotifySong findSpotifySongMatch(YoutubeSong song) throws IOException, InterruptedException;
 
     YoutubeMatchDataAccessObject.Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubePlaylist playlist);
 }

@@ -1,20 +1,18 @@
 package use_case.spotify_get;
 
-import data_access.TempPlaylistDataAccessObject;
+import data_access.TempFileWriterDataAccessObject;
 import entity.SpotifyPlaylist;
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 
 public class SpotifyGetInteractor implements SpotifyGetInputBoundary {
 
     final SpotifyGetDataAccessInterface spotifyGetDataAccessObject;
-    final TempPlaylistDataAccessObject fileWriter;
+    final TempFileWriterDataAccessObject fileWriter;
     final SpotifyGetOutputBoundary spotifyGetPresenter;
 
     public SpotifyGetInteractor(SpotifyGetDataAccessInterface spotifyGetDataAccessInterface,
-                                TempPlaylistDataAccessObject fileWriter, SpotifyGetOutputBoundary spotifyGetOutputBoundary) {
+                                TempFileWriterDataAccessObject fileWriter, SpotifyGetOutputBoundary spotifyGetOutputBoundary) {
         this.spotifyGetDataAccessObject = spotifyGetDataAccessInterface;
         this.fileWriter = fileWriter;
         this.spotifyGetPresenter = spotifyGetOutputBoundary;

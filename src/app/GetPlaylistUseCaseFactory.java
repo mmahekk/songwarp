@@ -1,19 +1,15 @@
 package app;
 
 import data_access.SpotifyGetDataAccessObject;
-import data_access.TempPlaylistDataAccessObject;
+import data_access.TempFileWriterDataAccessObject;
 import data_access.YoutubeGetDataAccessObject;
 import interface_adapter.*;
 import interface_adapter.load_playlist.LoadPlaylistController;
 import interface_adapter.load_playlist.LoadPlaylistPresenter;
-import interface_adapter.load_playlist.LoadPlaylistViewModel;
 import interface_adapter.spotify_get.SpotifyGetController;
 import interface_adapter.spotify_get.SpotifyGetPresenter;
-import interface_adapter.spotify_get.SpotifyGetViewModel;
 import interface_adapter.youtube_get.YoutubeGetController;
 import interface_adapter.youtube_get.YoutubeGetPresenter;
-import interface_adapter.youtube_get.YoutubeGetViewModel;
-import use_case.load_playlist.LoadPlaylistDataAccessInterface;
 import use_case.load_playlist.LoadPlaylistInputBoundary;
 import use_case.load_playlist.LoadPlaylistInteractor;
 import use_case.load_playlist.LoadPlaylistOutputBoundary;
@@ -28,7 +24,6 @@ import use_case.youtube_get.YoutubeGetOutputBoundary;
 import view.InitialView;
 
 import javax.swing.*;
-import javax.swing.text.View;
 import java.io.IOException;
 
 public class GetPlaylistUseCaseFactory {
@@ -38,7 +33,7 @@ public class GetPlaylistUseCaseFactory {
     public static InitialView create(ViewManagerModel viewManagerModel,
                                      GetPlaylistViewModel getPlaylistViewModel,
                                      ProcessPlaylistViewModel processPlaylistViewModel,
-                                     TempPlaylistDataAccessObject fileWriter) {
+                                     TempFileWriterDataAccessObject fileWriter) {
         try {
             // LoadPlaylistController loadPlaylistController = createLoadPlaylistUseCase(viewManagerModel, getPlaylistViewModel, loadPlaylistDataAccessObject);
             YoutubeGetController youtubeGetController = createYoutubeGetUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
@@ -63,7 +58,7 @@ public class GetPlaylistUseCaseFactory {
 
     private static YoutubeGetController createYoutubeGetUseCase(
             ViewManagerModel viewManagerModel, GetPlaylistViewModel getPlaylistViewModel,
-            ProcessPlaylistViewModel processPlaylistViewModel, TempPlaylistDataAccessObject fileWriter) throws IOException {
+            ProcessPlaylistViewModel processPlaylistViewModel, TempFileWriterDataAccessObject fileWriter) throws IOException {
 
         YoutubeGetOutputBoundary youtubeGetOutputBoundary = new YoutubeGetPresenter(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel);
 
@@ -77,7 +72,7 @@ public class GetPlaylistUseCaseFactory {
 
     private static SpotifyGetController createSpotifyGetUseCase (
             ViewManagerModel viewManagerModel, GetPlaylistViewModel getPlaylistViewModel,
-            ProcessPlaylistViewModel processPlaylistViewModel, TempPlaylistDataAccessObject fileWriter) throws IOException{
+            ProcessPlaylistViewModel processPlaylistViewModel, TempFileWriterDataAccessObject fileWriter) throws IOException{
 
         SpotifyGetDataAccessInterface spotifyGetDataAccessObject = new SpotifyGetDataAccessObject();
         SpotifyGetOutputBoundary spotifyGetOutputBoundary = new SpotifyGetPresenter(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel);

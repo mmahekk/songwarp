@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static extra_functions.YoutubeTitleInfoExtract.youtubeTitleInfoExtract;
-import static data_access.TempPlaylistDataAccessObject.readTempJSON;
+import static data_access.TempFileWriterDataAccessObject.readTempJSON;
 
 public class TestYoutubeTitleInfoExtract {
     @Test

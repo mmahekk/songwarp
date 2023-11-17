@@ -1,18 +1,18 @@
 package use_case.youtube_match;
 
-import data_access.TempPlaylistDataAccessObject;
+import data_access.TempFileWriterDataAccessObject;
 import data_access.YoutubeMatchDataAccessObject;
 import entity.CompletePlaylist;
 import entity.YoutubePlaylist;
 
 public class YoutubeMatchInteractor implements YoutubeMatchInputBoundary {
     final YoutubeMatchDataAccessInterface youtubeMatchDataAccessObject;
-    final TempPlaylistDataAccessObject fileWriter;
-    final TempPlaylistDataAccessObject backupFileWriter;
+    final TempFileWriterDataAccessObject fileWriter;
+    final TempFileWriterDataAccessObject backupFileWriter;
     final YoutubeMatchOutputBoundary youtubeMatchPresenter;
 
     public YoutubeMatchInteractor(YoutubeMatchDataAccessInterface youtubeMatchDataAccessInterface,
-                                  TempPlaylistDataAccessObject fileWriter, TempPlaylistDataAccessObject backupFileWriter,
+                                  TempFileWriterDataAccessObject fileWriter, TempFileWriterDataAccessObject backupFileWriter,
                                   YoutubeMatchOutputBoundary youtubeMatchOutputBoundary) {
         this.youtubeMatchDataAccessObject = youtubeMatchDataAccessInterface;
         this.fileWriter = fileWriter;
