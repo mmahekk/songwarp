@@ -73,11 +73,11 @@ public class SpotifyGetDataAccessObject implements SpotifyGetDataAccessInterface
                     JSONObject snippet2 = snippet.getJSONObject("album");
                     String title = snippet.getString("name");
                     String author = snippet2.getJSONArray("artists").getJSONObject(0).getString("name");
-                    String date = snippet.getString("added_at");
-                    String duration = snippet.getString("duration_ms");
+                    String date = snippet2.getString("release_date");
+                    Integer duration = snippet.getInt("duration_ms");
                     String id = snippet.getString("id");
 
-                    SpotifySong song = new SpotifySong(title, author, Integer.parseInt(duration), id, date);
+                    SpotifySong song = new SpotifySong(title, author, duration, id, date);
                     spotifyPlaylist.addSong(song);
                 } else {
                     System.out.println("Deleted.");
