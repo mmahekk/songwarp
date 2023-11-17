@@ -17,13 +17,13 @@ public class YoutubeTitleInfoExtract {
         String author_alt = null;
 
         // remove weird characters
-        String[] strangeChars = {"@", "#"};
+        String[] strangeChars = {"\\@", "\\#", "\\$", "\\!", "\\*", "\\'", "\\;", "\\:", "\\=", "\\+", "\\?", "\\|"};
         for (String character : strangeChars) {
             title = title.replaceAll(character, "");
         }
 
         // split up title
-        String[] dividers = {" - ", "- ", " by ", "\\/ ", "\\| ", ": ", " ~ ", "~ "};
+        String[] dividers = {" - ", "- ", " by ", "\\/ ", ": ", " ~ ", "~ "};
         String[] splitTitle = {};
         for (String divider : dividers) {
             if (title.contains(divider)) {

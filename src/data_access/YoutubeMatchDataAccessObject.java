@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static data_access.APIs.SpotifyAPI.spotifyAPIRequest;
+import static extra_functions.SearchQueryEncoder.encodeSearchQuery;
 import static extra_functions.YoutubeTitleInfoExtract.youtubeTitleInfoExtract;
 
 public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInterface {
@@ -18,7 +19,7 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
         String secondTryQuery = nameAndAuthor[2] + " " + nameAndAuthor[3];
 
         try {
-            String data = spotifyAPIRequest("search", firstTryQuery);
+            String data = spotifyAPIRequest("searchSong", encodeSearchQuery(firstTryQuery));
             if (data != null) {
                 return buildSpotifySong(new JSONObject(data));
             }
@@ -29,9 +30,22 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
     }
 
     public SpotifySong buildSpotifySong(JSONObject data) {
+        if (data.has("tracks")) {
+            JSONObject topSearchResults = data.getJSONObject("tracks").getJSONArray("items").getJSONObject(0);
+            String id = topSearchResults.getString("id");
+            String name = topSearchResults.getString("name");
+            int duration = topSearchResults.getInt("duration_ms");
+            JSONObject album = topSearchResults.getJSONObject("album");
+            String date = album.getString("release_date");
+            String author = album.getJSONArray("artists").getJSONObject(0).getString("name");
 
+            SpotifySong song = new SpotifySong(name, author, duration, id, date);
+            System.out.println(song.convertToJSON());
+            return song;
+        }
         return null;
     }
+
 
     @Override
     public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubePlaylist playlist) {
