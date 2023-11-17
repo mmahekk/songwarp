@@ -6,13 +6,8 @@ import data_access.YoutubeMatchDataAccessObject;
 import interface_adapter.GetPlaylistViewModel;
 import interface_adapter.ProcessPlaylistViewModel;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.youtube_get.YoutubeGetController;
-import interface_adapter.youtube_get.YoutubeGetPresenter;
 import interface_adapter.youtube_match.YoutubeMatchController;
 import interface_adapter.youtube_match.YoutubeMatchPresenter;
-import use_case.youtube_get.YoutubeGetDataAccessInterface;
-import use_case.youtube_get.YoutubeGetInteractor;
-import use_case.youtube_get.YoutubeGetOutputBoundary;
 import use_case.youtube_match.YoutubeMatchDataAccessInterface;
 import use_case.youtube_match.YoutubeMatchInteractor;
 import use_case.youtube_match.YoutubeMatchOutputBoundary;
@@ -49,14 +44,9 @@ public class Main {
         TempPlaylistDataAccessObject fileWriter = new TempPlaylistDataAccessObject("temp.json");
         TempPlaylistDataAccessObject backupFileWriter = new TempPlaylistDataAccessObject("backup.json");
 
-        //TODO: note, the following code is temporary and should be replaced once usecase factories are made
-        YoutubeGetDataAccessInterface dataAccessObject = new YoutubeGetDataAccessObject();
-        YoutubeGetOutputBoundary outputBoundary = new YoutubeGetPresenter(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel);
-        YoutubeGetInteractor youtubeGetInteractor = new YoutubeGetInteractor(dataAccessObject, fileWriter, outputBoundary);
-        YoutubeGetController youtubeGetController = new YoutubeGetController(youtubeGetInteractor);
-        InitialView initialView = new InitialView(getPlaylistViewModel, youtubeGetController);
-//          InitialView initialView = GetPlaylistUseCaseFactory.create(
-//          viewManagerModel, getPlaylistViewModel, tempPlaylistDataAccessObject);
+        InitialView initialView = GetPlaylistUseCaseFactory.create(
+            viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
+        assert initialView != null;
         views.add(initialView, initialView.viewName);  // viewName is "page 1"
 
 

@@ -41,7 +41,7 @@ public class YoutubeGetInteractor implements YoutubeGetInputBoundary {
                 youtubeGetPresenter.prepareFailView("Failed to get playlist.");
             }
         } else {
-            youtubeGetPresenter.prepareFailView("Invalid Playlist Url.");
+            youtubeGetPresenter.prepareFailView("Invalid Youtube Playlist Url.");
         }
     }
 }

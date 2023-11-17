@@ -30,7 +30,6 @@ public class YoutubeGetPresenter implements YoutubeGetOutputBoundary {
         this.processPlaylistViewModel.setState(processPlaylistState);
         this.processPlaylistViewModel.firePropertyChanged();
 
-
         this.viewManagerModel.setActiveView(processPlaylistViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }

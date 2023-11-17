@@ -1,7 +1,9 @@
 package app;
 
+import data_access.SpotifyGetDataAccessObject;
 import data_access.TempPlaylistDataAccessObject;
-import interface_adapter.ViewManagerModel;
+import data_access.YoutubeGetDataAccessObject;
+import interface_adapter.*;
 import interface_adapter.load_playlist.LoadPlaylistController;
 import interface_adapter.load_playlist.LoadPlaylistPresenter;
 import interface_adapter.load_playlist.LoadPlaylistViewModel;
@@ -34,14 +36,14 @@ public class GetPlaylistUseCaseFactory {
     private GetPlaylistUseCaseFactory() {}
 
     public static InitialView create(ViewManagerModel viewManagerModel,
-                                     LoadPlaylistViewModel loadPlaylistViewModel, LoadPlaylistDataAccessInterface loadPlaylistDataAccessObject,
-                                     YoutubeGetViewModel youtubeGetViewModel, YoutubeGetDataAccessInterface youtubeGetDataAccessObject,
-                                     SpotifyGetViewModel spotifyGetViewModel, SpotifyGetDataAccessInterface spotifyGetDataAccessObject) {
+                                     GetPlaylistViewModel getPlaylistViewModel,
+                                     ProcessPlaylistViewModel processPlaylistViewModel,
+                                     TempPlaylistDataAccessObject fileWriter) {
         try {
-            LoadPlaylistController loadPlaylistController = createLoadPlaylistUseCase(viewManagerModel, loadPlaylistViewModel, loadPlaylistDataAccessObject);
-            YoutubeGetController youtubeGetController = createYoutubeGetUseCase(viewManagerModel, youtubeGetViewModel, youtubeGetDataAccessObject);
-            SpotifyGetController spotifyGetController = createSpotifyGetUseCase(viewManagerModel, spotifyGetViewModel, spotifyGetDataAccessObject);
-            return new InitialView(); //TODO: add the controllers to the arguments after InitalView is implemented.
+            // LoadPlaylistController loadPlaylistController = createLoadPlaylistUseCase(viewManagerModel, getPlaylistViewModel, loadPlaylistDataAccessObject);
+            YoutubeGetController youtubeGetController = createYoutubeGetUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
+            SpotifyGetController spotifyGetController = createSpotifyGetUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
+            return new InitialView(getPlaylistViewModel, youtubeGetController, spotifyGetController);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "could not load initial page");
         }
@@ -49,46 +51,39 @@ public class GetPlaylistUseCaseFactory {
     }
 
     private static LoadPlaylistController createLoadPlaylistUseCase(
-            ViewManagerModel viewManagerModel, LoadPlaylistViewModel loadPlaylistViewModel,
-            LoadPlaylistDataAccessInterface loadPlaylistDataAccessObject) throws IOException {
+            ViewManagerModel viewManagerModel, GetPlaylistViewModel getPlaylistViewModel,
+            ProcessPlaylistViewModel processPlaylistViewModel) throws IOException {
 
         //TODO: change the input arguments when methods are done.
         LoadPlaylistOutputBoundary loadPlaylistOutputBoundary = new LoadPlaylistPresenter();
-
-        TempPlaylistDataAccessObject filewriter = new TempPlaylistDataAccessObject();
-
         LoadPlaylistInputBoundary loadPlaylistInteractor = new LoadPlaylistInteractor();
 
         return new LoadPlaylistController();
     }
 
     private static YoutubeGetController createYoutubeGetUseCase(
-            ViewManagerModel viewManagerModel, YoutubeGetViewModel youtubeGetViewModel,
-            YoutubeGetDataAccessInterface youtubeGetDataAccessObject) throws IOException {
+            ViewManagerModel viewManagerModel, GetPlaylistViewModel getPlaylistViewModel,
+            ProcessPlaylistViewModel processPlaylistViewModel, TempPlaylistDataAccessObject fileWriter) throws IOException {
 
+        YoutubeGetOutputBoundary youtubeGetOutputBoundary = new YoutubeGetPresenter(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel);
 
-        YoutubeGetOutputBoundary youtubeGetOutputBoundary = new YoutubeGetPresenter(viewManagerModel, youtubeGetViewModel);
-
-        TempPlaylistDataAccessObject filewriter = new TempPlaylistDataAccessObject();
+        YoutubeGetDataAccessInterface youtubeGetDataAccessObject = new YoutubeGetDataAccessObject();
 
         YoutubeGetInputBoundary youtubeGetInteractor = new YoutubeGetInteractor(youtubeGetDataAccessObject,
-                filewriter, youtubeGetOutputBoundary);
+                fileWriter, youtubeGetOutputBoundary);
 
         return new YoutubeGetController(youtubeGetInteractor);
     }
 
     private static SpotifyGetController createSpotifyGetUseCase (
-            ViewManagerModel viewManagerModel, SpotifyGetViewModel spotifyGetViewModel,
-            SpotifyGetDataAccessInterface spotifyGetDataAccessObject) throws IOException{
+            ViewManagerModel viewManagerModel, GetPlaylistViewModel getPlaylistViewModel,
+            ProcessPlaylistViewModel processPlaylistViewModel, TempPlaylistDataAccessObject fileWriter) throws IOException{
 
-        //TODO: change the input arguments when methods are done.
-        SpotifyGetOutputBoundary spotifyGetOutputBoundary = new SpotifyGetPresenter();
+        SpotifyGetDataAccessInterface spotifyGetDataAccessObject = new SpotifyGetDataAccessObject();
+        SpotifyGetOutputBoundary spotifyGetOutputBoundary = new SpotifyGetPresenter(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel);
 
-        TempPlaylistDataAccessObject filewriter = new TempPlaylistDataAccessObject();
+        SpotifyGetInputBoundary spotifyGetInteractor = new SpotifyGetInteractor(spotifyGetDataAccessObject, fileWriter, spotifyGetOutputBoundary);
 
-        SpotifyGetInputBoundary spotifyGetInteractor = new SpotifyGetInteractor();
-
-        return new SpotifyGetController();
+        return new SpotifyGetController(spotifyGetInteractor);
     }
-
 }

@@ -1,5 +1,7 @@
 import data_access.SpotifyGetDataAccessObject;
 import data_access.YoutubeGetDataAccessObject;
+import interface_adapter.GetPlaylistViewModel;
+import interface_adapter.ProcessPlaylistViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.spotify_get.SpotifyGetPresenter;
 import interface_adapter.spotify_get.SpotifyGetViewModel;
@@ -19,10 +21,11 @@ public class TestSpotifyGet {
     @Before
     public void setup() {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
-        SpotifyGetViewModel viewModel = new SpotifyGetViewModel();
-        TempPlaylistDataAccessObject fileWriter = new TempPlaylistDataAccessObject();
+        GetPlaylistViewModel viewModel = new GetPlaylistViewModel();
+        ProcessPlaylistViewModel nextViewModel = new ProcessPlaylistViewModel();
+        TempPlaylistDataAccessObject fileWriter = new TempPlaylistDataAccessObject("temp.json");
         SpotifyGetDataAccessInterface dataAccessObject = new SpotifyGetDataAccessObject();
-        SpotifyGetOutputBoundary outputBoundary = new SpotifyGetPresenter(viewManagerModel, viewModel);
+        SpotifyGetOutputBoundary outputBoundary = new SpotifyGetPresenter(viewManagerModel, viewModel, nextViewModel);
         testUrl = "https://open.spotify.com/playlist/6BHIpWRDOIznQi7HiVvlpZ";
         SpotifyGetInteractor interactor = new SpotifyGetInteractor(dataAccessObject, fileWriter, outputBoundary);
         controller = new SpotifyGetController(interactor);

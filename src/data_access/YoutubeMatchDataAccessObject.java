@@ -23,7 +23,7 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
                 if (matchedSong != null) {
                     CompleteSong completeSong = new CompleteSong(
                             matchedSong.getName(), matchedSong.getAuthor(), matchedSong.getSpotifyID(),
-                            ((YoutubeSong) song).getYoutubeID(), matchedSong.getGenre(), matchedSong.getDate(),
+                            ((YoutubeSong) song).getYoutubeID(), matchedSong.getDate(),
                             song.getName(), song.getAuthor());
 
                     matchedPlaylist.addSong(completeSong);
