@@ -11,12 +11,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface {
     @Override
-    public String getPlaylistJSON(String youtubePlaylistID) {
+    public JSONObject getPlaylistJSON(String youtubePlaylistID) {
         try {
-            HttpURLConnection connection = getHttpURLConnection();
+            HttpURLConnection connection = getHttpURLConnection(youtubePlaylistID, null);
 
             int responseCode = connection.getResponseCode();
             if (responseCode == 200) {
@@ -30,10 +31,11 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
                 reader.close();
 
                 // Parse the JSON response
-                String jsonResponse = response.toString();
-                return jsonResponse;
+                JSONObject jsonObject = new JSONObject(response.toString());
+                return jsonObject;
             } else {
-                return "FAILED HTTP request with response code: " + responseCode;
+                System.out.println("FAILED HTTP request with response code: " + responseCode);
+                return null;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,15 +43,17 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
         return null;
     }
 
-    private static HttpURLConnection getHttpURLConnection() throws IOException {
+    private static HttpURLConnection getHttpURLConnection(String playlistId, String pageToken) throws IOException {
         String apiKey = "AIzaSyDSuUFqX_f7v1LI8OTYjvkCjTbzzOfj4b4";
-        String playlistId = "PLQ6xshOf41Nk3Ff_D9GyOpVCBZ7zc8NN5";
         String apiUsed = "https://www.googleapis.com/youtube/v3/";
         String apiRequest = "playlistItems?";
         String configurations = "part=snippet&maxResults=50";
 
         // Construct the URL for the API request
         String apiUrl = apiUsed + apiRequest + configurations + "&playlistId=" + playlistId + "&key=" + apiKey;
+        if (pageToken != null) {
+            apiUrl += "&pageToken=" + pageToken;
+        }
 
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -57,12 +61,64 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
         return connection;
     }
 
+    /**
+     * uses next page tokens to get the rest of the playlist, since max return is 50 songs
+     *
+     * @return
+     */
     @Override
-    public YoutubePlaylist buildYoutubePlaylist(String youtubePlaylistJSON, String playlistId) {
+    public JSONArray getAllPlaylist(JSONObject jsonObject, String playlistID) {
+        String nextPageToken;
+        if (jsonObject.has("nextPageToken")) {
+            nextPageToken = jsonObject.getString("nextPageToken");
+        } else {
+            nextPageToken = null;
+        }
+        JSONArray firstItems = jsonObject.getJSONArray("items");
+        while (nextPageToken != null) {
+            System.out.println(nextPageToken);
+            try {
+                HttpURLConnection connection = getHttpURLConnection(playlistID, nextPageToken);
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode == 200) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String inputLine;
+                    StringBuilder response = new StringBuilder();
+                    while ((inputLine = reader.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    reader.close();
+
+                    // Parse the JSON response
+                    JSONObject nextPage = new JSONObject(response.toString());
+                    // get next page token ready for next time
+                    if (nextPage.has("nextPageToken")) {
+                        nextPageToken = nextPage.getString("nextPageToken");
+                    } else {
+                        nextPageToken = null;
+                        System.out.println("no next page");
+                    }
+
+                    if (nextPage.has("items")) {
+                        // get items and append them to our JSON array
+                        JSONArray newItems = nextPage.getJSONArray("items");
+                        for (int i = 0; i < newItems.length(); i++) {
+                            firstItems.put(newItems.getJSONObject(i));
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return firstItems;
+    }
+
+    @Override
+    public YoutubePlaylist buildYoutubePlaylist(JSONArray songList, String playlistId) {
         // convert JSON string to JSON object
-        JSONObject jsonObject = new JSONObject(youtubePlaylistJSON);
         String name = "unknown name";
-        JSONArray songList = jsonObject.getJSONArray("items");
 
         // create empty youtubePlaylist object
         YoutubePlaylist youtubePlaylist = new YoutubePlaylist(name, null, playlistId);
