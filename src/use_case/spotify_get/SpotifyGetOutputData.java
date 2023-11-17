@@ -5,7 +5,7 @@ import entity.SpotifyPlaylist;
 public class SpotifyGetOutputData {
 
     private final SpotifyPlaylist playlist;
-    private boolean useCaseFailed;
+    private final boolean useCaseFailed;
 
     public SpotifyGetOutputData(SpotifyPlaylist playlist, boolean useCaseFailed) {
         this.playlist = playlist;
