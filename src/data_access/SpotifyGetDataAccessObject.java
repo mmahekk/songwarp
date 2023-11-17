@@ -42,7 +42,7 @@ public class SpotifyGetDataAccessObject implements SpotifyGetDataAccessInterface
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder().header("Content-Type", "application/x-www-form-urlencoded")
                     .uri(URI.create("https://accounts.spotify.com/api/token"))
-                    .POST(HttpRequest.BodyPublishers.ofString("grant_type=client_credentials&client_id=11d73b5dea134ad89de266eee9b4db5d&client_secret=5341f28addc940dc83860492caaffdd9A"))
+                    .POST(HttpRequest.BodyPublishers.ofString("grant_type=client_credentials&client_id=11d73b5dea134ad89de266eee9b4db5d&client_secret=5341f28addc940dc83860492caaffdd9"))
                     .build();
 
             HttpResponse<String> response = client.send(request,
