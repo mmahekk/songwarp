@@ -4,13 +4,13 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static data_access.TempPlaylistDataAccessObject.readTempJSON;
 import static extra_functions.YoutubeTitleInfoExtract.youtubeTitleInfoExtract;
+import static data_access.TempPlaylistDataAccessObject.readTempJSON;
 
 public class TestYoutubeTitleInfoExtract {
     @Test
     public void testYoutubeTitleInfoExtract() throws IOException {
-        JSONObject jsonObject = readTempJSON(false);
+        JSONObject jsonObject = readTempJSON(null, false);
         JSONArray list = jsonObject.getJSONArray("items").getJSONArray(0);
         for (int i = 0; i < list.length(); i++) {
             String title = list.getJSONObject(i).getJSONArray("name").getString(0);

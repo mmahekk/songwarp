@@ -39,7 +39,7 @@ public class YoutubeGetInputData {
                 }
             }
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            return null;
         }
         return null;
     }
