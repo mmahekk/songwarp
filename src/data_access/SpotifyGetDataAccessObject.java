@@ -14,9 +14,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class SpotifyGetDataAccessObject implements SpotifyGetDataAccessInterface {
-    public String getPlaylistJSON(String spotifyPlaylistID){
-
-
+    public JSONObject getPlaylistJSON(String spotifyPlaylistID){
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder().header("Authorization", "Bearer  " + getAccess())
@@ -26,7 +24,7 @@ public class SpotifyGetDataAccessObject implements SpotifyGetDataAccessInterface
             HttpResponse<String> response = client.send(request,
                     HttpResponse.BodyHandlers.ofString());
 
-            return response.body();
+            return new JSONObject(response.body());
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -63,32 +61,37 @@ public class SpotifyGetDataAccessObject implements SpotifyGetDataAccessInterface
         return null;
     }
 
-    public SpotifyPlaylist buildSpotifyPlaylist(String spotifyPlaylistJSON, String playlistId) {
-        JSONObject jsonObject = new JSONObject(spotifyPlaylistJSON);
-        String name = "unknown name";
-        JSONArray songlist = jsonObject.getJSONObject("tracks").getJSONArray("items");
+    public SpotifyPlaylist buildSpotifyPlaylist(JSONObject spotifyPlaylistJSON, String playlistId) {
+        System.out.println(spotifyPlaylistJSON);
+
+        if (spotifyPlaylistJSON.has("error")) {
+            return null;
+        } else {
+            String name = "unknown name";
+            JSONArray songlist = spotifyPlaylistJSON.getJSONObject("tracks").getJSONArray("items");
 
 
-        SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist(name, null, playlistId);
+            SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist(name, null, playlistId);
 
-        for (int i = 0; i < songlist.length(); i++) {
-            JSONObject entry = songlist.getJSONObject(i);
-            JSONObject snippet = entry.getJSONObject("track");
+            for (int i = 0; i < songlist.length(); i++) {
+                JSONObject entry = songlist.getJSONObject(i);
+                JSONObject snippet = entry.getJSONObject("track");
 
-            if (snippet.has("album")) {
-                JSONObject snippet2 = snippet.getJSONObject("album");
-                String title = snippet.getString("name");
-                String author = snippet2.getJSONArray("artists").getJSONObject(0).getString("name");
-                String date = snippet.getString("added_at");
-                String duration = snippet.getString("duration_ms");
-                String id = snippet.getString("id");
+                if (snippet.has("album")) {
+                    JSONObject snippet2 = snippet.getJSONObject("album");
+                    String title = snippet.getString("name");
+                    String author = snippet2.getJSONArray("artists").getJSONObject(0).getString("name");
+                    String date = snippet.getString("added_at");
+                    String duration = snippet.getString("duration_ms");
+                    String id = snippet.getString("id");
 
-                SpotifySong song = new SpotifySong(title, author, Integer.parseInt(duration), id, date);
-                spotifyPlaylist.addSong(song);
-            } else {
-                System.out.println("Deleted.");
+                    SpotifySong song = new SpotifySong(title, author, Integer.parseInt(duration), id, date);
+                    spotifyPlaylist.addSong(song);
+                } else {
+                    System.out.println("Deleted.");
+                }
             }
+            return spotifyPlaylist;
         }
-        return spotifyPlaylist;
     }
 }

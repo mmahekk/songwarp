@@ -2,6 +2,7 @@ package use_case.spotify_get;
 
 import data_access.TempPlaylistDataAccessObject;
 import entity.SpotifyPlaylist;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -25,10 +26,9 @@ public class SpotifyGetInteractor implements SpotifyGetInputBoundary {
         String id = spotifyGetInputData.getId();
 
 
-        String jsonFile = spotifyGetDataAccessObject.getPlaylistJSON(id);
+        JSONObject jsonFile = spotifyGetDataAccessObject.getPlaylistJSON(id);
 
-
-        if (!(jsonFile).startsWith("FAILED")) {
+        if (!jsonFile.has("error")) {
             // build youtubePlaylist object from json (DAO request 2)
             SpotifyPlaylist spotifyPlaylist = spotifyGetDataAccessObject.buildSpotifyPlaylist(jsonFile, id);
 
@@ -38,10 +38,8 @@ public class SpotifyGetInteractor implements SpotifyGetInputBoundary {
             // invoke presenter
             SpotifyGetOutputData spotifyGetOutputData = new SpotifyGetOutputData(spotifyPlaylist, false);
             spotifyGetPresenter.prepareSuccessView(spotifyGetOutputData);
+        } else {
+            spotifyGetPresenter.prepareFailView("http Error 400");
+        }
     }
-
-
-
-
-
-}}
+}
