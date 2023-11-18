@@ -1,15 +1,15 @@
 package app;
 
-import data_access.TempPlaylistDataAccessObject;
-import data_access.YoutubeGetDataAccessObject;
+import data_access.TempFileWriterDataAccessObject;
+import data_access.YoutubeMatchDataAccessObject;
 import interface_adapter.GetPlaylistViewModel;
 import interface_adapter.ProcessPlaylistViewModel;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.youtube_get.YoutubeGetController;
-import interface_adapter.youtube_get.YoutubeGetPresenter;
-import use_case.youtube_get.YoutubeGetDataAccessInterface;
-import use_case.youtube_get.YoutubeGetInteractor;
-import use_case.youtube_get.YoutubeGetOutputBoundary;
+import interface_adapter.youtube_match.YoutubeMatchController;
+import interface_adapter.youtube_match.YoutubeMatchPresenter;
+import use_case.youtube_match.YoutubeMatchDataAccessInterface;
+import use_case.youtube_match.YoutubeMatchInteractor;
+import use_case.youtube_match.YoutubeMatchOutputBoundary;
 import view.InitialView;
 import view.MatchOrSplitSelectionView;
 import view.ViewManager;
@@ -39,20 +39,21 @@ public class Main {
         GetPlaylistViewModel getPlaylistViewModel = new GetPlaylistViewModel();
         ProcessPlaylistViewModel processPlaylistViewModel = new ProcessPlaylistViewModel();
 
-        TempPlaylistDataAccessObject fileWriter = new TempPlaylistDataAccessObject("temp.json");
+        // temporary file writers
+        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("temp.json");
+        TempFileWriterDataAccessObject backupFileWriter = new TempFileWriterDataAccessObject("backup.json");
 
-        //TODO: note, the following code is temporary and should be replaced once usecase factories are made
-        YoutubeGetDataAccessInterface dataAccessObject = new YoutubeGetDataAccessObject();
-        YoutubeGetOutputBoundary outputBoundary = new YoutubeGetPresenter(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel);
-        YoutubeGetInteractor youtubeGetInteractor = new YoutubeGetInteractor(dataAccessObject, fileWriter, outputBoundary);
-        YoutubeGetController youtubeGetController = new YoutubeGetController(youtubeGetInteractor);
-        InitialView initialView = new InitialView(getPlaylistViewModel, youtubeGetController);
-//          InitialView initialView = GetPlaylistUseCaseFactory.create(
-//          viewManagerModel, getPlaylistViewModel, tempPlaylistDataAccessObject);
+        InitialView initialView = GetPlaylistUseCaseFactory.create(
+            viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
+        assert initialView != null;
         views.add(initialView, initialView.viewName);  // viewName is "page 1"
 
 
-        MatchOrSplitSelectionView matchOrSplitSelectionView = new MatchOrSplitSelectionView(processPlaylistViewModel);
+        YoutubeMatchDataAccessInterface matchdataAccessObject = new YoutubeMatchDataAccessObject();
+        YoutubeMatchOutputBoundary matchoutputBoundary = new YoutubeMatchPresenter(viewManagerModel, processPlaylistViewModel);
+        YoutubeMatchInteractor youtubeMatchInteractor = new YoutubeMatchInteractor(matchdataAccessObject, fileWriter, backupFileWriter, matchoutputBoundary);
+        YoutubeMatchController youtubeMatchController = new YoutubeMatchController(youtubeMatchInteractor);
+        MatchOrSplitSelectionView matchOrSplitSelectionView = new MatchOrSplitSelectionView(processPlaylistViewModel, youtubeMatchController);
 //          MatchOrSplitSelectionView matchOrSplitSelectionView = ProcessPlaylistUseCaseFactory.create(
 //          viewManagerModel, processPlaylistViewModel, tempPlaylistDataAccessObject);
         views.add(matchOrSplitSelectionView, matchOrSplitSelectionView.viewName);

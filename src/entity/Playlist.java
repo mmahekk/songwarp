@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public abstract class Playlist implements PlaylistInterface {
+public class Playlist implements PlaylistInterface {
     private final String name;
     private ArrayList<Song> songs;
     private String genre;
@@ -17,22 +17,13 @@ public abstract class Playlist implements PlaylistInterface {
     }
 
     @Override
-    public ArrayList<Song> getList() {
-        return songs;
-    }
-
-//    @Override
-//    public int getDuration() {
-//        int totalDuration = 0;
-//        for (Song song : songs) {
-//            totalDuration += song.getDuration();
-//        }
-//        return totalDuration;
-//    }
-
-    @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public ArrayList<Song> getList() {
+        return songs;
     }
 
     @Override
@@ -66,6 +57,14 @@ public abstract class Playlist implements PlaylistInterface {
         }
         jsonObject.append("items", songList);
         jsonObject.append("type", this.getClass().getName());
+        if (this instanceof CompletePlaylist) {
+            jsonObject.append("youtubeID", ((CompletePlaylist) this).getIDs()[0]);
+            jsonObject.append("spotifyID", ((CompletePlaylist) this).getIDs()[1]);
+        } else if (this instanceof SpotifyPlaylist) {
+            jsonObject.append("spotifyID", ((SpotifyPlaylist) this).getSpotifyID());
+        } else if (this instanceof YoutubePlaylist) {
+            jsonObject.append("youtubeID", ((YoutubePlaylist) this).getYoutubeID());
+        }
         return jsonObject;
     }
 }

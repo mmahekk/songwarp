@@ -1,12 +1,12 @@
 import data_access.SpotifyGetDataAccessObject;
-import data_access.YoutubeGetDataAccessObject;
+import interface_adapter.GetPlaylistViewModel;
+import interface_adapter.ProcessPlaylistViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.spotify_get.SpotifyGetPresenter;
-import interface_adapter.spotify_get.SpotifyGetViewModel;
 import org.junit.Before;
 import org.junit.Test;
 
-import data_access.TempPlaylistDataAccessObject;
+import data_access.TempFileWriterDataAccessObject;
 import interface_adapter.spotify_get.SpotifyGetController;
 import use_case.spotify_get.SpotifyGetDataAccessInterface;
 import use_case.spotify_get.SpotifyGetInteractor;
@@ -19,10 +19,11 @@ public class TestSpotifyGet {
     @Before
     public void setup() {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
-        SpotifyGetViewModel viewModel = new SpotifyGetViewModel();
-        TempPlaylistDataAccessObject fileWriter = new TempPlaylistDataAccessObject();
+        GetPlaylistViewModel viewModel = new GetPlaylistViewModel();
+        ProcessPlaylistViewModel nextViewModel = new ProcessPlaylistViewModel();
+        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("temp.json");
         SpotifyGetDataAccessInterface dataAccessObject = new SpotifyGetDataAccessObject();
-        SpotifyGetOutputBoundary outputBoundary = new SpotifyGetPresenter(viewManagerModel, viewModel);
+        SpotifyGetOutputBoundary outputBoundary = new SpotifyGetPresenter(viewManagerModel, viewModel, nextViewModel);
         testUrl = "https://open.spotify.com/playlist/6BHIpWRDOIznQi7HiVvlpZ";
         SpotifyGetInteractor interactor = new SpotifyGetInteractor(dataAccessObject, fileWriter, outputBoundary);
         controller = new SpotifyGetController(interactor);

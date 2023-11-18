@@ -2,23 +2,22 @@ package entity;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class CompleteSong extends Song {
     private final String spotifyID;
     private final String youtubeID;
     private final String youtubeTitle;
     private final String youtubeChannel;
-    private final ArrayList<String> genre;
+    private final int duration;
 
-    public CompleteSong(String title, String author, String spotifyID, 
-                        String youtubeID, ArrayList<String> genre, String date, String youtubeTitle, String youtubeChannel) {
+    public CompleteSong(String title, String author, String spotifyID,
+                        String youtubeID, String date,
+                        String youtubeTitle, String youtubeChannel, int duration) {
         super(title, author, date);
         this.spotifyID = spotifyID;
         this.youtubeID = youtubeID;
         this.youtubeTitle = youtubeTitle;
         this.youtubeChannel = youtubeChannel;
-        this.genre = genre;
+        this.duration = duration;
     }
 
     public String getSpotifyId() {
@@ -29,8 +28,8 @@ public class CompleteSong extends Song {
         return this.youtubeID;
     }
 
-    public ArrayList<String> getGenres() {
-        return this.genre;
+    public int getDuration() {
+        return this.duration;
     }
 
     @Override
@@ -39,11 +38,11 @@ public class CompleteSong extends Song {
         jsonObject.append("name", this.getName());
         jsonObject.append("author", this.getAuthor());
         jsonObject.append("date", this.getDate());
-        jsonObject.append("spotifyID", spotifyID);
-        jsonObject.append("youtubeID", youtubeID);
+        jsonObject.append("duration", this.getDuration());
+        jsonObject.append("spotifyID", this.getSpotifyId());
+        jsonObject.append("youtubeID", this.getYoutubeId());
         jsonObject.append("youtubeTitle", youtubeTitle);
         jsonObject.append("youtubeChannel", youtubeChannel);
-        jsonObject.append("genres", genre);
         jsonObject.append("type", "CompleteSong");
         return jsonObject;
     }

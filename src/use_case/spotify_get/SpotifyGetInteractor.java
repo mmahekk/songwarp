@@ -1,20 +1,18 @@
 package use_case.spotify_get;
 
-import data_access.TempPlaylistDataAccessObject;
+import data_access.TempFileWriterDataAccessObject;
 import entity.SpotifyPlaylist;
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 
 public class SpotifyGetInteractor implements SpotifyGetInputBoundary {
 
     final SpotifyGetDataAccessInterface spotifyGetDataAccessObject;
-    final TempPlaylistDataAccessObject fileWriter;
+    final TempFileWriterDataAccessObject fileWriter;
     final SpotifyGetOutputBoundary spotifyGetPresenter;
 
     public SpotifyGetInteractor(SpotifyGetDataAccessInterface spotifyGetDataAccessInterface,
-                                TempPlaylistDataAccessObject fileWriter, SpotifyGetOutputBoundary spotifyGetOutputBoundary) {
+                                TempFileWriterDataAccessObject fileWriter, SpotifyGetOutputBoundary spotifyGetOutputBoundary) {
         this.spotifyGetDataAccessObject = spotifyGetDataAccessInterface;
         this.fileWriter = fileWriter;
         this.spotifyGetPresenter = spotifyGetOutputBoundary;
@@ -25,23 +23,27 @@ public class SpotifyGetInteractor implements SpotifyGetInputBoundary {
 
         String id = spotifyGetInputData.getId();
 
-        JSONObject jsonFile = spotifyGetDataAccessObject.getPlaylistJSON(id);
+        if (id != null) {
 
-        if (!jsonFile.has("error")) {
-            System.out.println(jsonFile);
-            // build youtubePlaylist object from json (DAO request 2)
-            SpotifyPlaylist spotifyPlaylist = spotifyGetDataAccessObject.buildSpotifyPlaylist(jsonFile, id);
+            JSONObject jsonFile = spotifyGetDataAccessObject.getPlaylistJSON(id);
 
-            // store instance in project temp save file (DAO request 3)
-            fileWriter.writePlaylistFile(spotifyPlaylist);
+            if (!jsonFile.has("error")) {
+                System.out.println(jsonFile);
+                // build youtubePlaylist object from json (DAO request 2)
+                SpotifyPlaylist spotifyPlaylist = spotifyGetDataAccessObject.buildSpotifyPlaylist(jsonFile, id);
 
-            // invoke presenter
-            SpotifyGetOutputData spotifyGetOutputData = new SpotifyGetOutputData(spotifyPlaylist, false);
-            spotifyGetPresenter.prepareSuccessView(spotifyGetOutputData);
+                // store instance in project temp save file (DAO request 3)
+                fileWriter.writePlaylistFile(spotifyPlaylist);
+
+                // invoke presenter
+                SpotifyGetOutputData spotifyGetOutputData = new SpotifyGetOutputData(spotifyPlaylist, false);
+                spotifyGetPresenter.prepareSuccessView(spotifyGetOutputData);
+            } else {
+                String errorMessage = "Error: " + jsonFile.getJSONObject("error").getString("message");
+                spotifyGetPresenter.prepareFailView(errorMessage);
+            }
         } else {
-            String errorMessage = "Error: " + jsonFile.getJSONObject("error").getString("message");
-            spotifyGetPresenter.prepareFailView(errorMessage);
-            System.out.println(errorMessage);
+            spotifyGetPresenter.prepareFailView("Invalid Spotify Playlist Url");
         }
     }
 }

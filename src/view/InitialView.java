@@ -21,7 +21,7 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
     private final GetPlaylistViewModel getPlaylistViewModel;
     private final JTextField urlInputField = new JTextField(40);
     private final YoutubeGetController youtubeGetController;
-//    private final SpotifyGetController spotifyGetController;
+    private final SpotifyGetController spotifyGetController;
 //    private final LoadPlaylistController loadPlaylistController;
 
     private final JButton youtubeGet;
@@ -29,12 +29,13 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
     private final JButton loadPlaylist;
 
     public InitialView(GetPlaylistViewModel getPlaylistViewModel,
-                       YoutubeGetController youtubeGetController
-                       //, SpotifyGetController spotifyGetController, LoadPlaylistController loadPlaylistController
+                       YoutubeGetController youtubeGetController,
+                       SpotifyGetController spotifyGetController
+                       // LoadPlaylistController loadPlaylistController
                        ) {
         this.getPlaylistViewModel = getPlaylistViewModel;
         this.youtubeGetController = youtubeGetController;
-//        this.spotifyGetController = spotifyGetController;
+        this.spotifyGetController = spotifyGetController;
 //        this.loadPlaylistController = loadPlaylistController;
 
         getPlaylistViewModel.addPropertyChangeListener(this);
@@ -54,20 +55,28 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
         buttons.add(loadPlaylist);
 
         youtubeGet.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GetPlaylistState currentState = getPlaylistViewModel.getState();
+                    if (e.getSource().equals(youtubeGet)) {
+                        youtubeGetController.execute(currentState.getUrlInput());
+                    }
+                }
+            }
+        );
+        spotifyGet.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         GetPlaylistState currentState = getPlaylistViewModel.getState();
-                        if (e.getSource().equals(youtubeGet)) {
-                            youtubeGetController.execute(currentState.getUrlInput());
+                        if (e.getSource().equals(spotifyGet)) {
+                            spotifyGetController.execute(currentState.getUrlInput());
                         }
                     }
                 }
         );
-        // This makes a new KeyListener implementing class, instantiates it, and
-        // makes it listen to keystrokes in the usernameInputField.
-        //
-        // Notice how it has access to instance variables in the enclosing class!
+
         urlInputField.addKeyListener(
             new KeyListener() {
                 @Override
