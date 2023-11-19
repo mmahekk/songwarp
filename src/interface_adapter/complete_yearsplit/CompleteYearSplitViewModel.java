@@ -1,12 +1,12 @@
-package interface_adapter.spotify_genresplit;
+package interface_adapter.complete_yearsplit;
 
 import interface_adapter.ViewModel;
 
 import java.beans.PropertyChangeListener;
 
-public class SpotifyGenresplitViewModel extends ViewModel {
-    public SpotifyGenresplitViewModel() {
-        super("page 2");
+public class CompleteYearSplitViewModel extends ViewModel {
+    public CompleteYearSplitViewModel() {
+        super("page 3");
     }
 
     @Override
