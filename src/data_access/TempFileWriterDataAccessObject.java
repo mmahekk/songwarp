@@ -1,4 +1,4 @@
-package data_access;
+bpackage data_access;
 
 import entity.*;
 import org.json.JSONArray;
@@ -99,7 +99,7 @@ public class TempFileWriterDataAccessObject {
                     CompletePlaylist completePlaylist = new CompletePlaylist("loaded playlist", null, youtubeID, spotifyID);
                     for (int i = 0; i < songList.length(); i++) {
                         JSONObject entry = songList.getJSONObject(i);
-                        String title = entry.getJSONArray("title").getString(0);
+                        String title = entry.getJSONArray("name").getString(0);
                         String channel = entry.getJSONArray("author").getString(0);
                         String date = entry.getJSONArray("date").getString(0);
                         String spotifySongID = entry.getJSONArray("spotifyID").getString(0);
