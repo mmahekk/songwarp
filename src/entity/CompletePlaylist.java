@@ -1,5 +1,8 @@
 package entity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class CompletePlaylist extends Playlist {
@@ -47,4 +50,5 @@ public class CompletePlaylist extends Playlist {
     public ArrayList<Song> getList() {
         return super.getList();
     }
+
 }
