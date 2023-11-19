@@ -67,4 +67,7 @@ public class Playlist implements PlaylistInterface {
         }
         return jsonObject;
     }
+    public void setSongs(ArrayList<Song> songs) {
+        this.songs = songs;
+    }
 }
