@@ -1,11 +1,11 @@
-package interface_adapter.playlist_genresplit;
+package interface_adapter.complete_yearsplit;
 
 import interface_adapter.ViewModel;
 
 import java.beans.PropertyChangeListener;
 
-public class PlaylistGenresplitViewModel extends ViewModel {
-    public PlaylistGenresplitViewModel() {
+public class CompleteYearSplitViewModel extends ViewModel {
+    public CompleteYearSplitViewModel() {
         super("page 3");
     }
 
