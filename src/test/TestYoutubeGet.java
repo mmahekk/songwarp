@@ -1,11 +1,12 @@
 import data_access.YoutubeGetDataAccessObject;
+import interface_adapter.GetPlaylistViewModel;
+import interface_adapter.ProcessPlaylistViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.youtube_get.YoutubeGetPresenter;
-import interface_adapter.youtube_get.YoutubeGetViewModel;
 import org.junit.Before;
 import org.junit.Test;
 
-import data_access.TempPlaylistDataAccessObject;
+import data_access.TempFileWriterDataAccessObject;
 import interface_adapter.youtube_get.YoutubeGetController;
 import use_case.youtube_get.YoutubeGetDataAccessInterface;
 import use_case.youtube_get.YoutubeGetInteractor;
@@ -18,11 +19,12 @@ public class TestYoutubeGet {
     @Before
     public void setup() {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
-        YoutubeGetViewModel viewModel = new YoutubeGetViewModel();
-        TempPlaylistDataAccessObject fileWriter = new TempPlaylistDataAccessObject();
+        GetPlaylistViewModel viewModel = new GetPlaylistViewModel();
+        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("temp.json");
         YoutubeGetDataAccessInterface dataAccessObject = new YoutubeGetDataAccessObject();
-        YoutubeGetOutputBoundary outputBoundary = new YoutubeGetPresenter(viewManagerModel, viewModel);
+        YoutubeGetOutputBoundary outputBoundary = new YoutubeGetPresenter(viewManagerModel, viewModel, new ProcessPlaylistViewModel());
         testUrl = "https://www.youtube.com/playlist?list=PLQ6xshOf41Nk3Ff_D9GyOpVCBZ7zc8NN5";
+        // testUrl = "https://www.youtube.com/playlist?list=PLQ6xshOf41NlhTT3bPQgcaOCn1wkwClya";
         YoutubeGetInteractor interactor = new YoutubeGetInteractor(dataAccessObject, fileWriter, outputBoundary);
         controller = new YoutubeGetController(interactor);
     }

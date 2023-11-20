@@ -1,13 +1,16 @@
 package entity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class SpotifyPlaylist extends Playlist implements SpotifyPlaylistInterface {
-    private final String spotifyURL;
+    private final String spotifyID;
 
-    public SpotifyPlaylist(String name, String genre, String spotifyURL) {
+    public SpotifyPlaylist(String name, String genre, String spotifyID) {
         super(name, genre);
-        this.spotifyURL = spotifyURL;
+        this.spotifyID = spotifyID;
     }
 
     @Override
@@ -15,9 +18,13 @@ public class SpotifyPlaylist extends Playlist implements SpotifyPlaylistInterfac
         return super.getList();
     }
 
-//    public int getDuration() {
-//        return super.getDuration();
-//    }
+    public int getDuration() {
+        int totalDuration = 0;
+        for (SpotifySong song : this.getSpotifySongs()) {
+            totalDuration += song.getDuration();
+        }
+        return totalDuration;
+    }
 
     @Override
     public String getName() {
@@ -46,8 +53,7 @@ public class SpotifyPlaylist extends Playlist implements SpotifyPlaylistInterfac
     }
 
     @Override
-    public String getSpotifyURL() {
-        return spotifyURL;
+    public String getSpotifyID() {
+        return spotifyID;
     }
-
 }

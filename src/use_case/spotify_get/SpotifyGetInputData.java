@@ -23,12 +23,17 @@ public class SpotifyGetInputData {
 
     public String extractId(String playlistUrl) {
 
-        if (playlistUrl != null){
+        if (playlistUrl != null && playlistUrl.startsWith("https://open.spotify.com/playlist/")){
             int lastIndex = url.lastIndexOf("/");
 
-            return url.substring(lastIndex + 1);
+            if (url.endsWith(Character.toString(22))) {
+                return url.substring(lastIndex + 1, url.length() - 1);
+            } else {
+                return url.substring(lastIndex + 1);
+            }
+
         } else {
-            return "Error, enter a valid url.";
+            return null;
         }
 
     }
