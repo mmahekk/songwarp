@@ -2,6 +2,8 @@ package use_case.youtube_get;
 
 import data_access.TempPlaylistDataAccessObject;
 import entity.YoutubePlaylist;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class YoutubeGetInteractor implements YoutubeGetInputBoundary {
     final YoutubeGetDataAccessInterface youtubeGetDataAccessObject;
@@ -20,23 +22,23 @@ public class YoutubeGetInteractor implements YoutubeGetInputBoundary {
         String id = youtubeGetInputData.getId();
 
         // get json file from youtube api
-        String jsonFile = youtubeGetDataAccessObject.getPlaylistJSON(id); // (DAO request 1)
+        JSONObject jsonFile = youtubeGetDataAccessObject.getPlaylistJSON(id); // (DAO request 1)
+        if (jsonFile.has("items")) {
+            // get rest of pages via nextPageToken
+            JSONArray jsonArray = youtubeGetDataAccessObject.getAllPlaylist(jsonFile, id);
 
-        if (!(jsonFile).startsWith("FAILED")) {
             // build youtubePlaylist object from json (DAO request 2)
-            YoutubePlaylist youtubePlaylist = youtubeGetDataAccessObject.buildYoutubePlaylist(jsonFile, id);
+            YoutubePlaylist youtubePlaylist = youtubeGetDataAccessObject.buildYoutubePlaylist(jsonArray, id);
 
             // store instance in project temp save file (DAO request 3)
             fileWriter.writePlaylistFile(youtubePlaylist);
 
             // invoke presenter
-            YoutubeGetOutputData youtubeGetOutputData = new YoutubeGetOutputData(youtubePlaylist, false);
+            YoutubeGetOutputData youtubeGetOutputData = new YoutubeGetOutputData(youtubePlaylist);
             youtubeGetPresenter.prepareSuccessView(youtubeGetOutputData);
 
         } else {
-            // TODO: implement this situation
-            // failed HTTP request, so we must now save the playlist and inform the user
-            // failed HTTP request may be due to passing the api call quota (youtube API has a 10,000 quota a day)
+            youtubeGetPresenter.prepareFailView("Failed to get playlist.");
         }
     }
 }
