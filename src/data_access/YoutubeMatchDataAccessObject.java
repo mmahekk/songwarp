@@ -21,11 +21,13 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
         System.out.println(firstTryQuery);
         System.out.println(secondTryQuery);
         try {
-            String data = spotifyAPIRequest("searchSong", encodeSearchQuery(firstTryQuery));
-            if (data != null) {
+            String[] info = new String[]{encodeSearchQuery(firstTryQuery)};
+            String data = spotifyAPIRequest("searchSong", info);
+            if (data != null && !data.isEmpty()) {
                 SpotifySong newSong = buildSpotifySong(new JSONObject(data));
                 if (!firstTryQuery.contains(newSong.getAuthor().toLowerCase())) {
-                    String secondData = spotifyAPIRequest("searchSong", encodeSearchQuery(firstTryQuery + " " + secondTryQuery));
+                    info = new String[]{encodeSearchQuery(firstTryQuery + " " + secondTryQuery)};
+                    String secondData = spotifyAPIRequest("searchSong", info);
                     if (secondData != null) {
                         newSong = buildSpotifySong(new JSONObject(secondData));
                     }
