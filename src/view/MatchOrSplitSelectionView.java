@@ -1,6 +1,7 @@
 package view;
 
 import entity.CompletePlaylist;
+import entity.Playlist;
 import entity.SpotifyPlaylist;
 import entity.YoutubePlaylist;
 import interface_adapter.ProcessPlaylistState;
@@ -65,7 +66,12 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
                     ProcessPlaylistState currentState = processPlaylistViewModel.getState();
                     if (e.getSource().equals(match)) {
                         if (currentState.getPlaylist() instanceof YoutubePlaylist playlist) {
-                            youtubeMatchController.execute(playlist, true);
+                            Playlist incompletePlaylist = currentState.getIncompletePlaylist();
+                            if (incompletePlaylist == null) {
+                                youtubeMatchController.execute(playlist, true);
+                            } else {
+                                youtubeMatchController.execute(playlist, incompletePlaylist, true);
+                            }
                         } else if (currentState.getPlaylist() instanceof SpotifyPlaylist playlist) {
                             // spotifyMatchController.execute(playlist, true);
                         }

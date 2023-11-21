@@ -6,6 +6,7 @@ import use_case.youtube_match.YoutubeMatchDataAccessInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static data_access.APIs.SpotifyAPI.spotifyAPIRequest;
 import static utilities.SearchQueryEncoder.encodeSearchQuery;
@@ -57,10 +58,20 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
 
 
     @Override
-    public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubePlaylist playlist) {
+    public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubePlaylist playlist, CompletePlaylist incompletePlaylist) {
         ArrayList<YoutubeSong> songList = playlist.getYoutubeSongs();
-        CompletePlaylist matchedPlaylist = new CompletePlaylist("unknown name", null, playlist.getYoutubeID(), "unknown");
-        for (YoutubeSong song : songList) {
+        CompletePlaylist matchedPlaylist = Objects.requireNonNullElseGet(incompletePlaylist, () ->
+                new CompletePlaylist("unknown name", null, playlist.getYoutubeID(), "unknown"));
+
+        int offset;
+        if (matchedPlaylist.getTotal() < songList.size()) {
+            offset = matchedPlaylist.getTotal();
+        } else {
+            offset = 0;
+        }
+
+        for (int i = offset; i < songList.size(); i++) {
+            YoutubeSong song = songList.get(i);
             if (song != null) {
                 SpotifySong matchedSong = findSpotifySongMatch(song);
 

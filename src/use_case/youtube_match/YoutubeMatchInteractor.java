@@ -21,11 +21,12 @@ public class YoutubeMatchInteractor implements YoutubeMatchInputBoundary {
     }
 
     @Override
-    public void execute(YoutubeMatchInputData youtubeMatchInputData, Boolean gotoNextView) {
+    public void execute(YoutubeMatchInputData youtubeMatchInputData) {
         YoutubePlaylist playlist = youtubeMatchInputData.getPlaylist();
+        CompletePlaylist incompletePlaylist = (CompletePlaylist) youtubeMatchInputData.getIncompletePlaylist();
 
         YoutubeMatchDataAccessObject.Pair<CompletePlaylist, Boolean> result =
-                youtubeMatchDataAccessObject.buildCompletePlaylist(playlist);
+                youtubeMatchDataAccessObject.buildCompletePlaylist(playlist, incompletePlaylist);
 
         CompletePlaylist matchedPlaylist = result.p();
         Boolean completed = result.completed();
@@ -37,7 +38,7 @@ public class YoutubeMatchInteractor implements YoutubeMatchInputBoundary {
 
         if (completed) {
             YoutubeMatchOutputData youtubeMatchOutputData = new YoutubeMatchOutputData(matchedPlaylist);
-            youtubeMatchPresenter.prepareSuccessView(youtubeMatchOutputData, gotoNextView);
+            youtubeMatchPresenter.prepareSuccessView(youtubeMatchOutputData, youtubeMatchInputData.getGotoNextView());
         } else {
             YoutubeMatchOutputData youtubeMatchOutputData = new YoutubeMatchOutputData(matchedPlaylist);
             youtubeMatchPresenter.failSaveExit(
