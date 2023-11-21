@@ -1,5 +1,6 @@
 package interface_adapter.save_playlist;
 
+import entity.CompletePlaylist;
 import entity.Playlist;
 import use_case.save_playlist.SavePlaylistInputBoundary;
 import use_case.save_playlist.SavePlaylistInputData;
@@ -13,10 +14,10 @@ public class SavePlaylistController {
         this.savePlaylistUseCaseInteractor = savePlaylistUseCaseInteractor;
     }
 
-    public void execute(String filePath, Playlist playlist) {
+    public void execute(String filePath, Playlist playlist, Playlist incompletePlaylist) {
         try {
             // Create input data for the use case
-            SavePlaylistInputData inputData = new SavePlaylistInputData(playlist, filePath);
+            SavePlaylistInputData inputData = new SavePlaylistInputData(playlist, filePath, incompletePlaylist);
 
             // Invoke the use case interactor
             savePlaylistUseCaseInteractor.execute(inputData);

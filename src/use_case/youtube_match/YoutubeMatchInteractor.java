@@ -41,7 +41,7 @@ public class YoutubeMatchInteractor implements YoutubeMatchInputBoundary {
         } else {
             YoutubeMatchOutputData youtubeMatchOutputData = new YoutubeMatchOutputData(matchedPlaylist);
             youtubeMatchPresenter.failSaveExit(
-                    playlist, matchedPlaylist,
+                    playlist, youtubeMatchOutputData.getPlaylist(),
                     "Couldn't complete playlist matching. Will now save playlist as file.");
         }
     }

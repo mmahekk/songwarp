@@ -5,7 +5,8 @@ import entity.SpotifyPlaylist;
 import entity.YoutubePlaylist;
 import interface_adapter.ProcessPlaylistState;
 import interface_adapter.ProcessPlaylistViewModel;
-import interface_adapter.spotify_match.SpotifyMatchController;
+import interface_adapter.save_playlist.SavePlaylistController;
+import interface_adapter.view_traverse.ViewTraverseController;
 import interface_adapter.youtube_match.YoutubeMatchController;
 
 import javax.swing.*;
@@ -14,6 +15,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class MatchOrSplitSelectionView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "page 2";
@@ -24,17 +28,24 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
     private final YoutubeMatchController youtubeMatchController;
 //    private final CompleteYearSplitController completeYearSplitController;
 
+    private final SavePlaylistController savePlaylistController;
+    private final ViewTraverseController viewTraverseController;
+
     private final JButton match;
     private final JButton split;
 
     public MatchOrSplitSelectionView(ProcessPlaylistViewModel processPlaylistViewModel,
                                      // SpotifyMatchController spotifyMatchController,
                                      // CompleteYearSplitController completeYearSplitController,
-                                     YoutubeMatchController youtubeMatchController) {
+                                     YoutubeMatchController youtubeMatchController,
+                                     SavePlaylistController savePlaylistController, ViewTraverseController viewTraverseController) {
         this.processPlaylistViewModel = processPlaylistViewModel;
         // this.spotifyMatchController = spotifyMatchController;
         // this.completeYearSplitController = completeYearSplitController;
         this.youtubeMatchController = youtubeMatchController;
+        this.savePlaylistController = savePlaylistController;
+        this.viewTraverseController = viewTraverseController;
+
 
         processPlaylistViewModel.addPropertyChangeListener(this);
 
@@ -100,6 +111,12 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
         if (newValue instanceof ProcessPlaylistState state) {
             if (state.getError() != null) {
                 JOptionPane.showMessageDialog(this, state.getError());
+                if (state.getForcedToSave()) {
+                    String time = LocalTime.now().format(DateTimeFormatter.ofPattern("HH-mm-ss", Locale.ENGLISH));
+                    savePlaylistController.execute("Playlist in progress" + time, state.getIncompletePlaylist(), state.getPlaylist());
+                    state.setForcedToSave(false);
+                    viewTraverseController.execute();
+                }
             }
         }
     }

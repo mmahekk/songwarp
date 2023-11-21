@@ -4,6 +4,7 @@ import entity.CompletePlaylist;
 import entity.Playlist;
 import entity.YoutubePlaylist;
 import interface_adapter.*;
+import use_case.youtube_match.YoutubeMatchInputData;
 import use_case.youtube_match.YoutubeMatchOutputBoundary;
 import use_case.youtube_match.YoutubeMatchOutputData;
 
@@ -60,6 +61,8 @@ public class YoutubeMatchPresenter implements YoutubeMatchOutputBoundary {
         youtubeMatchState.setPlaylist(playlist);
         youtubeMatchState.setIncompletePlaylist(matchedPlaylist);
         youtubeMatchState.setError(error);
+        youtubeMatchState.setForcedToSave(true);
+        youtubeMatchViewModel.setState(youtubeMatchState);
         youtubeMatchViewModel.firePropertyChanged();
     }
 }

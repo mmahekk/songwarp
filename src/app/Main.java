@@ -6,7 +6,6 @@ import interface_adapter.GetPlaylistViewModel;
 import interface_adapter.ProcessPlaylistViewModel;
 import interface_adapter.PutPlaylistViewModel;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.save_playlist.SavePlaylistController;
 import interface_adapter.youtube_match.YoutubeMatchController;
 import interface_adapter.youtube_match.YoutubeMatchPresenter;
 import use_case.youtube_match.YoutubeMatchDataAccessInterface;
@@ -55,14 +54,7 @@ public class Main {
         views.add(initialView, initialView.viewName);  // viewName is "page 1"
 
 
-        YoutubeMatchDataAccessInterface matchdataAccessObject = new YoutubeMatchDataAccessObject();
-        YoutubeMatchOutputBoundary matchoutputBoundary = new YoutubeMatchPresenter(viewManagerModel, processPlaylistViewModel, putPlaylistViewModel);
-        YoutubeMatchInteractor youtubeMatchInteractor = new YoutubeMatchInteractor(matchdataAccessObject, fileWriter, backupFileWriter, matchoutputBoundary);
-        YoutubeMatchController youtubeMatchController = new YoutubeMatchController(youtubeMatchInteractor);
-        MatchOrSplitSelectionView matchOrSplitSelectionView = new MatchOrSplitSelectionView(processPlaylistViewModel, youtubeMatchController);
-//          MatchOrSplitSelectionView matchOrSplitSelectionView = ProcessPlaylistUseCaseFactory.create(
-//          viewManagerModel, processPlaylistViewModel, tempPlaylistDataAccessObject);
-        views.add(matchOrSplitSelectionView, matchOrSplitSelectionView.viewName);
+
 
 
         OutputPageView outputPageView = PutPlaylistUseCaseFactory.create(
@@ -70,8 +62,17 @@ public class Main {
         assert outputPageView != null;
         views.add(outputPageView, outputPageView.viewName);
 
+        YoutubeMatchDataAccessInterface matchdataAccessObject = new YoutubeMatchDataAccessObject();
+        YoutubeMatchOutputBoundary matchoutputBoundary = new YoutubeMatchPresenter(viewManagerModel, processPlaylistViewModel, putPlaylistViewModel);
+        YoutubeMatchInteractor youtubeMatchInteractor = new YoutubeMatchInteractor(matchdataAccessObject, fileWriter, backupFileWriter, matchoutputBoundary);
+        YoutubeMatchController youtubeMatchController = new YoutubeMatchController(youtubeMatchInteractor);
+        MatchOrSplitSelectionView matchOrSplitSelectionView = new MatchOrSplitSelectionView(processPlaylistViewModel, youtubeMatchController, outputPageView.getSavePlaylistController(), outputPageView.getViewTraverseController());
+//          MatchOrSplitSelectionView matchOrSplitSelectionView = ProcessPlaylistUseCaseFactory.create(
+//          viewManagerModel, processPlaylistViewModel, tempPlaylistDataAccessObject);
+        views.add(matchOrSplitSelectionView, matchOrSplitSelectionView.viewName);
 
-        viewManagerModel.setActiveView(outputPageView.viewName);
+
+        viewManagerModel.setActiveView(initialView.viewName);
         viewManagerModel.firePropertyChanged();
 
         application.pack();

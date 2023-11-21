@@ -69,6 +69,7 @@ public class SavePlaylistDataAccessObject implements SavePlaylistDataAccessInter
     @Override
     public void createJSONFile(SavePlaylistInputData inputData) {
         Playlist playlist = inputData.getPlaylist();
+        Playlist incompletePlaylist = inputData.getIncompletePlaylist();
 
         // Display file chooser to select the save location
         JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -90,10 +91,19 @@ public class SavePlaylistDataAccessObject implements SavePlaylistDataAccessInter
 
             // Convert playlist to well-formatted JSON with URLs
             JSONObject jsonObject = convertPlaylistToJSON((CompletePlaylist) playlist);
+            JSONObject jsonObject2;
+            if (incompletePlaylist != null) {
+                jsonObject2 = incompletePlaylist.convertToJSON();
+            } else {
+                jsonObject2 = null;
+            }
 
             // Save JSON to file
             try (FileWriter file = new FileWriter(filePath)) {
                 file.write(jsonObject.toString(2)); // Use 2-space indentation for better formatting
+                if (jsonObject2 != null) {
+                    file.write(jsonObject2.toString(2));
+                }
                 System.out.println("Playlist saved to " + filePath);
             } catch (IOException e) {
                 throw new RuntimeException(e);

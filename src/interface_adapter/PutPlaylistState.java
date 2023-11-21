@@ -1,11 +1,13 @@
 package interface_adapter;
 
 import entity.CompletePlaylist;
+import entity.CompleteSong;
 import entity.Playlist;
 import org.json.JSONObject;
 
 public class PutPlaylistState {
     private Playlist playlist;
+    private CompletePlaylist incompletePlaylist;
     private String error;
     private JSONObject saveFileText;
     private String playlistName;
@@ -27,7 +29,9 @@ public class PutPlaylistState {
         return error;
     }
 
+    public CompletePlaylist getIncompletePlaylist() {return incompletePlaylist;}
 
+    public void setIncompletePlaylist(CompletePlaylist completePlaylist) {this.incompletePlaylist = completePlaylist;}
     public void setPlaylistName(String name) {
         this.playlistName = name;
     }

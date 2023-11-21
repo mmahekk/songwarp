@@ -1,6 +1,5 @@
-package extra_functions;
+package utilities;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 

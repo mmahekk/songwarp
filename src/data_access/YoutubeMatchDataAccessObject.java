@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static data_access.APIs.SpotifyAPI.spotifyAPIRequest;
-import static extra_functions.SearchQueryEncoder.encodeSearchQuery;
-import static extra_functions.YoutubeTitleInfoExtract.youtubeTitleInfoExtract;
+import static utilities.SearchQueryEncoder.encodeSearchQuery;
+import static utilities.YoutubeTitleInfoExtract.youtubeTitleInfoExtract;
 
 public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInterface {
     @Override
@@ -64,7 +64,7 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
             if (song != null) {
                 SpotifySong matchedSong = findSpotifySongMatch(song);
 
-                if (matchedSong != null) {
+                if (matchedSong != null) {  // add this to test for incomplete handling: && matchedPlaylist.getTotal() < 6
                     CompleteSong completeSong = new CompleteSong(
                             matchedSong.getName(), matchedSong.getAuthor(), matchedSong.getSpotifyID(),
                             song.getYoutubeID(), matchedSong.getDate(),

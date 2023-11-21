@@ -1,4 +1,4 @@
-package extra_functions;
+package utilities;
 
 import java.util.ArrayList;
 import java.util.List;

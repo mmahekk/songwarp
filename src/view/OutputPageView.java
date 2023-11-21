@@ -1,13 +1,10 @@
 package view;
 
 import data_access.TempFileWriterDataAccessObject;
-import entity.CompletePlaylist;
-import entity.Playlist;
-import entity.SpotifyPlaylist;
-import entity.YoutubePlaylist;
+import entity.*;
 import interface_adapter.*;
 import interface_adapter.save_playlist.SavePlaylistController;
-import interface_adapter.save_playlist.SavePlaylistState;
+import interface_adapter.view_traverse.ViewTraverseController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +23,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
 //    private final YoutubePutController youtubePutController;
 //    private final SpotifyPutController spotifyPutController;
     private final SavePlaylistController savePlaylistController;
+    private final ViewTraverseController viewTraverseController;
 
     private final JButton save;
     private final JButton spotifyPut;
@@ -37,11 +35,12 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
 
     public OutputPageView(PutPlaylistViewModel putPlaylistViewModel,
                          GetPlaylistViewModel getPlaylistViewModel,
-                         SavePlaylistController savePlaylistController
-                        ) {
+                         SavePlaylistController savePlaylistController,
+                          ViewTraverseController viewTraverseController) {
         this.putPlaylistViewModel = putPlaylistViewModel;
         this.getPlaylistViewModel = getPlaylistViewModel;
         this.savePlaylistController = savePlaylistController;
+        this.viewTraverseController = viewTraverseController;
         // this.controller = controller initialize controllers
 
         putPlaylistViewModel.addPropertyChangeListener(this);
@@ -76,12 +75,24 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
                     PutPlaylistState currentState = putPlaylistViewModel.getState();
                     if (e.getSource().equals(save)) {
                         Playlist playlist = currentState.getPlaylist();
+                        CompletePlaylist incompletePlaylist = currentState.getIncompletePlaylist();
                         if (playlist == null) {
                             TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("temp.json");
                             playlist = fileWriter.readPlaylistJSON();
                         }
                         String filepath = currentState.getPlaylistName();
-                        savePlaylistController.execute(filepath, playlist);
+                        savePlaylistController.execute(filepath, playlist, incompletePlaylist);
+                    }
+                }
+            }
+        );
+
+        restart.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getSource().equals(restart)) {
+                        viewTraverseController.execute();
                     }
                 }
             }
@@ -129,5 +140,14 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
                 JOptionPane.showMessageDialog(this, state.getError());
             }
         }
+    }
+
+
+    public SavePlaylistController getSavePlaylistController() {
+        return this.savePlaylistController;
+    }
+
+    public ViewTraverseController getViewTraverseController() {
+        return this.viewTraverseController;
     }
 }
