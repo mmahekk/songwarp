@@ -71,7 +71,7 @@ public class Main {
         views.add(outputPageView, outputPageView.viewName);
 
 
-        viewManagerModel.setActiveView(initialView.viewName);
+        viewManagerModel.setActiveView(outputPageView.viewName);
         viewManagerModel.firePropertyChanged();
 
         application.pack();
