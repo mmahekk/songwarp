@@ -13,14 +13,21 @@ public class YoutubeMatchController {
     }
 
     public void execute(YoutubePlaylist playlist, Boolean gotoNextView) {
-        YoutubeMatchInputData youtubeMatchInputData = new YoutubeMatchInputData(playlist, null, gotoNextView);
+        YoutubeMatchInputData youtubeMatchInputData = new YoutubeMatchInputData(playlist, null, gotoNextView, -1);
 
         //invoke the use case interactor
         youtubeMatchUseCaseInteractor.execute(youtubeMatchInputData);
     }
 
     public void execute(YoutubePlaylist playlist, Playlist incompletePlaylist, Boolean gotoNextView) {
-        YoutubeMatchInputData youtubeMatchInputData = new YoutubeMatchInputData(playlist, incompletePlaylist, gotoNextView);
+        YoutubeMatchInputData youtubeMatchInputData = new YoutubeMatchInputData(playlist, incompletePlaylist, gotoNextView, -1);
+
+        //invoke the use case interactor
+        youtubeMatchUseCaseInteractor.execute(youtubeMatchInputData);
+    }
+
+    public void execute(YoutubePlaylist playlist, Playlist incompletePlaylist, Boolean gotoNextView, int songLimit) {
+        YoutubeMatchInputData youtubeMatchInputData = new YoutubeMatchInputData(playlist, incompletePlaylist, gotoNextView, songLimit);
 
         //invoke the use case interactor
         youtubeMatchUseCaseInteractor.execute(youtubeMatchInputData);

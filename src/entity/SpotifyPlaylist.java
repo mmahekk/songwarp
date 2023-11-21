@@ -56,4 +56,11 @@ public class SpotifyPlaylist extends Playlist implements SpotifyPlaylistInterfac
     public String getSpotifyID() {
         return spotifyID;
     }
+
+    @Override
+    public JSONObject convertToJSON() {
+        JSONObject jsonObject = super.convertToJSON();
+        jsonObject.append("spotifyID", this.getSpotifyID());
+        return jsonObject;
+    }
 }

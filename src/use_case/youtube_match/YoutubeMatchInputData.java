@@ -8,10 +8,13 @@ public class YoutubeMatchInputData {
     private Boolean gotoNextView;
     private Playlist incompletePlaylist;
 
-    public YoutubeMatchInputData(YoutubePlaylist playlist, Playlist incompletePlaylist, Boolean gotoNextView) {
+    private int songLimit;
+
+    public YoutubeMatchInputData(YoutubePlaylist playlist, Playlist incompletePlaylist, Boolean gotoNextView, int songLimit) {
         this.playlist = playlist;
         this.incompletePlaylist = incompletePlaylist;
         this.gotoNextView = gotoNextView;
+        this.songLimit = songLimit;
     }
 
     public YoutubePlaylist getPlaylist() {return playlist;}
@@ -20,4 +23,5 @@ public class YoutubeMatchInputData {
 
     public Boolean getGotoNextView() {return gotoNextView;}
 
+    public int getSongLimit() {return songLimit;}
 }

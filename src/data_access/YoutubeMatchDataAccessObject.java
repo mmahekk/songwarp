@@ -58,7 +58,7 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
 
 
     @Override
-    public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubePlaylist playlist, CompletePlaylist incompletePlaylist) {
+    public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubePlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit) {
         ArrayList<YoutubeSong> songList = playlist.getYoutubeSongs();
         CompletePlaylist matchedPlaylist = Objects.requireNonNullElseGet(incompletePlaylist, () ->
                 new CompletePlaylist("unknown name", null, playlist.getYoutubeID(), "unknown"));
@@ -73,9 +73,11 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
         for (int i = offset; i < songList.size(); i++) {
             YoutubeSong song = songList.get(i);
             if (song != null) {
+                if (songLimit != -1 && matchedPlaylist.getTotal() >= songLimit) {
+                    return new Pair<>(matchedPlaylist, false);
+                }
                 SpotifySong matchedSong = findSpotifySongMatch(song);
-
-                if (matchedSong != null) {  // add this to test for incomplete handling: && matchedPlaylist.getTotal() < 6
+                if (matchedSong != null) {
                     CompleteSong completeSong = new CompleteSong(
                             matchedSong.getName(), matchedSong.getAuthor(), matchedSong.getSpotifyID(),
                             song.getYoutubeID(), matchedSong.getDate(),

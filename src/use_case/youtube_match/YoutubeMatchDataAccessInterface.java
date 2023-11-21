@@ -12,5 +12,5 @@ import java.io.IOException;
 public interface YoutubeMatchDataAccessInterface {
     SpotifySong findSpotifySongMatch(YoutubeSong song) throws IOException, InterruptedException;
 
-    YoutubeMatchDataAccessObject.Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubePlaylist playlist, CompletePlaylist incompletePlaylist);
+    YoutubeMatchDataAccessObject.Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubePlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit);
 }

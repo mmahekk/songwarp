@@ -24,9 +24,10 @@ public class YoutubeMatchInteractor implements YoutubeMatchInputBoundary {
     public void execute(YoutubeMatchInputData youtubeMatchInputData) {
         YoutubePlaylist playlist = youtubeMatchInputData.getPlaylist();
         CompletePlaylist incompletePlaylist = (CompletePlaylist) youtubeMatchInputData.getIncompletePlaylist();
+        int songLimit = youtubeMatchInputData.getSongLimit();
 
         YoutubeMatchDataAccessObject.Pair<CompletePlaylist, Boolean> result =
-                youtubeMatchDataAccessObject.buildCompletePlaylist(playlist, incompletePlaylist);
+                youtubeMatchDataAccessObject.buildCompletePlaylist(playlist, incompletePlaylist, songLimit);
 
         CompletePlaylist matchedPlaylist = result.p();
         Boolean completed = result.completed();
