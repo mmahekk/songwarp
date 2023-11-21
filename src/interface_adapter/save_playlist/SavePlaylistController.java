@@ -8,15 +8,12 @@ import use_case.save_playlist.SavePlaylistOutputData;
 
 public class SavePlaylistController {
     private final SavePlaylistInputBoundary savePlaylistUseCaseInteractor;
-    private final SavePlaylistOutputBoundary savePlaylistPresenter;
 
-    public SavePlaylistController(SavePlaylistInputBoundary savePlaylistUseCaseInteractor,
-                                  SavePlaylistOutputBoundary savePlaylistPresenter) {
+    public SavePlaylistController(SavePlaylistInputBoundary savePlaylistUseCaseInteractor) {
         this.savePlaylistUseCaseInteractor = savePlaylistUseCaseInteractor;
-        this.savePlaylistPresenter = savePlaylistPresenter;
     }
 
-    public void executeSavePlaylist(String filePath, Playlist playlist) {
+    public void execute(String filePath, Playlist playlist) {
         try {
             // Create input data for the use case
             SavePlaylistInputData inputData = new SavePlaylistInputData(playlist, filePath);
@@ -29,15 +26,15 @@ public class SavePlaylistController {
         }
     }
 
-    // This method is typically called by the presenter to handle the output
-    public void handleSavePlaylistOutput(SavePlaylistOutputData outputData) {
-        // Delegate the output handling to the presenter
-        savePlaylistPresenter.prepareSuccessView(outputData);
-    }
-
-    // This method is typically called by the presenter to handle errors
-    public void handleSavePlaylistError(String error) {
-        // Delegate the error handling to the presenter
-        savePlaylistPresenter.prepareFailView(error);
-    }
+//    // This method is typically called by the presenter to handle the output
+//    public void handleSavePlaylistOutput(SavePlaylistOutputData outputData) {
+//        // Delegate the output handling to the presenter
+//        savePlaylistPresenter.prepareSuccessView(outputData);
+//    }
+//
+//    // This method is typically called by the presenter to handle errors
+//    public void handleSavePlaylistError(String error) {
+//        // Delegate the error handling to the presenter
+//        savePlaylistPresenter.prepareFailView(error);
+//    }
 }

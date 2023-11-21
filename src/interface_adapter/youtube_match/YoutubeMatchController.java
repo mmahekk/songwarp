@@ -11,10 +11,10 @@ public class YoutubeMatchController {
         this.youtubeMatchUseCaseInteractor = youtubeMatchUseCaseInteractor;
     }
 
-    public void execute(YoutubePlaylist playlist) {
+    public void execute(YoutubePlaylist playlist, Boolean gotoNextView) {
         YoutubeMatchInputData youtubeMatchInputData = new YoutubeMatchInputData(playlist);
 
         //invoke the use case interactor
-        youtubeMatchUseCaseInteractor.execute(youtubeMatchInputData);
+        youtubeMatchUseCaseInteractor.execute(youtubeMatchInputData, gotoNextView);
     }
 }

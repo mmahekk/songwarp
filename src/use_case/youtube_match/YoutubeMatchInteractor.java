@@ -21,7 +21,7 @@ public class YoutubeMatchInteractor implements YoutubeMatchInputBoundary {
     }
 
     @Override
-    public void execute(YoutubeMatchInputData youtubeMatchInputData) {
+    public void execute(YoutubeMatchInputData youtubeMatchInputData, Boolean gotoNextView) {
         YoutubePlaylist playlist = youtubeMatchInputData.getPlaylist();
 
         YoutubeMatchDataAccessObject.Pair<CompletePlaylist, Boolean> result =
@@ -35,7 +35,14 @@ public class YoutubeMatchInteractor implements YoutubeMatchInputBoundary {
             backupFileWriter.writePlaylistFile(playlist);
         }
 
-        YoutubeMatchOutputData youtubeMatchOutputData = new YoutubeMatchOutputData(matchedPlaylist);
-        youtubeMatchPresenter.prepareSuccessView(youtubeMatchOutputData);
+        if (completed) {
+            YoutubeMatchOutputData youtubeMatchOutputData = new YoutubeMatchOutputData(matchedPlaylist);
+            youtubeMatchPresenter.prepareSuccessView(youtubeMatchOutputData, gotoNextView);
+        } else {
+            YoutubeMatchOutputData youtubeMatchOutputData = new YoutubeMatchOutputData(matchedPlaylist);
+            youtubeMatchPresenter.failSaveExit(
+                    playlist, matchedPlaylist,
+                    "Couldn't complete playlist matching. Will now save playlist as file.");
+        }
     }
 }

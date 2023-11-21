@@ -17,11 +17,20 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
         String[] nameAndAuthor = youtubeTitleInfoExtract(song.getName(), song.getAuthor());
         String firstTryQuery = nameAndAuthor[0] + " " + nameAndAuthor[1];
         String secondTryQuery = nameAndAuthor[2] + " " + nameAndAuthor[3];
-
+        System.out.println(firstTryQuery);
+        System.out.println(secondTryQuery);
         try {
             String data = spotifyAPIRequest("searchSong", encodeSearchQuery(firstTryQuery));
             if (data != null) {
-                return buildSpotifySong(new JSONObject(data));
+                SpotifySong newSong = buildSpotifySong(new JSONObject(data));
+                if (!firstTryQuery.contains(newSong.getAuthor().toLowerCase())) {
+                    String secondData = spotifyAPIRequest("searchSong", encodeSearchQuery(firstTryQuery + " " + secondTryQuery));
+                    if (secondData != null) {
+                        newSong = buildSpotifySong(new JSONObject(secondData));
+                    }
+                }
+
+                return newSong;
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

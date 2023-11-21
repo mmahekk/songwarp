@@ -1,5 +1,6 @@
 package view;
 
+import entity.CompletePlaylist;
 import entity.SpotifyPlaylist;
 import entity.YoutubePlaylist;
 import interface_adapter.ProcessPlaylistState;
@@ -17,19 +18,22 @@ import java.beans.PropertyChangeListener;
 public class MatchOrSplitSelectionView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "page 2";
     private final ProcessPlaylistViewModel processPlaylistViewModel;
+
 //    private final SpotifyMatchController spotifyMatchController;
 //    private final SpotifyGenresplitController spotifyGenresplitController;
     private final YoutubeMatchController youtubeMatchController;
-//    private final YoutubeGenresplitController youtubeGenresplitController;
+//    private final CompleteYearSplitController completeYearSplitController;
 
     private final JButton match;
     private final JButton split;
 
     public MatchOrSplitSelectionView(ProcessPlaylistViewModel processPlaylistViewModel,
                                      // SpotifyMatchController spotifyMatchController,
+                                     // CompleteYearSplitController completeYearSplitController,
                                      YoutubeMatchController youtubeMatchController) {
         this.processPlaylistViewModel = processPlaylistViewModel;
         // this.spotifyMatchController = spotifyMatchController;
+        // this.completeYearSplitController = completeYearSplitController;
         this.youtubeMatchController = youtubeMatchController;
 
         processPlaylistViewModel.addPropertyChangeListener(this);
@@ -50,9 +54,28 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
                     ProcessPlaylistState currentState = processPlaylistViewModel.getState();
                     if (e.getSource().equals(match)) {
                         if (currentState.getPlaylist() instanceof YoutubePlaylist playlist) {
-                            MatchOrSplitSelectionView.this.youtubeMatchController.execute(playlist);
+                            youtubeMatchController.execute(playlist, true);
                         } else if (currentState.getPlaylist() instanceof SpotifyPlaylist playlist) {
-                            // MatchOrSplitSelectionView.this.spotifyMatchController.execute(playlist);
+                            // spotifyMatchController.execute(playlist, true);
+                        }
+                    }
+                }
+            }
+        );
+
+        split.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ProcessPlaylistState currentState = processPlaylistViewModel.getState();
+                    if (e.getSource().equals(split)) {
+                        if (currentState.getPlaylist() instanceof YoutubePlaylist playlist) {
+                            // youtubeMatchController.execute(playlist, false);
+                        } else if (currentState.getPlaylist() instanceof SpotifyPlaylist playlist) {
+                            // spotifyMatchController.execute(playlist, false);
+                        }
+                        if (currentState.getPlaylist() instanceof CompletePlaylist playlist) {
+                            // completeYearSplitController.execute(playlist)
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 package interface_adapter.save_playlist;
 
+import interface_adapter.GetPlaylistState;
 import interface_adapter.ViewModel;
 
 import java.beans.PropertyChangeSupport;
@@ -9,9 +10,8 @@ public class SavePlaylistViewModel extends ViewModel {
 
     private SavePlaylistState state = new SavePlaylistState();
     public SavePlaylistViewModel() {
-        super("page 1");
+        super("page 3");
     }
-
 
     public SavePlaylistState getState() {
         return state;
@@ -20,14 +20,14 @@ public class SavePlaylistViewModel extends ViewModel {
     public void setState(SavePlaylistState state){
         this.state = state;
     }
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     @Override
     public void firePropertyChanged() {
-
+        support.firePropertyChange("state", null, this.state);
     }
 
-    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-
+        support.addPropertyChangeListener(listener);
     }
 }
