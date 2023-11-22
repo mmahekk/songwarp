@@ -5,6 +5,7 @@ import entity.*;
 import interface_adapter.*;
 import interface_adapter.save_playlist.SavePlaylistController;
 import interface_adapter.view_traverse.ViewTraverseController;
+import interface_adapter.youtube_put.YoutubePutController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +21,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
     private final PutPlaylistViewModel putPlaylistViewModel;
     private final GetPlaylistViewModel getPlaylistViewModel;
 
-//    private final YoutubePutController youtubePutController;
+    private final YoutubePutController youtubePutController;
 //    private final SpotifyPutController spotifyPutController;
     private final SavePlaylistController savePlaylistController;
     private final ViewTraverseController viewTraverseController;
@@ -33,15 +34,14 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
     private final JTextField namePlaylistInputField;
     private final JTextArea playlistView;
 
-    public OutputPageView(PutPlaylistViewModel putPlaylistViewModel,
-                         GetPlaylistViewModel getPlaylistViewModel,
-                         SavePlaylistController savePlaylistController,
-                          ViewTraverseController viewTraverseController) {
+    public OutputPageView(PutPlaylistViewModel putPlaylistViewModel, GetPlaylistViewModel getPlaylistViewModel,
+                         SavePlaylistController savePlaylistController, ViewTraverseController viewTraverseController,
+                          YoutubePutController youtubePutController) {
         this.putPlaylistViewModel = putPlaylistViewModel;
         this.getPlaylistViewModel = getPlaylistViewModel;
         this.savePlaylistController = savePlaylistController;
         this.viewTraverseController = viewTraverseController;
-        // this.controller = controller initialize controllers
+        this.youtubePutController = youtubePutController;
 
         putPlaylistViewModel.addPropertyChangeListener(this);
 
@@ -93,6 +93,22 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
                 public void actionPerformed(ActionEvent e) {
                     if (e.getSource().equals(restart)) {
                         viewTraverseController.execute();
+                    }
+                }
+            }
+        );
+
+        spotifyPut.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    PutPlaylistState currentState = putPlaylistViewModel.getState();
+                    if (e.getSource().equals(spotifyPut)) {
+                        Playlist playlist = currentState.getPlaylist();
+                        String name = currentState.getPlaylistName();
+                        if (playlist instanceof CompletePlaylist p) {
+                            youtubePutController.execute(p, name);
+                        }
                     }
                 }
             }

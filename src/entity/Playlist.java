@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Playlist implements PlaylistInterface {
-    private final String name;
+    private String name;
     private ArrayList<Song> songs;
     private String genre;
 
@@ -61,5 +61,9 @@ public class Playlist implements PlaylistInterface {
     }
     public void setSongs(ArrayList<Song> songs) {
         this.songs = songs;
+    }
+
+    public void setName(String playlistName) {
+        this.name = playlistName;
     }
 }

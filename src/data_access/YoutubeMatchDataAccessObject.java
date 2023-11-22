@@ -1,5 +1,6 @@
 package data_access;
 
+import data_access.APIs.InputSpotifyAPI;
 import entity.*;
 import org.json.JSONObject;
 import use_case.youtube_match.YoutubeMatchDataAccessInterface;
@@ -17,17 +18,19 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
     public SpotifySong findSpotifySongMatch(YoutubeSong song) {
         String[] nameAndAuthor = youtubeTitleInfoExtract(song.getName(), song.getAuthor());
         String firstTryQuery = nameAndAuthor[0] + " " + nameAndAuthor[1];
-        String secondTryQuery = nameAndAuthor[2] + " " + nameAndAuthor[3];
+        String secondTryQuery = (nameAndAuthor[2] + " " + nameAndAuthor[3]).replaceAll("null", "");
         System.out.println(firstTryQuery);
-        System.out.println(secondTryQuery);
         try {
-            String[] info = new String[]{encodeSearchQuery(firstTryQuery)};
-            String data = spotifyAPIRequest("searchSong", info);
+            InputSpotifyAPI info = new InputSpotifyAPI();
+            info.setApiCall("searchSong");
+            info.setItemInfo(new String[]{encodeSearchQuery(firstTryQuery)});
+
+            String data = spotifyAPIRequest(info);
             if (data != null && !data.isEmpty()) {
                 SpotifySong newSong = buildSpotifySong(new JSONObject(data));
                 if (!firstTryQuery.contains(newSong.getAuthor().toLowerCase())) {
-                    info = new String[]{encodeSearchQuery(firstTryQuery + " " + secondTryQuery)};
-                    String secondData = spotifyAPIRequest("searchSong", info);
+                    info.setItemInfo(new String[]{encodeSearchQuery(firstTryQuery + " " + secondTryQuery)});
+                    String secondData = spotifyAPIRequest(info);
                     if (secondData != null) {
                         newSong = buildSpotifySong(new JSONObject(secondData));
                     }
@@ -41,6 +44,7 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
         return null;
     }
 
+    @Override
     public SpotifySong buildSpotifySong(JSONObject data) {
         if (data.has("tracks")) {
             JSONObject topSearchResults = data.getJSONObject("tracks").getJSONArray("items").getJSONObject(0);
