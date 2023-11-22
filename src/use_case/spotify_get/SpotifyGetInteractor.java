@@ -28,7 +28,7 @@ public class SpotifyGetInteractor implements SpotifyGetInputBoundary {
             JSONObject jsonFile = spotifyGetDataAccessObject.getPlaylistJSON(id);
 
             if (!jsonFile.has("error")) {
-                .println(jsonFile);
+                System.out.println(jsonFile);
                 // build youtubePlaylist object from json (DAO request 2)
                 SpotifyPlaylist spotifyPlaylist = spotifyGetDataAccessObject.buildSpotifyPlaylist(jsonFile, id);
 

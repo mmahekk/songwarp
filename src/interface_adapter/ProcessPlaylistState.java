@@ -9,7 +9,7 @@ public class ProcessPlaylistState {
     private String error;
     private String url;
     private Boolean forcedToSave;
-
+    private int progress;
     public void setError(String error) {
         this.error = error;
     }
@@ -47,4 +47,8 @@ public class ProcessPlaylistState {
     }
 
     public Boolean getForcedToSave() {return forcedToSave;}
+
+    public int getProgress() {return progress;}
+
+    public void setProgress(int progress) {this.progress = progress;}
 }

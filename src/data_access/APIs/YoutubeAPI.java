@@ -61,7 +61,7 @@ public class YoutubeAPI {
                 reader.close();
                 return response.toString();
             } else {
-                .println("FAILED HTTP request with response code: " + responseCode);
+                System.out.println("FAILED HTTP request with response code: " + responseCode);
                 return null;
             }
         } else {

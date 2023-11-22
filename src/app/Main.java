@@ -59,6 +59,7 @@ public class Main {
         views.add(outputPageView, outputPageView.viewName);
 
         YoutubeMatchDataAccessInterface matchdataAccessObject = new YoutubeMatchDataAccessObject();
+        matchdataAccessObject.addProgressListener(processPlaylistViewModel);
         YoutubeMatchOutputBoundary matchoutputBoundary = new YoutubeMatchPresenter(viewManagerModel, processPlaylistViewModel, putPlaylistViewModel);
         YoutubeMatchInteractor youtubeMatchInteractor = new YoutubeMatchInteractor(matchdataAccessObject, fileWriter, backupFileWriter, matchoutputBoundary);
         YoutubeMatchController youtubeMatchController = new YoutubeMatchController(youtubeMatchInteractor);
@@ -66,7 +67,6 @@ public class Main {
 //          MatchOrSplitSelectionView matchOrSplitSelectionView = ProcessPlaylistUseCaseFactory.create(
 //          viewManagerModel, processPlaylistViewModel, tempPlaylistDataAccessObject);
         views.add(matchOrSplitSelectionView, matchOrSplitSelectionView.viewName);
-
 
         viewManagerModel.setActiveView(initialView.viewName);
         viewManagerModel.firePropertyChanged();

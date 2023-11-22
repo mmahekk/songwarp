@@ -29,24 +29,29 @@ public class SpotifyAPI {
         HttpClient client = HttpClient.newHttpClient();
         String apiCall = null;
         JSONObject jsonData = new JSONObject();
-        if (Objects.equals(input.getApiCall(), "getPlaylist")) {
-            apiCall = "playlists/" + input.getItemInfo()[0];  // itemInfo[0] is an existing playlist's id
-
-        } else if (Objects.equals(input.getApiCall(), "searchSong")) {
-            apiCall = "search?q=" + input.getItemInfo()[0] + "&type=track&limit=1";  // itemInfo[0] is the search query
-
-        } else if (Objects.equals(input.getApiCall(), "createPlaylist") && input.getItemInfo().length == 3) {
-            apiCall = "users/" + input.getItemInfo()[0] + "/playlists";  // itemInfo[0] is the user id (by default, it's our shared spotify account)
-            jsonData.put("name", input.getItemInfo()[1]);
-            jsonData.put("description", "Spotify Playlist converted from " + input.getItemInfo()[2] + " using SongWarp");
-            jsonData.put("public", true);
-
-        } else if (Objects.equals(input.getApiCall(), "addSongsToPlaylist")) {
-            apiCall = "playlists/" + input.getItemInfo()[0] + "/tracks";
-            jsonData.put("uris", input.getListInfo());
-
-        } else if (Objects.equals(input.getApiCall(), "getUser")) {
-            apiCall = "me";
+        switch (input.getApiCall()) {
+            case "getPlaylist":
+                apiCall = "playlists/" + input.getItemInfo()[0];  // itemInfo[0] is an existing playlist's id
+                break;
+            case "searchSong":
+                apiCall = "search?q=" + input.getItemInfo()[0] + "&type=track&limit=1";  // itemInfo[0] is the search query
+                break;
+            case "createPlaylist":
+                apiCall = "users/" + input.getItemInfo()[0] + "/playlists";  // itemInfo[0] is the user id (by default, it's our shared spotify account)
+                jsonData.put("name", input.getItemInfo()[1]);
+                jsonData.put("description", "Spotify Playlist converted from "
+                        + input.getItemInfo()[2] + " using SongWarp");
+                jsonData.put("public", true);
+                break;
+            case "addSongsToPlaylist":
+                apiCall = "playlists/" + input.getItemInfo()[0] + "/tracks";
+                jsonData.put("uris", input.getListInfo());
+                break;
+            case "getUser":
+                apiCall = "me";
+                break;
+            default:
+                break;
         }
         if (apiCall != null) {
             try {
@@ -181,7 +186,7 @@ public class SpotifyAPI {
                 e.printStackTrace();
             }
         } else {
-            .println("Desktop not supported or unable to browse.");
+            System.out.println("Desktop not supported or unable to browse.");
         }
     }
 }

@@ -18,6 +18,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class MatchOrSplitSelectionView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -34,6 +35,7 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
 
     private final JButton match;
     private final JButton split;
+    private final JProgressBar progress;
 
     public MatchOrSplitSelectionView(ProcessPlaylistViewModel processPlaylistViewModel,
                                      // SpotifyMatchController spotifyMatchController,
@@ -52,6 +54,10 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
 
         JLabel title = new JLabel(processPlaylistViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        progress = new JProgressBar();
+        progress.setStringPainted(true);
+        progress.setValue(0);
 
         JPanel buttons = new JPanel();
         match = new JButton(processPlaylistViewModel.MATCH_BUTTON_LABEL);
@@ -104,6 +110,7 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
 
         this.add(title);
         this.add(buttons);
+        this.add(progress, BorderLayout.CENTER);
     }
 
     public void actionPerformed(ActionEvent evt) {
@@ -123,7 +130,11 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
                     state.setForcedToSave(false);
                     viewTraverseController.execute();
                 }
+
             }
+            System.out.println(state.getProgress());
+            progress.setValue(state.getProgress());
+            progress.repaint();
         }
     }
 }
