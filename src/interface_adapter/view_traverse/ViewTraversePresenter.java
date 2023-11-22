@@ -28,6 +28,8 @@ public class ViewTraversePresenter implements ViewTraverseOutputBoundary {
         processPlaylistState.setPlaylist(null);
         processPlaylistState.setIncompletePlaylist(null);
         processPlaylistState.setError(null);
+        processPlaylistState.setProgress(0);
+        processPlaylistState.setForcedToSave(false);
 
         putPlaylistState.setPlaylist(null);
         putPlaylistState.setIncompletePlaylist(null);
