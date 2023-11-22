@@ -40,7 +40,7 @@ public class GetPlaylistUseCaseFactory {
             LoadPlaylistController loadPlaylistController = createLoadPlaylistUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
             YoutubeGetController youtubeGetController = createYoutubeGetUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
             SpotifyGetController spotifyGetController = createSpotifyGetUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
-            return new InitialView(getPlaylistViewModel, youtubeGetController, spotifyGetController);
+            return new InitialView(getPlaylistViewModel, youtubeGetController, spotifyGetController, loadPlaylistController);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "could not load initial page");
         }
