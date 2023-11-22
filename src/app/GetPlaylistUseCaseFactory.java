@@ -1,5 +1,6 @@
 package app;
 
+import data_access.LoadPlaylistDataAccessObject;
 import data_access.SpotifyGetDataAccessObject;
 import data_access.TempFileWriterDataAccessObject;
 import data_access.YoutubeGetDataAccessObject;
@@ -10,6 +11,7 @@ import interface_adapter.spotify_get.SpotifyGetController;
 import interface_adapter.spotify_get.SpotifyGetPresenter;
 import interface_adapter.youtube_get.YoutubeGetController;
 import interface_adapter.youtube_get.YoutubeGetPresenter;
+import use_case.load_playlist.LoadPlaylistDataAccessInterface;
 import use_case.load_playlist.LoadPlaylistInputBoundary;
 import use_case.load_playlist.LoadPlaylistInteractor;
 import use_case.load_playlist.LoadPlaylistOutputBoundary;
@@ -35,10 +37,10 @@ public class GetPlaylistUseCaseFactory {
                                      ProcessPlaylistViewModel processPlaylistViewModel,
                                      TempFileWriterDataAccessObject fileWriter) {
         try {
-            // LoadPlaylistController loadPlaylistController = createLoadPlaylistUseCase(viewManagerModel, getPlaylistViewModel, loadPlaylistDataAccessObject);
+            LoadPlaylistController loadPlaylistController = createLoadPlaylistUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
             YoutubeGetController youtubeGetController = createYoutubeGetUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
             SpotifyGetController spotifyGetController = createSpotifyGetUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
-            return new InitialView(getPlaylistViewModel, youtubeGetController, spotifyGetController);
+            return new InitialView(getPlaylistViewModel, youtubeGetController, spotifyGetController, loadPlaylistController);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "could not load initial page");
         }
@@ -47,13 +49,14 @@ public class GetPlaylistUseCaseFactory {
 
     private static LoadPlaylistController createLoadPlaylistUseCase(
             ViewManagerModel viewManagerModel, GetPlaylistViewModel getPlaylistViewModel,
-            ProcessPlaylistViewModel processPlaylistViewModel) throws IOException {
+            ProcessPlaylistViewModel processPlaylistViewModel, TempFileWriterDataAccessObject fileWriter) throws IOException {
 
         //TODO: change the input arguments when methods are done.
-        LoadPlaylistOutputBoundary loadPlaylistOutputBoundary = new LoadPlaylistPresenter();
-        LoadPlaylistInputBoundary loadPlaylistInteractor = new LoadPlaylistInteractor();
+        LoadPlaylistOutputBoundary loadPlaylistOutputBoundary = new LoadPlaylistPresenter(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel);
+        LoadPlaylistDataAccessInterface loadPlaylistDataAccessObject = new LoadPlaylistDataAccessObject();
+        LoadPlaylistInputBoundary loadPlaylistInteractor = new LoadPlaylistInteractor(loadPlaylistDataAccessObject,fileWriter, loadPlaylistOutputBoundary);
 
-        return new LoadPlaylistController();
+        return new LoadPlaylistController(loadPlaylistInteractor);
     }
 
     private static YoutubeGetController createYoutubeGetUseCase(
