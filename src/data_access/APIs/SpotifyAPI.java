@@ -160,11 +160,11 @@ public class SpotifyAPI {
                 latch.await();  // wait for user to accept (not working now?)
                 JSONObject jsonResponse = new JSONObject(key.toString());
                 String token = jsonResponse.getString("access_token");
+                app.stop();
                 return token;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            app.stop();
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }

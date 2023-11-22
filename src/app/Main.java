@@ -54,7 +54,7 @@ public class Main {
         views.add(initialView, initialView.viewName);  // viewName is "page 1"
 
         OutputPageView outputPageView = PutPlaylistUseCaseFactory.create(
-                viewManagerModel, putPlaylistViewModel, getPlaylistViewModel, fileWriter);
+                viewManagerModel, putPlaylistViewModel, processPlaylistViewModel, getPlaylistViewModel, fileWriter);
         assert outputPageView != null;
         views.add(outputPageView, outputPageView.viewName);
 

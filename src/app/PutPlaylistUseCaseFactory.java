@@ -33,11 +33,12 @@ public class PutPlaylistUseCaseFactory {
 
     public static OutputPageView create(ViewManagerModel viewManagerModel,
                                         PutPlaylistViewModel putPlaylistViewModel,
+                                        ProcessPlaylistViewModel processPlaylistViewModel,
                                         GetPlaylistViewModel getPlaylistViewModel,
                                         TempFileWriterDataAccessObject fileWriter) {
         try {
             SavePlaylistController savePlaylistController = createSavePlaylistUseCase(viewManagerModel, putPlaylistViewModel, fileWriter);
-            ViewTraverseController viewTraverseController = createViewTraverseUseCase(viewManagerModel, getPlaylistViewModel);
+            ViewTraverseController viewTraverseController = createViewTraverseUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, putPlaylistViewModel);
             YoutubePutController youtubePutController = createYoutubePutUseCase(viewManagerModel, putPlaylistViewModel);
             return new OutputPageView(putPlaylistViewModel, getPlaylistViewModel, savePlaylistController, viewTraverseController, youtubePutController);
         } catch (IOException e) {
@@ -58,9 +59,10 @@ public class PutPlaylistUseCaseFactory {
     }
 
     private static ViewTraverseController createViewTraverseUseCase (
-            ViewManagerModel viewManagerModel, GetPlaylistViewModel getPlaylistViewModel) throws IOException{
+            ViewManagerModel viewManagerModel, GetPlaylistViewModel getPlaylistViewModel,
+            ProcessPlaylistViewModel processPlaylistViewModel, PutPlaylistViewModel putPlaylistViewModel) throws IOException{
 
-        ViewTraverseOutputBoundary viewTraverseOutputBoundary = new ViewTraversePresenter(viewManagerModel, getPlaylistViewModel);
+        ViewTraverseOutputBoundary viewTraverseOutputBoundary = new ViewTraversePresenter(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, putPlaylistViewModel);
         ViewTraverseInputBoundary viewTraverseInteractor = new ViewTraverseInteractor(viewTraverseOutputBoundary);
 
         return new ViewTraverseController(viewTraverseInteractor);

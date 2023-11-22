@@ -31,12 +31,16 @@ public class YoutubePutInteractor implements YoutubePutInputBoundary {
                     youtubePutInputData.getPlaylistName(), youtubePutInputData.getYoutubeUrl(), token);
             playlist.setName(youtubePutInputData.getPlaylistName());
             playlist.setSpotifyID(spotifyPlaylistID);
-            youtubePutDataAccessObject.uploadSongs(spotifyPlaylistID, playlist, token);
+            if (spotifyPlaylistID != null) {
+                youtubePutDataAccessObject.uploadSongs(spotifyPlaylistID, playlist, token);
 
-            System.out.println("New playlist: https://open.spotify.com/playlist/" + spotifyPlaylistID);
+                System.out.println("New playlist: https://open.spotify.com/playlist/" + spotifyPlaylistID);
 
-            YoutubePutOutputData youtubePutOutputData = new YoutubePutOutputData(playlist);
-            youtubePutPresenter.prepareSuccessView(youtubePutOutputData);
+                YoutubePutOutputData youtubePutOutputData = new YoutubePutOutputData(playlist);
+                youtubePutPresenter.prepareSuccessView(youtubePutOutputData);
+            } else {
+                youtubePutPresenter.prepareFailView("Failed to upload the playlist to Spotify with null");
+            }
         } catch (IOException | InterruptedException e) {
             youtubePutPresenter.prepareFailView("Failed to upload the playlist to Spotify");
         }
