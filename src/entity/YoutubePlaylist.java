@@ -1,4 +1,6 @@
 package entity;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class YoutubePlaylist extends Playlist implements YoutubePlaylistInterface {
@@ -37,5 +39,12 @@ public class YoutubePlaylist extends Playlist implements YoutubePlaylistInterfac
 
     public String getYoutubeID() {
         return youtubeID;
+    }
+
+    @Override
+    public JSONObject convertToJSON() {
+        JSONObject jsonObject = super.convertToJSON();
+        jsonObject.append("youtubeID", this.getYoutubeID());
+        return jsonObject;
     }
 }

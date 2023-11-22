@@ -51,4 +51,11 @@ public class CompletePlaylist extends Playlist {
         return super.getList();
     }
 
+    @Override
+    public JSONObject convertToJSON() {
+        JSONObject jsonObject = super.convertToJSON();
+        jsonObject.append("youtubeID", this.getIDs()[0]);
+        jsonObject.append("spotifyID", this.getIDs()[1]);
+        return jsonObject;
+    }
 }

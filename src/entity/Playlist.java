@@ -57,14 +57,6 @@ public class Playlist implements PlaylistInterface {
         }
         jsonObject.append("items", songList);
         jsonObject.append("type", this.getClass().getName());
-        if (this instanceof CompletePlaylist) {
-            jsonObject.append("youtubeID", ((CompletePlaylist) this).getIDs()[0]);
-            jsonObject.append("spotifyID", ((CompletePlaylist) this).getIDs()[1]);
-        } else if (this instanceof SpotifyPlaylist) {
-            jsonObject.append("spotifyID", ((SpotifyPlaylist) this).getSpotifyID());
-        } else if (this instanceof YoutubePlaylist) {
-            jsonObject.append("youtubeID", ((YoutubePlaylist) this).getYoutubeID());
-        }
         return jsonObject;
     }
     public void setSongs(ArrayList<Song> songs) {

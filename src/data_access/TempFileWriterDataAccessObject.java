@@ -44,11 +44,15 @@ public class TempFileWriterDataAccessObject {
         filePath = Objects.requireNonNullElse(file, "temp_jsons/temp.json");
         try {
             String content = new String(Files.readAllBytes(Paths.get(filePath)));
-            JSONObject jsonObject = new JSONObject(content);
-            if (print) {
-                System.out.println(jsonObject.toString(2));
+            if (!content.isEmpty()) {
+                JSONObject jsonObject = new JSONObject(content);
+                if (print) {
+                    System.out.println(jsonObject.toString(2));
+                }
+                return jsonObject;
+            } else {
+                return null;
             }
-            return jsonObject;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,61 +61,62 @@ public class TempFileWriterDataAccessObject {
 
     public Playlist readPlaylistJSON() {
         JSONObject jsonObject = readTempJSON(file, false);
-        assert jsonObject != null;
-        if (jsonObject.has("type") && jsonObject.has("type")) {
-            String type = (String) jsonObject.getJSONArray("type").get(0);
-            JSONArray songList = jsonObject.getJSONArray("items").getJSONArray(0);
-            switch (type) {
-                case "entity.YoutubePlaylist" -> {
-                    String youtubeID = jsonObject.getJSONArray("youtubeID").getString(0);
-                    YoutubePlaylist youtubePlaylist = new YoutubePlaylist("loaded playlist", null, youtubeID);
-                    for (int i = 0; i < songList.length(); i++) {
-                        JSONObject entry = songList.getJSONObject(i);
-                        String title = entry.getJSONArray("name").getString(0);
-                        String author = entry.getJSONArray("author").getString(0);
-                        String date = entry.getJSONArray("date").getString(0);
-                        String id = entry.getJSONArray("youtubeID").getString(0);
+        if (jsonObject != null) {
+            if (jsonObject.has("type") && jsonObject.has("type")) {
+                String type = (String) jsonObject.getJSONArray("type").get(0);
+                JSONArray songList = jsonObject.getJSONArray("items").getJSONArray(0);
+                switch (type) {
+                    case "entity.YoutubePlaylist" -> {
+                        String youtubeID = jsonObject.getJSONArray("youtubeID").getString(0);
+                        YoutubePlaylist youtubePlaylist = new YoutubePlaylist("loaded playlist", null, youtubeID);
+                        for (int i = 0; i < songList.length(); i++) {
+                            JSONObject entry = songList.getJSONObject(i);
+                            String title = entry.getJSONArray("name").getString(0);
+                            String author = entry.getJSONArray("author").getString(0);
+                            String date = entry.getJSONArray("date").getString(0);
+                            String id = entry.getJSONArray("youtubeID").getString(0);
 
-                        YoutubeSong song = new YoutubeSong(title, author, id, date);
-                        youtubePlaylist.addSong(song);
+                            YoutubeSong song = new YoutubeSong(title, author, id, date);
+                            youtubePlaylist.addSong(song);
+                        }
+                        return youtubePlaylist;
                     }
-                    return youtubePlaylist;
-                }
-                case "entity.SpotifyPlaylist" -> {
-                    String spotifyID = jsonObject.getJSONArray("spotifyID").getString(0);
-                    SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist("loaded playlist", null, spotifyID);
-                    for (int i = 0; i < songList.length(); i++) {
-                        JSONObject entry = songList.getJSONObject(i);
-                        String title = entry.getJSONArray("name").getString(0);
-                        String author = entry.getJSONArray("author").getString(0);
-                        String date = entry.getJSONArray("date").getString(0);
-                        String id = entry.getJSONArray("spotifyID").getString(0);
-                        int duration = entry.getJSONArray("duration").getInt(0);
+                    case "entity.SpotifyPlaylist" -> {
+                        String spotifyID = jsonObject.getJSONArray("spotifyID").getString(0);
+                        SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist("loaded playlist", null, spotifyID);
+                        for (int i = 0; i < songList.length(); i++) {
+                            JSONObject entry = songList.getJSONObject(i);
+                            String title = entry.getJSONArray("name").getString(0);
+                            String author = entry.getJSONArray("author").getString(0);
+                            String date = entry.getJSONArray("date").getString(0);
+                            String id = entry.getJSONArray("spotifyID").getString(0);
+                            int duration = entry.getJSONArray("duration").getInt(0);
 
-                        SpotifySong song = new SpotifySong(title, author, duration, id, date);
-                        spotifyPlaylist.addSong(song);
+                            SpotifySong song = new SpotifySong(title, author, duration, id, date);
+                            spotifyPlaylist.addSong(song);
+                        }
+                        return spotifyPlaylist;
                     }
-                    return spotifyPlaylist;
-                }
-                case "entity.CompletePlaylist" -> {
-                    String youtubeID = jsonObject.getJSONArray("youtubeID").getString(0);
-                    String spotifyID = jsonObject.getJSONArray("spotifyID").getString(0);
-                    CompletePlaylist completePlaylist = new CompletePlaylist("loaded playlist", null, youtubeID, spotifyID);
-                    for (int i = 0; i < songList.length(); i++) {
-                        JSONObject entry = songList.getJSONObject(i);
-                        String title = entry.getJSONArray("name").getString(0);
-                        String channel = entry.getJSONArray("author").getString(0);
-                        String date = entry.getJSONArray("date").getString(0);
-                        String spotifySongID = entry.getJSONArray("spotifyID").getString(0);
-                        String youtubeSongID = entry.getJSONArray("youtubeID").getString(0);
-                        int duration = entry.getJSONArray("duration").getInt(0);
-                        String youtubeTitle = entry.getJSONArray("youtubeTitle").getString(0);
-                        String youtubeChannel = entry.getJSONArray("youtubeChannel").getString(0);
-                        CompleteSong song = new CompleteSong(title, channel, spotifySongID, youtubeSongID, date,
-                                youtubeTitle, youtubeChannel, duration);
-                        completePlaylist.addSong(song);
+                    case "entity.CompletePlaylist" -> {
+                        String youtubeID = jsonObject.getJSONArray("youtubeID").getString(0);
+                        String spotifyID = jsonObject.getJSONArray("spotifyID").getString(0);
+                        CompletePlaylist completePlaylist = new CompletePlaylist("loaded playlist", null, youtubeID, spotifyID);
+                        for (int i = 0; i < songList.length(); i++) {
+                            JSONObject entry = songList.getJSONObject(i);
+                            String title = entry.getJSONArray("name").getString(0);
+                            String channel = entry.getJSONArray("author").getString(0);
+                            String date = entry.getJSONArray("date").getString(0);
+                            String spotifySongID = entry.getJSONArray("spotifyID").getString(0);
+                            String youtubeSongID = entry.getJSONArray("youtubeID").getString(0);
+                            int duration = entry.getJSONArray("duration").getInt(0);
+                            String youtubeTitle = entry.getJSONArray("youtubeTitle").getString(0);
+                            String youtubeChannel = entry.getJSONArray("youtubeChannel").getString(0);
+                            CompleteSong song = new CompleteSong(title, channel, spotifySongID, youtubeSongID, date,
+                                    youtubeTitle, youtubeChannel, duration);
+                            completePlaylist.addSong(song);
+                        }
+                        return completePlaylist;
                     }
-                    return completePlaylist;
                 }
             }
         }

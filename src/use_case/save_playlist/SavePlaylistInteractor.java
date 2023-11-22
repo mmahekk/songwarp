@@ -1,6 +1,7 @@
 package use_case.save_playlist;
 
 import data_access.TempFileWriterDataAccessObject;
+import entity.Playlist;
 
 public class SavePlaylistInteractor implements SavePlaylistInputBoundary {
     private final SavePlaylistDataAccessInterface savePlaylistDataAccess;
@@ -18,15 +19,20 @@ public class SavePlaylistInteractor implements SavePlaylistInputBoundary {
     @Override
     public void execute(SavePlaylistInputData inputData) {
         try {
-            // Create a JSON file from the Playlist object and save it (DAO request)
-            savePlaylistDataAccess.createJSONFile(inputData);
+            if (inputData.getFilePath() != null) {
+                // Create a JSON file from the Playlist object and save it (DAO request)
+                savePlaylistDataAccess.createJSONFile(inputData);
 
-            // Get the file path of the saved JSON file
-            String filePath = inputData.getFilePath(); // Update this based on your logic
+                // Get the file path of the saved JSON file
+                String filePath = inputData.getFilePath(); // Update this based on your logic
 
-            // Invoke presenter with success view and provide the file path
-            SavePlaylistOutputData outputData = new SavePlaylistOutputData(filePath);
-            savePlaylistPresenter.prepareSuccessView(outputData);
+                // Invoke presenter with success view and provide the file path
+                SavePlaylistOutputData outputData = new SavePlaylistOutputData(filePath);
+                savePlaylistPresenter.prepareSuccessView(outputData);
+            } else {
+                savePlaylistPresenter.prepareFailView("Please enter a playlist name first");
+            }
+
         } catch (Exception e) {
             // Invoke presenter with fail view and error message
             savePlaylistPresenter.prepareFailView("Failed to save playlist: " + e.getMessage());

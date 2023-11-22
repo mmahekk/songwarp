@@ -8,6 +8,8 @@ public class ProcessPlaylistState {
     private CompletePlaylist incompletePlaylist;
     private String error;
     private String url;
+    private Boolean forcedToSave;
+
     public void setError(String error) {
         this.error = error;
     }
@@ -39,4 +41,10 @@ public class ProcessPlaylistState {
     public void setUrlInput(String url) {
         this.url = url;
     }
+
+    public void setForcedToSave(Boolean b) {
+        this.forcedToSave = b;
+    }
+
+    public Boolean getForcedToSave() {return forcedToSave;}
 }
