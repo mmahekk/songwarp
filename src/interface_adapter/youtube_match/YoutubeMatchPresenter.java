@@ -50,8 +50,8 @@ public class YoutubeMatchPresenter implements YoutubeMatchOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
-        ProcessPlaylistState youtubeGetState = youtubeMatchViewModel.getState();
-        youtubeGetState.setError(error);
+        ProcessPlaylistState youtubePutState = youtubeMatchViewModel.getState();
+        youtubePutState.setError(error);
         youtubeMatchViewModel.firePropertyChanged();
     }
 

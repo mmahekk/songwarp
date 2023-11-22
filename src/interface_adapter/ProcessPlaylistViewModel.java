@@ -2,7 +2,7 @@ package interface_adapter;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class ProcessPlaylistViewModel extends ViewModel {
+public class ProcessPlaylistViewModel extends ViewModel implements ProgressListener {
     public final String TITLE_LABEL = "Successfully retrieved Playlist data. Now pick an option:";
     public final String MATCH_BUTTON_LABEL = "Convert playlist";
     public final String GENRESPLIT_BUTTON_LABEL = "Split playlist by genre";
@@ -29,5 +29,12 @@ public class ProcessPlaylistViewModel extends ViewModel {
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
+    }
+
+    @Override
+    public void onProgressUpdated(int progress) {
+        this.getState().setProgress(progress);
+        this.setState(this.state);
+        this.firePropertyChanged();
     }
 }

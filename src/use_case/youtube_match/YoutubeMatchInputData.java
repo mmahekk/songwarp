@@ -4,11 +4,10 @@ import entity.Playlist;
 import entity.YoutubePlaylist;
 
 public class YoutubeMatchInputData {
-    private YoutubePlaylist playlist;
-    private Boolean gotoNextView;
-    private Playlist incompletePlaylist;
-
-    private int songLimit;
+    private final YoutubePlaylist playlist;
+    private final Boolean gotoNextView;
+    private final Playlist incompletePlaylist;
+    private final int songLimit;
 
     public YoutubeMatchInputData(YoutubePlaylist playlist, Playlist incompletePlaylist, Boolean gotoNextView, int songLimit) {
         this.playlist = playlist;
