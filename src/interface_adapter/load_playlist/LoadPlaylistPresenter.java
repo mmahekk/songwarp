@@ -16,20 +16,30 @@ public class LoadPlaylistPresenter implements LoadPlaylistOutputBoundary {
         this.processPlaylistViewModel = processPlaylistViewModel;
     }
     @Override
-    public void prepareSuccessView(LoadPlaylistOutputData outputData) {
+    public void prepareSuccessView(LoadPlaylistOutputData playlist) {
         GetPlaylistState loadPlaylistState = loadPlaylistViewModel.getState();
-        loadPlaylistState.setPlaylist(outputData.getPlaylist());
         loadPlaylistState.setError(null);
         this.loadPlaylistViewModel.setState(loadPlaylistState);
         this.loadPlaylistViewModel.firePropertyChanged();
 
         ProcessPlaylistState processPlaylistState = processPlaylistViewModel.getState();
-        processPlaylistState.setPlaylist(outputData.getPlaylist());
         this.processPlaylistViewModel.setState(processPlaylistState);
         this.processPlaylistViewModel.firePropertyChanged();
 
         this.viewManagerModel.setActiveView(processPlaylistViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
+        if (playlist.getCompletePlaylist() != null) {
+            loadPlaylistState.setPlaylist(playlist.getPlaylist());
+            loadPlaylistState.setIncompletePlaylist(playlist.getCompletePlaylist());
+
+            processPlaylistState.setPlaylist(playlist.getPlaylist());
+            processPlaylistState.setIncompletePlaylist(playlist.getCompletePlaylist());
+        }
+        else {
+            loadPlaylistState.setPlaylist(playlist.getPlaylist());
+
+            processPlaylistState.setPlaylist(playlist.getPlaylist());
+        }
     }
 
     @Override
