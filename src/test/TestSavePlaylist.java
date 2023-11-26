@@ -17,6 +17,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static org.junit.Assert.*;
 
 
 public class TestSavePlaylist {
@@ -24,6 +29,8 @@ public class TestSavePlaylist {
     private SavePlaylistInteractor savePlaylistInteractor;
     private Playlist mainPlaylist;
     private Playlist incompletePlaylist;
+    private Playlist incompletePlaylist2;
+    private Playlist mainPlaylist2;
 
     @Before
     public void setup() {
@@ -34,6 +41,12 @@ public class TestSavePlaylist {
         SavePlaylistDataAccessObject dataAccessObject = new SavePlaylistDataAccessObject();
         SavePlaylistOutputBoundary outputBoundary = new SavePlaylistPresenter(viewManagerModel, viewModel, putPlaylistViewModel);
         TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("temp.json");
+        TempFileWriterDataAccessObject backupFileWriter = new TempFileWriterDataAccessObject("backup.json");
+
+        // Read playlists from JSON file
+        mainPlaylist2 = fileWriter.readPlaylistJSON();
+
+        incompletePlaylist2 = backupFileWriter.readPlaylistJSON();
 
         // Create a sample playlist for testing
         mainPlaylist = new CompletePlaylist("Test Playlist", "Test Genre", "YoutubeID",
@@ -55,13 +68,45 @@ public class TestSavePlaylist {
 
         savePlaylistInteractor = new SavePlaylistInteractor(dataAccessObject, fileWriter, outputBoundary);
         controller = new SavePlaylistController(savePlaylistInteractor);
+
     }
 
     @Test
-    public void testSavePlaylist() {
-        // Execute the save playlist use case
+    public void testSavePlaylistWithoutFiles() {
+        // Execute the save playlist use case without sending in a json file
         // Note, the file should be removed manually, I will work on a teardown to figure out how to delete files after
         // testing
-        savePlaylistInteractor.execute(new SavePlaylistInputData(mainPlaylist, "testFilePath", incompletePlaylist));
+        SavePlaylistInputData inputData = new SavePlaylistInputData(mainPlaylist, "testFilePath", incompletePlaylist);
+        savePlaylistInteractor.execute(inputData);
+    }
+
+    @Test
+    public void testSavePlaylistWithFileReading() {
+        // Execute the save playlist use case by reading the json files
+        //  Note, the file should be removed manually once the test is finished running
+        SavePlaylistInputData inputData2 = new SavePlaylistInputData(mainPlaylist2, "testFilePath2", incompletePlaylist2);
+        savePlaylistInteractor.execute(inputData2);
+    }
+
+    @After
+    public void tearDown() {
+        // Clean up: Delete the created files
+        deleteFile("testFilePath");
+        deleteFile("testFilePath2");
+    }
+
+    private void deleteFile(String filePath) {
+        try {
+            Path path = Paths.get(filePath);
+            boolean deleted = Files.deleteIfExists(path);
+            if (deleted) {
+                System.out.println("File deleted successfully: " + filePath);
+            } else {
+                System.out.println("File does not exist or couldn't be deleted: " + filePath);
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to delete the file: " + filePath);
+            e.printStackTrace();
+        }
     }
 }
