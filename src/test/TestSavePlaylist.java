@@ -39,7 +39,8 @@ public class TestSavePlaylist {
         SavePlaylistViewModel viewModel = new SavePlaylistViewModel();
         PutPlaylistViewModel putPlaylistViewModel = new PutPlaylistViewModel();
         SavePlaylistDataAccessObject dataAccessObject = new SavePlaylistDataAccessObject();
-        SavePlaylistOutputBoundary outputBoundary = new SavePlaylistPresenter(viewManagerModel, viewModel, putPlaylistViewModel);
+        SavePlaylistOutputBoundary outputBoundary = new SavePlaylistPresenter(viewManagerModel, viewModel,
+                putPlaylistViewModel);
         TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("temp.json");
         TempFileWriterDataAccessObject backupFileWriter = new TempFileWriterDataAccessObject("backup.json");
 
@@ -76,16 +77,23 @@ public class TestSavePlaylist {
         // Execute the save playlist use case without sending in a json file
         // Note, the file should be removed manually, I will work on a teardown to figure out how to delete files after
         // testing
-        SavePlaylistInputData inputData = new SavePlaylistInputData(mainPlaylist, "testFilePath", incompletePlaylist);
+        SavePlaylistInputData inputData = new SavePlaylistInputData(mainPlaylist, "testFilePath",
+                incompletePlaylist);
         savePlaylistInteractor.execute(inputData);
     }
 
     @Test
     public void testSavePlaylistWithFileReading() {
-        // Execute the save playlist use case by reading the json files
-        //  Note, the file should be removed manually once the test is finished running
-        SavePlaylistInputData inputData2 = new SavePlaylistInputData(mainPlaylist2, "testFilePath2", incompletePlaylist2);
-        savePlaylistInteractor.execute(inputData2);
+        if ((mainPlaylist instanceof CompletePlaylist && incompletePlaylist instanceof CompletePlaylist) ||
+                (mainPlaylist instanceof CompletePlaylist && incompletePlaylist == null)) {
+            // Execute the save playlist use case by reading the json files
+            // Note, the file should be removed manually once the test is finished running
+            SavePlaylistInputData inputData2 = new SavePlaylistInputData(mainPlaylist2, "testFilePath2",
+                    incompletePlaylist2);
+            savePlaylistInteractor.execute(inputData2);
+        } else {
+            fail("Invalid playlist types for this test case.");
+        }
     }
 
     @After
