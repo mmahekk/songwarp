@@ -1,8 +1,15 @@
 package use_case.load_playlist;
 
+import entity.CompletePlaylist;
 import entity.Playlist;
+import entity.SpotifyPlaylist;
+import entity.YoutubePlaylist;
 
 public interface LoadPlaylistDataAccessInterface {
 
-    Playlist LoadPlaylist();
+    Playlist LoadPlaylist(String file);
+    YoutubePlaylist LoadYoutubePlaylist(String file);
+    SpotifyPlaylist LoadSpotifyPlaylist(String file);
+    CompletePlaylist LoadCompletePlaylist(String file);
+    String Type(String file);
 }

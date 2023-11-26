@@ -11,8 +11,7 @@ public class LoadPlaylistController {
     }
 
     public void execute(String filePath) {
-        //TODO: change the next line after figuring out how to get input json file
-        LoadPlaylistInputData loadPlaylistInputData = new LoadPlaylistInputData(filePath); //using temp.json as placeholder
+        LoadPlaylistInputData loadPlaylistInputData = new LoadPlaylistInputData(filePath);
 
         loadPlaylistUseCaseInteractor.execute(loadPlaylistInputData);
     }

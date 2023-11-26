@@ -64,7 +64,7 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
                         JFileChooser fileChooser = new JFileChooser("src");
 
                         //sets a filter for possible extensions
-                        FileNameExtensionFilter filter = new FileNameExtensionFilter(".json", "json");
+                        FileNameExtensionFilter filter = new FileNameExtensionFilter("SongWarp Saved Files", "SWsave");
                         fileChooser.setFileFilter(filter);
 
                         int result = fileChooser.showOpenDialog(null);
