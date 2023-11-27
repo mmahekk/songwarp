@@ -45,9 +45,9 @@ public class LoadPlaylistInteractor implements LoadPlaylistInputBoundary {
                 loadPlaylistPresenter.prepareSuccessView(completePlaylist);
             }
             else {
-                Playlist playlist = loadPlaylistDataAccess.LoadPlaylist(loadPlaylistInputData.getFilePath());
+                CompletePlaylist playlist = loadPlaylistDataAccess.LoadCompletePlaylist(loadPlaylistInputData.getFilePath());
                 LoadPlaylistOutputData CompletePlaylist = new LoadPlaylistOutputData();
-                CompletePlaylist.setPlaylist(playlist);
+                CompletePlaylist.setCompletePlaylist(playlist);
                 loadPlaylistPresenter.prepareSuccessView(CompletePlaylist);
             }
 
