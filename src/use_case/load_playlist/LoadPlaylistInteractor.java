@@ -1,7 +1,6 @@
 package use_case.load_playlist;
 
 import entity.CompletePlaylist;
-import entity.Playlist;
 import entity.SpotifyPlaylist;
 import entity.YoutubePlaylist;
 import utilities.CheckMultiplePlaylist;
@@ -21,9 +20,9 @@ public class LoadPlaylistInteractor implements LoadPlaylistInputBoundary {
 
 
     @Override
-    public void execute(LoadPlaylistInputData loadPlaylistInputData) {
+    public void execute() {
         try {
-            String filepath = loadPlaylistInputData.getFilePath();
+            String filepath = loadPlaylistDataAccess.GetFilePath();
             CheckMultiplePlaylist checker = new CheckMultiplePlaylist(filepath);
             if (checker.check()) {
                 SplitFile splitter = new SplitFile(filepath);
@@ -45,7 +44,7 @@ public class LoadPlaylistInteractor implements LoadPlaylistInputBoundary {
                 loadPlaylistPresenter.prepareSuccessView(completePlaylist);
             }
             else {
-                CompletePlaylist playlist = loadPlaylistDataAccess.LoadCompletePlaylist(loadPlaylistInputData.getFilePath());
+                CompletePlaylist playlist = loadPlaylistDataAccess.LoadCompletePlaylist(filepath);
                 LoadPlaylistOutputData CompletePlaylist = new LoadPlaylistOutputData();
                 CompletePlaylist.setCompletePlaylist(playlist);
                 loadPlaylistPresenter.prepareSuccessView(CompletePlaylist);

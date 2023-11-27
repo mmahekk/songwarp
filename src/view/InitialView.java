@@ -6,7 +6,6 @@ import interface_adapter.GetPlaylistViewModel;
 import interface_adapter.load_playlist.LoadPlaylistController;
 import interface_adapter.spotify_get.SpotifyGetController;
 import interface_adapter.youtube_get.YoutubeGetController;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +15,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class InitialView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -60,19 +58,7 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
         loadPlaylist.addActionListener(
                 e -> {
                     if (e.getSource().equals(loadPlaylist)) {
-                        //right now it defaults to open src folder as starting folder
-                        //can change it to default by removing the argument
-                        JFileChooser fileChooser = GetJFileChooser();
-
-                        int result = fileChooser.showOpenDialog(null);
-
-                        if (result == JFileChooser.APPROVE_OPTION) {
-                            java.io.File selectedFile = fileChooser.getSelectedFile();
-
-                            // Get the absolute path of the selected file and set it in the text field
-                            String filePath = selectedFile.getAbsolutePath();
-                            loadPlaylistController.execute(filePath);
-                        }
+                        loadPlaylistController.execute();
                     }
                 }
         );
@@ -123,18 +109,6 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
         this.add(title);
         this.add(urlInput);
         this.add(buttons);
-    }
-
-    @NotNull
-    private static JFileChooser GetJFileChooser() {
-        JFileChooser fileChooser = new JFileChooser("src");
-
-        //sets a filter for possible extensions
-        FileNameExtensionFilter filter1 = new FileNameExtensionFilter("SongWarp Saved Files", "SWsave");
-        FileNameExtensionFilter filter2 = new FileNameExtensionFilter("Text Files", "txt");
-        fileChooser.setFileFilter(filter1);
-        fileChooser.addChoosableFileFilter(filter2);
-        return fileChooser;
     }
 
     /**
