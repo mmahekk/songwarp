@@ -10,3 +10,5 @@ Songwarp.iml
 temp_jsons/backup.json
 temp_jsons/temp.json
 foo
+CompletePlaylist.json
+IncompletePlaylist.json
