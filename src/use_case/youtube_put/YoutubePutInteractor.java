@@ -23,7 +23,7 @@ public class YoutubePutInteractor implements YoutubePutInputBoundary {
         CompletePlaylist playlist = youtubePutInputData.getPlaylist();
         String name = youtubePutInputData.getPlaylistName();
         String url = youtubePutInputData.getYoutubeUrl();
-        if (name != null && !name.isEmpty()) {
+        if (name != null && !name.isEmpty() && name.matches("^.*[a-zA-Z0-9].*$")) {
             try {
                 // create a user authorized token to be used across all calls in this use case (no worry about 1 hour expiration)
                 String token = youtubePutDataAccessObject.getUserAuthorization();
@@ -47,7 +47,7 @@ public class YoutubePutInteractor implements YoutubePutInputBoundary {
                 youtubePutPresenter.prepareFailView("Failed to upload the playlist to Spotify");
             }
         } else {
-            youtubePutPresenter.prepareFailView("Please enter a playlist name first.");
+            youtubePutPresenter.prepareFailView("Please enter a valid playlist name first.");
         }
     }
 }

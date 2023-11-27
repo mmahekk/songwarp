@@ -9,18 +9,18 @@ import interface_adapter.youtube_put.YoutubePutController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Objects;
 
 public class OutputPageView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "page 3";
     private final PutPlaylistViewModel putPlaylistViewModel;
     private final GetPlaylistViewModel getPlaylistViewModel;
-
     private final YoutubePutController youtubePutController;
 //    private final SpotifyPutController spotifyPutController;
     private final SavePlaylistController savePlaylistController;
@@ -33,6 +33,9 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
     private final JButton restart;
     private final JTextField namePlaylistInputField;
     private final JTextArea playlistView;
+    private final JLabel spotifyLink;
+    private final JLabel youtubeLink;
+    private String[] linkTexts;
 
     public OutputPageView(PutPlaylistViewModel putPlaylistViewModel, GetPlaylistViewModel getPlaylistViewModel,
                          SavePlaylistController savePlaylistController, ViewTraverseController viewTraverseController,
@@ -49,24 +52,80 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         namePlaylistInputField = new JTextField(40);
-        playlistView = new JTextArea();
+
+        playlistView = new JTextArea(10, 100);
+        playlistView.setLineWrap(true);
+        JScrollPane scrollPane = new JScrollPane(playlistView);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        LabelTextPanel textOutput = new LabelTextPanel(new JLabel(putPlaylistViewModel.VIEW_OUTPUT_LABEL), scrollPane);
 
         LabelTextPanel playlistNameInput = new LabelTextPanel(
                 new JLabel(putPlaylistViewModel.SAVE_PLAYLIST_TITLE), namePlaylistInputField);
-        LabelTextPanel playlistViewPanel = new LabelTextPanel(
-                new JLabel(putPlaylistViewModel.VIEW_OUTPUT_LABEL), playlistView);
+//        LabelTextPanel playlistViewPanel = new LabelTextPanel(
+//                new JLabel(putPlaylistViewModel.VIEW_OUTPUT_LABEL), playlistView);
+
+        linkTexts = new String[]{"", ""};
+        JPanel links = new JPanel();
+        spotifyLink = new JLabel("spotify link to be determined");
+        spotifyLink.setForeground(Color.BLUE.darker());
+        spotifyLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        links.add(spotifyLink);
+        JLabel divider = new JLabel(" | ");
+        links.add(divider);
+        youtubeLink = new JLabel("youtube link to be determined");
+        youtubeLink.setForeground(Color.BLUE.darker());
+        youtubeLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        links.add(youtubeLink);
 
         JPanel buttons = new JPanel();
+        viewPlaylist = new JButton(putPlaylistViewModel.VIEW_PLAYLIST_BUTTON_LABEL);
+        viewPlaylist.setAlignmentX(Component.CENTER_ALIGNMENT);
         save = new JButton(putPlaylistViewModel.SAVE_PLAYLIST_BUTTON_LABEL);
         buttons.add(save);
         youtubePut = new JButton(putPlaylistViewModel.YOUTUBE_PUT_BUTTON_LABEL);
         buttons.add(youtubePut);
         spotifyPut = new JButton(putPlaylistViewModel.SPOTIFY_PUT_BUTTON_LABEL);
         buttons.add(spotifyPut);
-        viewPlaylist = new JButton(putPlaylistViewModel.VIEW_PLAYLIST_BUTTON_LABEL);
-        buttons.add(viewPlaylist);
         restart = new JButton(putPlaylistViewModel.RESTART_BUTTON_LABEL);
-        buttons.add(restart);
+        restart.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        spotifyLink.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!spotifyLink.getText().contains("to be determined")) {
+                    try {
+                        Desktop.getDesktop().browse(new URI(linkTexts[1]));
+                    } catch (IOException | URISyntaxException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+
+        youtubeLink.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!youtubeLink.getText().contains("to be determined")) {
+                    try {
+                        Desktop.getDesktop().browse(new URI(linkTexts[0]));
+                    } catch (IOException | URISyntaxException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
 
         save.addActionListener(
             new ActionListener() {
@@ -136,11 +195,12 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        this.add(playlistNameInput);
-        this.add(playlistViewPanel);
-
         this.add(title);
+        this.add(playlistNameInput);
+        this.add(textOutput, BorderLayout.CENTER);
+        this.add(links);
         this.add(buttons);
+        this.add(restart);
     }
 
     public void actionPerformed(ActionEvent evt) {
@@ -154,6 +214,16 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
         if (newValue instanceof PutPlaylistState state) {
             if (state.getError() != null) {
                 JOptionPane.showMessageDialog(this, state.getError());
+            }
+            if (state.getPlaylist() instanceof CompletePlaylist playlist) {
+                linkTexts[0] = "https://www.youtube.com/playlist?list=" + playlist.getIDs()[0];
+                linkTexts[1] = "https://open.spotify.com/playlist/" + playlist.getIDs()[1];
+                if (!Objects.equals(playlist.getIDs()[0], "unknown")) {
+                    youtubeLink.setText("See playlist on YouTube");
+                }
+                if (!Objects.equals(playlist.getIDs()[1], "unknown")) {
+                    spotifyLink.setText("See playlist on Spotify");
+                }
             }
         }
     }
