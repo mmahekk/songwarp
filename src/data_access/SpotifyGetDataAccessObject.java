@@ -9,7 +9,6 @@ import use_case.spotify_get.SpotifyGetDataAccessInterface;
 
 import java.io.IOException;
 
-import static data_access.APIs.SpotifyAPI.getSpotifyAccess;
 import static data_access.APIs.SpotifyAPI.spotifyAPIRequest;
 
 public class SpotifyGetDataAccessObject implements SpotifyGetDataAccessInterface {

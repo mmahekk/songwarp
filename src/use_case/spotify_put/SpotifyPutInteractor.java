@@ -1,8 +1,13 @@
 package use_case.spotify_put;
 
+import data_access.APIs.YoutubeAPI;
 import entity.CompletePlaylist;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
+
+import static data_access.APIs.YoutubeAPI.youtubeAPIRequest;
 
 public class SpotifyPutInteractor implements SpotifyPutInputBoundary {
     final SpotifyPutDataAccessInterface spotifyPutDataAccessObject;
@@ -25,19 +30,24 @@ public class SpotifyPutInteractor implements SpotifyPutInputBoundary {
                 String token = spotifyPutDataAccessObject.getUserAuthorization();
 
                 int offset = 0;
-                if (!playlist.getIDs()[0].equals("unknown")) {
+                youtubePlaylistID = url;
+                if (playlist.getIDs()[0].equals("unknown")) {
+                    String data = youtubeAPIRequest("getPlaylist", youtubePlaylistID);
+                    if (data != null) {
+                        JSONObject response =  new JSONObject(data);
+                        if (response.has("items")) {
+                            JSONArray list = response.getJSONArray("items");
+                            offset = list.length();
+                        }
+                    }
+                }
+                if (offset == 0) {  // either because this is a new playlist or the supposed playlist doesn't exist
                     String id = spotifyPutDataAccessObject.getUserID(token);
                     youtubePlaylistID = spotifyPutDataAccessObject.initializeYoutubePlaylist(id, name, url, token);
                     playlist.setName(spotifyPutInputData.getPlaylistName());
                     playlist.setSpotifyID(youtubePlaylistID);
-                } else {
-                    // get playlist request to see how many songs were uploaded so far to this ol' playlist
-                    // this could happen if you run out of tokens while uploading it to youtube
-                    youtubePlaylistID = url;
-                    offset = 1;
                 }
-
-                if (youtubePlaylistID != null) {
+            if (youtubePlaylistID != null) {
                     spotifyPutDataAccessObject.uploadSongs(youtubePlaylistID, playlist, token, offset);
 
                     System.out.println("New playlist: https://www.youtube.com/playlist?list=" + youtubePlaylistID);

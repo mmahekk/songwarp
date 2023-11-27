@@ -2,8 +2,6 @@ package entity;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class SpotifySong extends Song implements SpotifySongInterface {
     private final int duration;
     private final String spotifyID;

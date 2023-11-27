@@ -30,6 +30,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
     private final JButton spotifyPut;
     private final JButton youtubePut;
     private final JButton viewPlaylist;
+//    private final JButton saveChanges;
     private final JButton restart;
     private final JTextField namePlaylistInputField;
     private final JTextArea playlistView;
@@ -77,15 +78,20 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
         youtubeLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         links.add(youtubeLink);
 
-        JPanel buttons = new JPanel();
-        viewPlaylist = new JButton(putPlaylistViewModel.VIEW_PLAYLIST_BUTTON_LABEL);
-        viewPlaylist.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JPanel uploadButtons = new JPanel();
         save = new JButton(putPlaylistViewModel.SAVE_PLAYLIST_BUTTON_LABEL);
-        buttons.add(save);
+        uploadButtons.add(save);
         youtubePut = new JButton(putPlaylistViewModel.YOUTUBE_PUT_BUTTON_LABEL);
-        buttons.add(youtubePut);
+        uploadButtons.add(youtubePut);
         spotifyPut = new JButton(putPlaylistViewModel.SPOTIFY_PUT_BUTTON_LABEL);
-        buttons.add(spotifyPut);
+        uploadButtons.add(spotifyPut);
+
+        JPanel viewButtons = new JPanel();
+        viewPlaylist = new JButton(putPlaylistViewModel.VIEW_PLAYLIST_BUTTON_LABEL);
+        viewButtons.add(viewPlaylist);
+//        saveChanges = new JButton(putPlaylistViewModel.SAVE_CHANGES_BUTTON_LABEL);
+//        viewButtons.add(saveChanges);
+
         restart = new JButton(putPlaylistViewModel.RESTART_BUTTON_LABEL);
         restart.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -197,9 +203,10 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
 
         this.add(title);
         this.add(playlistNameInput);
+        this.add(viewButtons);
         this.add(textOutput, BorderLayout.CENTER);
         this.add(links);
-        this.add(buttons);
+        this.add(uploadButtons);
         this.add(restart);
     }
 

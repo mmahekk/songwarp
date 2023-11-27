@@ -2,7 +2,6 @@ package data_access;
 import entity.CompletePlaylist;
 import entity.CompleteSong;
 import entity.Playlist;
-import entity.YoutubePlaylist;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

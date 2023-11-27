@@ -11,6 +11,7 @@ public class PutPlaylistViewModel extends ViewModel {
     public final String SAVE_PLAYLIST_BUTTON_LABEL = "Save";
     public final String SAVE_PLAYLIST_TITLE = "Enter the playlist name";
     public final String VIEW_PLAYLIST_BUTTON_LABEL = "view playlist as a JSON in textbox";
+    public final String SAVE_CHANGES_BUTTON_LABEL = "Save your json edits (risky)";
     public final String RESTART_BUTTON_LABEL = "Restart program";
 
     private PutPlaylistState state = new PutPlaylistState();
