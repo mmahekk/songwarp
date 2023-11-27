@@ -58,7 +58,7 @@ public class Main {
         assert matchOrSplitSelectionView != null;
         views.add(matchOrSplitSelectionView, matchOrSplitSelectionView.viewName);
 
-        viewManagerModel.setActiveView(outputPageView.viewName);
+        viewManagerModel.setActiveView(initialView.viewName);
         viewManagerModel.firePropertyChanged();
 
         application.pack();
