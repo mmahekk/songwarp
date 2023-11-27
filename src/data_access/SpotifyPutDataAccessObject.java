@@ -5,18 +5,17 @@ import entity.CompletePlaylist;
 import entity.CompleteSong;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import use_case.youtube_put.YoutubePutDataAccessInterface;
+import use_case.spotify_put.SpotifyPutDataAccessInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static data_access.APIs.SpotifyAPI.getUserAuthAccessToken;
+import static data_access.APIs.YoutubeAPI.getUserAuthAccessToken;
 import static data_access.APIs.SpotifyAPI.spotifyAPIRequest;
 import static java.lang.Math.min;
 
-public class YoutubePutDataAccessObject implements YoutubePutDataAccessInterface {
-
+public class SpotifyPutDataAccessObject implements SpotifyPutDataAccessInterface {
     @Override
     public String getUserAuthorization() {
         return getUserAuthAccessToken();
@@ -34,9 +33,9 @@ public class YoutubePutDataAccessObject implements YoutubePutDataAccessInterface
     }
 
     @Override
-    public String initializeSpotifyPlaylist(String userID, String playlistName, String youtubeUrl, String token) throws IOException, InterruptedException {
+    public String initializeYoutubePlaylist(String userID, String playlistName, String spotifyUrl, String token) throws IOException, InterruptedException {
         InputSpotifyAPI info = new InputSpotifyAPI();
-        info.setItemInfo(new String[]{userID, playlistName, youtubeUrl});  // youtubeUrl here is for the playlist description
+        info.setItemInfo(new String[]{userID, playlistName, spotifyUrl});
         info.setApiCall("createPlaylist");
         info.setPremadeToken(token);
         String response = spotifyAPIRequest(info);
@@ -50,19 +49,13 @@ public class YoutubePutDataAccessObject implements YoutubePutDataAccessInterface
     }
 
     @Override
-    public void uploadSongs(String spotifyPlaylistID, CompletePlaylist playlist, String token) throws IOException, InterruptedException {
-        for (int i = 0; i < Math.ceil((double) playlist.getTotal() / 100); i++) {  // because request can only handle up to 100 songs at a time
-            List<CompleteSong> songs = playlist.getCompleteSongs().subList(i * 100, min(playlist.getTotal(), (i + 1) * 100));
-            ArrayList<String> batch = new ArrayList<>();
-            for (CompleteSong song : songs) {
-                batch.add("spotify:track:" + song.getSpotifyId());
-            }
-
+    public void uploadSongs(String youtubePlaylistID, CompletePlaylist playlist, String token, int offset) throws IOException, InterruptedException {
+        for (int i = offset; i < playlist.getTotal(); i++) {  // because request can only handle up to 100 songs at a time
+            CompleteSong song = playlist.getCompleteSongs().get(i);
             InputSpotifyAPI info = new InputSpotifyAPI();
-            info.setItemInfo(new String[]{spotifyPlaylistID});
-            info.setListInfo(new JSONArray(batch));
+            info.setItemInfo(new String[]{youtubePlaylistID, song.getYoutubeId()});
             info.setPremadeToken(token);
-            info.setApiCall("addSongsToPlaylist");
+            info.setApiCall("addSongToPlaylist");
             spotifyAPIRequest(info);
         }
     }

@@ -1,6 +1,5 @@
 package interface_adapter.youtube_put;
 
-import interface_adapter.ProcessPlaylistState;
 import interface_adapter.PutPlaylistState;
 import interface_adapter.PutPlaylistViewModel;
 import interface_adapter.ViewManagerModel;
