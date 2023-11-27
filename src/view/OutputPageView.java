@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 public class OutputPageView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "page 3";
@@ -34,6 +35,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
     private final JTextArea playlistView;
     private final JLabel spotifyLink;
     private final JLabel youtubeLink;
+    private String[] linkTexts;
 
     public OutputPageView(PutPlaylistViewModel putPlaylistViewModel, GetPlaylistViewModel getPlaylistViewModel,
                          SavePlaylistController savePlaylistController, ViewTraverseController viewTraverseController,
@@ -62,6 +64,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
 //        LabelTextPanel playlistViewPanel = new LabelTextPanel(
 //                new JLabel(putPlaylistViewModel.VIEW_OUTPUT_LABEL), playlistView);
 
+        linkTexts = new String[]{"", ""};
         JPanel links = new JPanel();
         spotifyLink = new JLabel("spotify link to be determined");
         spotifyLink.setForeground(Color.BLUE.darker());
@@ -91,7 +94,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
             public void mouseClicked(MouseEvent e) {
                 if (!spotifyLink.getText().contains("to be determined")) {
                     try {
-                        Desktop.getDesktop().browse(new URI(spotifyLink.getText()));
+                        Desktop.getDesktop().browse(new URI(linkTexts[1]));
                     } catch (IOException | URISyntaxException e1) {
                         e1.printStackTrace();
                     }
@@ -110,7 +113,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
             public void mouseClicked(MouseEvent e) {
                 if (!youtubeLink.getText().contains("to be determined")) {
                     try {
-                        Desktop.getDesktop().browse(new URI(youtubeLink.getText()));
+                        Desktop.getDesktop().browse(new URI(linkTexts[0]));
                     } catch (IOException | URISyntaxException e1) {
                         e1.printStackTrace();
                     }
@@ -211,6 +214,16 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
         if (newValue instanceof PutPlaylistState state) {
             if (state.getError() != null) {
                 JOptionPane.showMessageDialog(this, state.getError());
+            }
+            if (state.getPlaylist() instanceof CompletePlaylist playlist) {
+                linkTexts[0] = "https://www.youtube.com/playlist?list=" + playlist.getIDs()[0];
+                linkTexts[1] = "https://open.spotify.com/playlist/" + playlist.getIDs()[1];
+                if (!Objects.equals(playlist.getIDs()[0], "unknown")) {
+                    youtubeLink.setText("See playlist on YouTube");
+                }
+                if (!Objects.equals(playlist.getIDs()[1], "unknown")) {
+                    spotifyLink.setText("See playlist on Spotify");
+                }
             }
         }
     }
