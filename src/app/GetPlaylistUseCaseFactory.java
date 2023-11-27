@@ -51,7 +51,6 @@ public class GetPlaylistUseCaseFactory {
             ViewManagerModel viewManagerModel, GetPlaylistViewModel getPlaylistViewModel,
             ProcessPlaylistViewModel processPlaylistViewModel) throws IOException {
 
-        //TODO: change the input arguments when methods are done.
         LoadPlaylistOutputBoundary loadPlaylistOutputBoundary = new LoadPlaylistPresenter(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel);
         LoadPlaylistDataAccessInterface loadPlaylistDataAccessObject = new LoadPlaylistDataAccessObject();
         LoadPlaylistInputBoundary loadPlaylistInteractor = new LoadPlaylistInteractor(loadPlaylistDataAccessObject, loadPlaylistOutputBoundary);

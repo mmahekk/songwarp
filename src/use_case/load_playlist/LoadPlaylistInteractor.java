@@ -4,8 +4,8 @@ import entity.CompletePlaylist;
 import entity.Playlist;
 import entity.SpotifyPlaylist;
 import entity.YoutubePlaylist;
-import extra_functions.CheckMultiplePlaylist;
-import extra_functions.SplitFile;
+import utilities.CheckMultiplePlaylist;
+import utilities.SplitFile;
 
 import java.util.Objects;
 
