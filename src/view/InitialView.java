@@ -6,6 +6,7 @@ import interface_adapter.GetPlaylistViewModel;
 import interface_adapter.load_playlist.LoadPlaylistController;
 import interface_adapter.spotify_get.SpotifyGetController;
 import interface_adapter.youtube_get.YoutubeGetController;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,11 +62,7 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
                     if (e.getSource().equals(loadPlaylist)) {
                         //right now it defaults to open src folder as starting folder
                         //can change it to default by removing the argument
-                        JFileChooser fileChooser = new JFileChooser("src");
-
-                        //sets a filter for possible extensions
-                        FileNameExtensionFilter filter = new FileNameExtensionFilter("SongWarp Saved Files", "SWsave");
-                        fileChooser.setFileFilter(filter);
+                        JFileChooser fileChooser = GetJFileChooser();
 
                         int result = fileChooser.showOpenDialog(null);
 
@@ -126,6 +123,18 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
         this.add(title);
         this.add(urlInput);
         this.add(buttons);
+    }
+
+    @NotNull
+    private static JFileChooser GetJFileChooser() {
+        JFileChooser fileChooser = new JFileChooser("src");
+
+        //sets a filter for possible extensions
+        FileNameExtensionFilter filter1 = new FileNameExtensionFilter("SongWarp Saved Files", "SWsave");
+        FileNameExtensionFilter filter2 = new FileNameExtensionFilter("Text Files", "txt");
+        fileChooser.setFileFilter(filter1);
+        fileChooser.addChoosableFileFilter(filter2);
+        return fileChooser;
     }
 
     /**
