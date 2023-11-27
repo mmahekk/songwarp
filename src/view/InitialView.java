@@ -16,6 +16,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.util.prefs.Preferences;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
@@ -62,12 +64,30 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
                     if (e.getSource().equals(loadPlaylist)) {
                         //right now it defaults to open src folder as starting folder
                         //can change it to default by removing the argument
-                        JFileChooser fileChooser = GetJFileChooser();
+                        JFileChooser fileChooser = new JFileChooser("src");
+                        Preferences prefs = Preferences.userNodeForPackage(InitialView.class);
+                        String lastOpenedFilePath = prefs.get("lastOpenedFilePath", null);
+
+                        // Set the initially selected file to the parent folder of the most recently opened file
+                        if (lastOpenedFilePath != null) {
+                            File lastOpenedFile = new File(lastOpenedFilePath);
+                            if (lastOpenedFile.exists() && lastOpenedFile.isFile()) {
+                                String a = lastOpenedFile.getParentFile().toString();
+                                fileChooser.setSelectedFile(lastOpenedFile.getAbsoluteFile());
+                            }
+                        }
+
+                        //sets a filter for possible extensions
+                        FileNameExtensionFilter filter1 = new FileNameExtensionFilter("SongWarp Saved Files", "SWsave");
+                        FileNameExtensionFilter filter2 = new FileNameExtensionFilter("Text Files", "txt");
+                        fileChooser.setFileFilter(filter1);
+                        fileChooser.addChoosableFileFilter(filter2);
 
                         int result = fileChooser.showOpenDialog(null);
 
                         if (result == JFileChooser.APPROVE_OPTION) {
                             java.io.File selectedFile = fileChooser.getSelectedFile();
+                            prefs.put("lastOpenedFilePath", selectedFile.getAbsolutePath());
 
                             // Get the absolute path of the selected file and set it in the text field
                             String filePath = selectedFile.getAbsolutePath();
@@ -123,18 +143,6 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
         this.add(title);
         this.add(urlInput);
         this.add(buttons);
-    }
-
-    @NotNull
-    private static JFileChooser GetJFileChooser() {
-        JFileChooser fileChooser = new JFileChooser("src");
-
-        //sets a filter for possible extensions
-        FileNameExtensionFilter filter1 = new FileNameExtensionFilter("SongWarp Saved Files", "SWsave");
-        FileNameExtensionFilter filter2 = new FileNameExtensionFilter("Text Files", "txt");
-        fileChooser.setFileFilter(filter1);
-        fileChooser.addChoosableFileFilter(filter2);
-        return fileChooser;
     }
 
     /**
