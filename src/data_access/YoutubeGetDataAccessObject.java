@@ -1,6 +1,7 @@
 package data_access;
 
 import data_access.APIs.InputAPI;
+import data_access.APIs.YoutubeAPI;
 import entity.YoutubePlaylist;
 import entity.YoutubeSong;
 import org.json.JSONArray;
@@ -9,16 +10,14 @@ import use_case.youtube_get.YoutubeGetDataAccessInterface;
 
 import java.io.IOException;
 
-import static data_access.APIs.YoutubeAPI.youtubeAPIRequest;
-
 public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface {
     @Override
-    public JSONObject getPlaylistJSON(String youtubePlaylistID) {
+    public JSONObject getPlaylistJSON(YoutubeAPI api, String youtubePlaylistID) {
         try {
             InputAPI input = new InputAPI();
             input.setApiCall("getPlaylist");
             input.setItemInfo(new String[]{youtubePlaylistID});
-            String data = youtubeAPIRequest(input);
+            String data = api.request(input);
             if (data != null) {
                 return new JSONObject(data);
             }
@@ -34,7 +33,7 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
      * @return
      */
     @Override
-    public JSONArray getAllPlaylist(JSONObject jsonObject, String playlistID) {
+    public JSONArray getAllPlaylist(YoutubeAPI api, JSONObject jsonObject, String playlistID) {
         String nextPageToken;
         if (jsonObject.has("nextPageToken")) {
             nextPageToken = jsonObject.getString("nextPageToken");
@@ -48,7 +47,7 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
                 InputAPI input = new InputAPI();
                 input.setApiCall("getPlaylist");
                 input.setItemInfo(new String[]{playlistID, nextPageToken});
-                String data = youtubeAPIRequest(input);
+                String data = api.request(input);
 
                 if (data != null) {
                     // Parse the JSON response

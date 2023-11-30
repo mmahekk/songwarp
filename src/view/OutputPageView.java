@@ -4,6 +4,7 @@ import data_access.TempFileWriterDataAccessObject;
 import entity.*;
 import interface_adapter.*;
 import interface_adapter.save_playlist.SavePlaylistController;
+import interface_adapter.spotify_put.SpotifyPutController;
 import interface_adapter.view_traverse.ViewTraverseController;
 import interface_adapter.youtube_put.YoutubePutController;
 
@@ -22,7 +23,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
     private final PutPlaylistViewModel putPlaylistViewModel;
     private final GetPlaylistViewModel getPlaylistViewModel;
     private final YoutubePutController youtubePutController;
-//    private final SpotifyPutController spotifyPutController;
+    private final SpotifyPutController spotifyPutController;
     private final SavePlaylistController savePlaylistController;
     private final ViewTraverseController viewTraverseController;
 
@@ -39,13 +40,14 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
     private String[] linkTexts;
 
     public OutputPageView(PutPlaylistViewModel putPlaylistViewModel, GetPlaylistViewModel getPlaylistViewModel,
-                         SavePlaylistController savePlaylistController, ViewTraverseController viewTraverseController,
-                          YoutubePutController youtubePutController) {
+                          SavePlaylistController savePlaylistController, ViewTraverseController viewTraverseController,
+                          YoutubePutController youtubePutController, SpotifyPutController spotifyPutController) {
         this.putPlaylistViewModel = putPlaylistViewModel;
         this.getPlaylistViewModel = getPlaylistViewModel;
         this.savePlaylistController = savePlaylistController;
         this.viewTraverseController = viewTraverseController;
         this.youtubePutController = youtubePutController;
+        this.spotifyPutController = spotifyPutController;
 
         putPlaylistViewModel.addPropertyChangeListener(this);
 
@@ -177,6 +179,22 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
                     }
                 }
             }
+        );
+
+        youtubePut.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        PutPlaylistState currentState = putPlaylistViewModel.getState();
+                        if (e.getSource().equals(youtubePut)) {
+                            Playlist playlist = currentState.getPlaylist();
+                            String name = currentState.getPlaylistName();
+                            if (playlist instanceof CompletePlaylist p) {
+                                OutputPageView.this.spotifyPutController.execute(p, name);
+                            }
+                        }
+                    }
+                }
         );
 
         namePlaylistInputField.addKeyListener(

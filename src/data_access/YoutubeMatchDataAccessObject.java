@@ -1,6 +1,7 @@
 package data_access;
 
 import data_access.APIs.InputAPI;
+import data_access.APIs.SpotifyAPI;
 import entity.*;
 import interface_adapter.ProgressListener;
 import org.json.JSONObject;
@@ -11,13 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static data_access.APIs.SpotifyAPI.spotifyAPIRequest;
 import static utilities.SearchQueryEncoder.encodeSearchQuery;
 import static utilities.YoutubeTitleInfoExtract.youtubeTitleInfoExtract;
 
 public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInterface {
     @Override
-    public SpotifySong findSpotifySongMatch(YoutubeSong song) {
+    public SpotifySong findSpotifySongMatch(SpotifyAPI api, YoutubeSong song) {
         String[] nameAndAuthor = youtubeTitleInfoExtract(song.getName(), song.getAuthor());
         String firstTryQuery = nameAndAuthor[0] + " " + nameAndAuthor[1];
         String secondTryQuery = (nameAndAuthor[2] + " " + nameAndAuthor[3]).replaceAll("null", "");
@@ -27,20 +27,19 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
             info.setApiCall("searchSong");
             info.setItemInfo(new String[]{encodeSearchQuery(firstTryQuery)});
 
-            String data = spotifyAPIRequest(info);
+            String data = api.request(info);
             if (data != null && !data.isEmpty()) {
                 SpotifySong newSong = buildSpotifySong(new JSONObject(data));
                 if (!firstTryQuery.contains(newSong.getAuthor().toLowerCase())) {
                     info.setItemInfo(new String[]{encodeSearchQuery(firstTryQuery + " " + secondTryQuery)});
-                    String secondData = spotifyAPIRequest(info);
+                    String secondData = api.request(info);
                     if (secondData != null) {
                         newSong = buildSpotifySong(new JSONObject(secondData));
                     }
                 }
-
                 return newSong;
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -66,7 +65,7 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
 
 
     @Override
-    public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubePlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit) {
+    public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(SpotifyAPI api, YoutubePlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit) {
         ArrayList<YoutubeSong> songList = playlist.getYoutubeSongs();
         CompletePlaylist matchedPlaylist = Objects.requireNonNullElseGet(incompletePlaylist, () ->
                 new CompletePlaylist("unknown name", null, playlist.getYoutubeID(), "unknown"));
@@ -84,7 +83,7 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
                 if (songLimit != -1 && matchedPlaylist.getTotal() >= songLimit) {
                     return new Pair<>(matchedPlaylist, false);
                 }
-                SpotifySong matchedSong = findSpotifySongMatch(song);
+                SpotifySong matchedSong = findSpotifySongMatch(api, song);
                 if (matchedSong != null) {
                     CompleteSong completeSong = new CompleteSong(
                             matchedSong.getName(), matchedSong.getAuthor(), matchedSong.getSpotifyID(),

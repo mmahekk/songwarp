@@ -1,5 +1,6 @@
 package use_case.spotify_get;
 
+import data_access.APIs.SpotifyAPI;
 import data_access.TempFileWriterDataAccessObject;
 import entity.SpotifyPlaylist;
 import org.json.JSONObject;
@@ -24,8 +25,9 @@ public class SpotifyGetInteractor implements SpotifyGetInputBoundary {
         String id = spotifyGetInputData.getId();
 
         if (id != null) {
+            SpotifyAPI api = new SpotifyAPI();
 
-            JSONObject jsonFile = spotifyGetDataAccessObject.getPlaylistJSON(id);
+            JSONObject jsonFile = spotifyGetDataAccessObject.getPlaylistJSON(api, id);
 
             if (!jsonFile.has("error")) {
                 System.out.println(jsonFile);
