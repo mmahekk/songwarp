@@ -17,7 +17,6 @@ public class CheckMultiplePlaylist {
             int character;
 
             while ((character = reader.read()) != -1) {
-                System.out.println(character);
                 char currentChar = (char) character;
 
                 if (currentChar != '\"') {

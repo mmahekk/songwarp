@@ -23,8 +23,7 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
     private final JTextField urlInputField = new JTextField(40);
     private final YoutubeGetController youtubeGetController;
     private final SpotifyGetController spotifyGetController;
-//    private final LoadPlaylistController loadPlaylistController;
-
+    private final LoadPlaylistController loadPlaylistController;
     private final JButton youtubeGet;
     private final JButton spotifyGet;
     private final JButton loadPlaylist;
@@ -37,7 +36,7 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
         this.getPlaylistViewModel = getPlaylistViewModel;
         this.youtubeGetController = youtubeGetController;
         this.spotifyGetController = spotifyGetController;
-//        this.loadPlaylistController = loadPlaylistController;
+        this.loadPlaylistController = loadPlaylistController;
 
         getPlaylistViewModel.addPropertyChangeListener(this);
 
