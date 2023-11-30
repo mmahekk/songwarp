@@ -35,7 +35,8 @@ public class YoutubeAPI extends APIcaller {
                 apiCallMethod = "GET";
                 break;
             case "searchSong":
-                //TODO: add this case
+                apiCall = "search?q=" + input.getItemInfo()[0] + "&part=snippet" + "&order=relevance" + "&maxResults=1";
+                apiCallMethod = "GET";
                 break;
             case "createPlaylist":
                 data = "{\"snippet\": {\"title\": \"" + input.getItemInfo()[0]
