@@ -1,7 +1,6 @@
 package data_access;
 
-import data_access.APIs.InputSpotifyAPI;
-import data_access.APIs.SpotifyAPI;
+import data_access.APIs.InputAPI;
 import entity.CompletePlaylist;
 import entity.CompleteSong;
 import org.json.JSONArray;
@@ -25,7 +24,7 @@ public class YoutubePutDataAccessObject implements YoutubePutDataAccessInterface
 
     @Override
     public String getUserID(String token) throws IOException, InterruptedException {
-        InputSpotifyAPI info = new InputSpotifyAPI();
+        InputAPI info = new InputAPI();
         info.setPremadeToken(token);
         info.setApiCall("getUser");
         String response = spotifyAPIRequest(info);
@@ -36,7 +35,7 @@ public class YoutubePutDataAccessObject implements YoutubePutDataAccessInterface
 
     @Override
     public String initializeSpotifyPlaylist(String userID, String playlistName, String youtubeUrl, String token) throws IOException, InterruptedException {
-        InputSpotifyAPI info = new InputSpotifyAPI();
+        InputAPI info = new InputAPI();
         info.setItemInfo(new String[]{userID, playlistName, youtubeUrl});
         info.setApiCall("createPlaylist");
         info.setPremadeToken(token);
@@ -59,7 +58,7 @@ public class YoutubePutDataAccessObject implements YoutubePutDataAccessInterface
                 batch.add("spotify:track:" + song.getSpotifyId());
             }
 
-            InputSpotifyAPI info = new InputSpotifyAPI();
+            InputAPI info = new InputAPI();
             info.setItemInfo(new String[]{spotifyPlaylistID});
             info.setListInfo(new JSONArray(batch));
             info.setPremadeToken(token);

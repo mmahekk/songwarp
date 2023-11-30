@@ -23,7 +23,7 @@ public class SpotifyAPI {
     public static String redirectURI = "http://localhost:3000/callback";
     public static String otherRedirectURI = "http://localhost:3000/login";
 
-    public static String spotifyAPIRequest(InputSpotifyAPI input) throws IOException, InterruptedException {
+    public static String spotifyAPIRequest(InputAPI input) throws IOException, InterruptedException {
 
         HttpClient client = HttpClient.newHttpClient();
         String apiCall = null;
