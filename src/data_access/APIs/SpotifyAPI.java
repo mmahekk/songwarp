@@ -10,7 +10,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
@@ -24,7 +23,7 @@ public class SpotifyAPI {
     public static String redirectURI = "http://localhost:3000/callback";
     public static String otherRedirectURI = "http://localhost:3000/login";
 
-    public static String spotifyAPIRequest(InputSpotifyAPI input) throws IOException, InterruptedException {
+    public static String spotifyAPIRequest(InputAPI input) throws IOException, InterruptedException {
 
         HttpClient client = HttpClient.newHttpClient();
         String apiCall = null;

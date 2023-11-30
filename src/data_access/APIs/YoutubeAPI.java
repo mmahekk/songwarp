@@ -14,30 +14,20 @@ public class YoutubeAPI {
     /**
      *This version uses a pageToken too
      */
-    public static String youtubeAPIRequest(String apiRequest, String itemID,
-                                                      String pageToken) throws IOException {
-        String apiCall = null;
+    public static String youtubeAPIRequest(InputAPI input) throws IOException {
+        String apiCall = input.getApiCall();
+        String[] info = input.getItemInfo();
         String apiCallMethod = null;
-        if (Objects.equals(apiRequest, "getPlaylist")) {
-            apiCall =  "playlistItems?" + "part=snippet&maxResults=50" + "&playlistId=" + itemID + "&pageToken=" + pageToken;
+        if (Objects.equals(apiCall, "getPlaylist")) {
+            apiCall =  "playlistItems?" + "part=snippet&maxResults=50" + "&playlistId=" + info[0] + "&pageToken=" + info[1];
             apiCallMethod = "GET";
-        } else {
-
+        } else if (Objects.equals(apiCall, "searchSong")){
+            apiCall = "search?q=" + info[0] + "&part=snippet" + "&order=relevance" + "&maxResults=1";
+            apiCallMethod = "GET";
         }
         return getHttpURLConnection(apiCall, apiCallMethod);
     }
 
-    public static String youtubeAPIRequest(String apiRequest, String itemInfo) throws IOException {
-        String apiCall = null;
-        String apiCallMethod = null;
-        if (Objects.equals(apiRequest, "getPlaylist")) {
-            apiCall = "playlistItems?" + "part=snippet&maxResults=50" + "&playlistId=" + itemInfo;
-            apiCallMethod = "GET";
-        } else {
-
-        }
-        return getHttpURLConnection(apiCall, apiCallMethod);
-    }
 
 
     private static String getHttpURLConnection(String apiCall, String apiCallMethod) throws IOException {
