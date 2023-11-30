@@ -83,7 +83,6 @@ public class YoutubeAPI extends APIcaller {
                     writer.write(data);
                 }
             }
-
             int responseCode = connection.getResponseCode();
 
             if (responseCode == 200) {
