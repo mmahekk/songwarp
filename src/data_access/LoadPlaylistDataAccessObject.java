@@ -4,11 +4,47 @@ import entity.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.load_playlist.LoadPlaylistDataAccessInterface;
+import view.InitialView;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
+import java.util.prefs.Preferences;
 
 import static data_access.TempFileWriterDataAccessObject.readTempJSON;
 
 public class LoadPlaylistDataAccessObject implements LoadPlaylistDataAccessInterface {
 
+    public String GetFilePath() {
+        JFileChooser fileChooser = new JFileChooser("src");
+        Preferences prefs = Preferences.userNodeForPackage(InitialView.class);
+        String lastOpenedFilePath = prefs.get("lastOpenedFilePath", null);
+
+        // Set the initially selected file to the parent folder of the most recently opened file
+        if (lastOpenedFilePath != null) {
+            File lastOpenedFile = new File(lastOpenedFilePath);
+            if (lastOpenedFile.exists() && lastOpenedFile.isFile()) {
+                fileChooser.setSelectedFile(lastOpenedFile.getAbsoluteFile());
+            }
+        }
+
+        //sets a filter for possible extensions
+        FileNameExtensionFilter filter1 = new FileNameExtensionFilter("SongWarp Saved Files", "SWsave");
+        FileNameExtensionFilter filter2 = new FileNameExtensionFilter("Text Files", "txt");
+        fileChooser.setFileFilter(filter1);
+        fileChooser.addChoosableFileFilter(filter2);
+
+        int result = fileChooser.showOpenDialog(null);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            java.io.File selectedFile = fileChooser.getSelectedFile();
+            prefs.put("lastOpenedFilePath", selectedFile.getAbsolutePath());
+
+            // Get the absolute path of the selected file and set it in the text field
+            return selectedFile.getAbsolutePath();
+        }
+        return null;
+    }
     public YoutubePlaylist LoadYoutubePlaylist(String file) {
         JSONObject jsonObject = readTempJSON(file, false);
         assert jsonObject != null;

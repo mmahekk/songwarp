@@ -1,7 +1,6 @@
 package use_case.load_playlist;
 
 import entity.CompletePlaylist;
-import entity.Playlist;
 import entity.SpotifyPlaylist;
 import entity.YoutubePlaylist;
 import utilities.CheckMultiplePlaylist;
@@ -21,33 +20,33 @@ public class LoadPlaylistInteractor implements LoadPlaylistInputBoundary {
 
 
     @Override
-    public void execute(LoadPlaylistInputData loadPlaylistInputData) {
+    public void execute() {
         try {
-            String filepath = loadPlaylistInputData.getFilePath();
+            String filepath = loadPlaylistDataAccess.GetFilePath();
             CheckMultiplePlaylist checker = new CheckMultiplePlaylist(filepath);
             if (checker.check()) {
                 SplitFile splitter = new SplitFile(filepath);
                 splitter.splitFile();
-                LoadPlaylistOutputData CompletePlaylist = new LoadPlaylistOutputData();
-                CompletePlaylist incompletePlaylist = loadPlaylistDataAccess.LoadCompletePlaylist("CompletePlaylist.json");
-                CompletePlaylist.setCompletePlaylist(incompletePlaylist);
-                if (Objects.equals(loadPlaylistDataAccess.Type("IncompletePlaylist.json"), "YoutubePlaylist")) {
-                    YoutubePlaylist youtubePlaylist = loadPlaylistDataAccess.LoadYoutubePlaylist("IncompletePlaylist.json");
-                    CompletePlaylist.setPlaylist(youtubePlaylist);
+                LoadPlaylistOutputData completePlaylist = new LoadPlaylistOutputData();
+                CompletePlaylist incompletePlaylist = loadPlaylistDataAccess.LoadCompletePlaylist("IncompletePlaylist.json");
+                completePlaylist.setCompletePlaylist(incompletePlaylist);
+                if (Objects.equals(loadPlaylistDataAccess.Type("CompletePlaylist.json"), "YoutubePlaylist")) {
+                    YoutubePlaylist youtubePlaylist = loadPlaylistDataAccess.LoadYoutubePlaylist("CompletePlaylist.json");
+                    completePlaylist.setPlaylist(youtubePlaylist);
                 }
-                else if (Objects.equals(loadPlaylistDataAccess.Type("IncompletePlaylist.json"), "SpotifyPlaylist")) {
-                    SpotifyPlaylist spotifyPlaylist = loadPlaylistDataAccess.LoadSpotifyPlaylist("IncompletePlaylist.json");
-                    CompletePlaylist.setPlaylist(spotifyPlaylist);
+                else if (Objects.equals(loadPlaylistDataAccess.Type("CompletePlaylist.json"), "SpotifyPlaylist")) {
+                    SpotifyPlaylist spotifyPlaylist = loadPlaylistDataAccess.LoadSpotifyPlaylist("CompletePlaylist.json");
+                    completePlaylist.setPlaylist(spotifyPlaylist);
                 }
                 else {
-                    loadPlaylistPresenter.prepareFailView("F");
+                    loadPlaylistPresenter.prepareFailView("Failed to load playlist");
                 }
-                loadPlaylistPresenter.prepareSuccessView(CompletePlaylist);
+                loadPlaylistPresenter.prepareSuccessView(completePlaylist);
             }
             else {
-                Playlist playlist = loadPlaylistDataAccess.LoadPlaylist(loadPlaylistInputData.getFilePath());
+                CompletePlaylist playlist = loadPlaylistDataAccess.LoadCompletePlaylist(filepath);
                 LoadPlaylistOutputData CompletePlaylist = new LoadPlaylistOutputData();
-                CompletePlaylist.setPlaylist(playlist);
+                CompletePlaylist.setCompletePlaylist(playlist);
                 loadPlaylistPresenter.prepareSuccessView(CompletePlaylist);
             }
 
