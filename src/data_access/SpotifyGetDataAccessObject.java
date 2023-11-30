@@ -1,6 +1,6 @@
 package data_access;
 
-import data_access.APIs.InputSpotifyAPI;
+import data_access.APIs.InputAPI;
 import entity.SpotifyPlaylist;
 import entity.SpotifySong;
 import org.json.JSONArray;
@@ -14,7 +14,7 @@ import static data_access.APIs.SpotifyAPI.spotifyAPIRequest;
 public class SpotifyGetDataAccessObject implements SpotifyGetDataAccessInterface {
     public JSONObject getPlaylistJSON(String spotifyPlaylistID){
         try {
-            InputSpotifyAPI info = new InputSpotifyAPI();
+            InputAPI info = new InputAPI();
             info.setApiCall("getPlaylist");
             info.setItemInfo(new String[]{spotifyPlaylistID});
             String response = spotifyAPIRequest(info);

@@ -2,7 +2,7 @@ package data_access.APIs;
 
 import org.json.JSONArray;
 
-public class InputSpotifyAPI {
+public class InputAPI {
     private String apiCall;
     private String[] itemInfo;
     private JSONArray listInfo;

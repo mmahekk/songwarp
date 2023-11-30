@@ -1,6 +1,6 @@
 package data_access;
 
-import data_access.APIs.InputSpotifyAPI;
+import data_access.APIs.InputAPI;
 import entity.*;
 import interface_adapter.ProgressListener;
 import org.json.JSONObject;
@@ -23,7 +23,7 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
         String secondTryQuery = (nameAndAuthor[2] + " " + nameAndAuthor[3]).replaceAll("null", "");
         System.out.println(firstTryQuery);
         try {
-            InputSpotifyAPI info = new InputSpotifyAPI();
+            InputAPI info = new InputAPI();
             info.setApiCall("searchSong");
             info.setItemInfo(new String[]{encodeSearchQuery(firstTryQuery)});
 

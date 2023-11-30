@@ -1,5 +1,6 @@
 package data_access;
 
+import data_access.APIs.InputAPI;
 import entity.YoutubePlaylist;
 import entity.YoutubeSong;
 import org.json.JSONArray;
@@ -14,7 +15,10 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
     @Override
     public JSONObject getPlaylistJSON(String youtubePlaylistID) {
         try {
-            String data = youtubeAPIRequest("getPlaylist", youtubePlaylistID);
+            InputAPI input = new InputAPI();
+            input.setApiCall("getPlaylist");
+            input.setItemInfo(new String[]{youtubePlaylistID});
+            String data = youtubeAPIRequest(input);
             if (data != null) {
                 return new JSONObject(data);
             }
@@ -41,7 +45,10 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
         while (nextPageToken != null) {
             System.out.println(nextPageToken);
             try {
-                String data = youtubeAPIRequest("getPlaylist", playlistID, nextPageToken);
+                InputAPI input = new InputAPI();
+                input.setApiCall("getPlaylist");
+                input.setItemInfo(new String[]{playlistID, nextPageToken});
+                String data = youtubeAPIRequest(input);
 
                 if (data != null) {
                     // Parse the JSON response

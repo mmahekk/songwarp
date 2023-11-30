@@ -32,8 +32,8 @@ public class YoutubePutInteractor implements YoutubePutInputBoundary {
 
                 spotifyPlaylistID = youtubePutDataAccessObject.initializeSpotifyPlaylist(id, name, url, token);
                 playlist.setName(youtubePutInputData.getPlaylistName());
-                playlist.setSpotifyID(spotifyPlaylistID);
                 if (spotifyPlaylistID != null) {
+                    playlist.setSpotifyID(spotifyPlaylistID);
                     youtubePutDataAccessObject.uploadSongs(spotifyPlaylistID, playlist, token);
 
                     System.out.println("New playlist: https://open.spotify.com/playlist/" + spotifyPlaylistID);
