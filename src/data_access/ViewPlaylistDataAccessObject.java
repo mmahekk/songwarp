@@ -1,5 +1,7 @@
 package data_access;
 
+import entity.CompletePlaylist;
+import entity.CompleteSong;
 import entity.Playlist;
 import entity.Song;
 import use_case.view_playlist.ViewPlaylistDataAccessInterface;
@@ -14,13 +16,29 @@ public class ViewPlaylistDataAccessObject implements ViewPlaylistDataAccessInter
 
         List<String> playlistData = new ArrayList<>();
 
-        if (playlist != null) {
-            playlistData.add("Playlist Name: " + playlist.getName());
+        if (playlist != null && playlist instanceof CompletePlaylist) {
 
-            List<Song> songs = playlist.getList();
-            for (Song song : songs) {
-                // Add each song as a separate line
-                String songInfo = song.getName() + " by " + song.getAuthor();
+            CompletePlaylist completePlaylist = (CompletePlaylist) playlist;
+
+            playlistData.add("Playlist Name: " + completePlaylist.getName());
+
+            List<CompleteSong> songs = completePlaylist.getCompleteSongs();
+
+            for (CompleteSong song : songs) {
+
+                // Extract complete song information
+                String name = song.getName();
+                String author = song.getAuthor();
+                String date = song.getDate();
+                String youtubeID = song.getYoutubeId();
+                String spotifyID = song.getSpotifyId();
+                String youtubeTitle = song.getYoutubeTitle();
+                String youtubeChannel = song.getYoutubeChannel();
+
+                String songInfo = name + " by " + author + " released " + date + ", YoutubeID: " +
+                        youtubeID + ", SpotifyID: " + spotifyID + ", Youtube Title: " +
+                        youtubeTitle + ", Youtube Channel Name: " + youtubeChannel;
+
                 playlistData.add(songInfo);
             }
         } else {
