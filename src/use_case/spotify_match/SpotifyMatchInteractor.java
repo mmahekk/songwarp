@@ -25,5 +25,8 @@ public class SpotifyMatchInteractor implements SpotifyMatchInputBoundary {
         this.spotifyMatchPresenter = spotifyMatchOutputBoundary;
     }
 
+    @Override
+    public void execute(SpotifyMatchInputData spotifyMatchInputData) {
 
+    }
 }
