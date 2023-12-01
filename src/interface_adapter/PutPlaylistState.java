@@ -11,6 +11,7 @@ public class PutPlaylistState {
     private JSONObject saveFileText;
     private String playlistName;
     private String successUrl;
+    private String outputTextView;
 
     public void setError(String error) {
         this.error = error;
@@ -53,6 +54,15 @@ public class PutPlaylistState {
 
     public JSONObject getSaveFileText() {
         return saveFileText;
+    }
+
+    // the following was added for viewplaylist use case
+    public void setOutputTextView(String outputTextView) {
+        this.outputTextView = outputTextView;
+    }
+
+    public String getOutputTextView() {
+        return outputTextView;
     }
 
 }
