@@ -32,6 +32,14 @@ public class CompleteSong extends Song {
         return this.duration;
     }
 
+    public String getYoutubeTitle() {
+        return this.youtubeTitle;
+    }
+
+    public  String getYoutubeChannel() {
+        return this.youtubeChannel;
+    }
+
     @Override
     public JSONObject convertToJSON() {
         JSONObject jsonObject = new JSONObject();
