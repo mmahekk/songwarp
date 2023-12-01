@@ -3,7 +3,6 @@ import data_access.YoutubeMatchDataAccessObject;
 import entity.CompletePlaylist;
 import entity.Playlist;
 import entity.YoutubePlaylist;
-import entity.YoutubeSong;
 import interface_adapter.ProcessPlaylistViewModel;
 import interface_adapter.PutPlaylistViewModel;
 import interface_adapter.ViewManagerModel;

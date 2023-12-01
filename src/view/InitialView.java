@@ -15,7 +15,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class InitialView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -24,8 +23,7 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
     private final JTextField urlInputField = new JTextField(40);
     private final YoutubeGetController youtubeGetController;
     private final SpotifyGetController spotifyGetController;
-//    private final LoadPlaylistController loadPlaylistController;
-
+    private final LoadPlaylistController loadPlaylistController;
     private final JButton youtubeGet;
     private final JButton spotifyGet;
     private final JButton loadPlaylist;
@@ -38,7 +36,7 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
         this.getPlaylistViewModel = getPlaylistViewModel;
         this.youtubeGetController = youtubeGetController;
         this.spotifyGetController = spotifyGetController;
-//        this.loadPlaylistController = loadPlaylistController;
+        this.loadPlaylistController = loadPlaylistController;
 
         getPlaylistViewModel.addPropertyChangeListener(this);
 
@@ -59,23 +57,7 @@ public class InitialView extends JPanel implements ActionListener, PropertyChang
         loadPlaylist.addActionListener(
                 e -> {
                     if (e.getSource().equals(loadPlaylist)) {
-                        //right now it defaults to open src folder as starting folder
-                        //can change it to default by removing the argument
-                        JFileChooser fileChooser = new JFileChooser("src");
-
-                        //sets a filter for possible extensions
-                        FileNameExtensionFilter filter = new FileNameExtensionFilter(".json", "json");
-                        fileChooser.setFileFilter(filter);
-
-                        int result = fileChooser.showOpenDialog(null);
-
-                        if (result == JFileChooser.APPROVE_OPTION) {
-                            java.io.File selectedFile = fileChooser.getSelectedFile();
-
-                            // Get the absolute path of the selected file and set it in the text field
-                            String filePath = selectedFile.getAbsolutePath();
-                            loadPlaylistController.execute(filePath);
-                        }
+                        loadPlaylistController.execute();
                     }
                 }
         );

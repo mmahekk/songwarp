@@ -2,7 +2,6 @@ package interface_adapter.spotify_get;
 
 
 import interface_adapter.*;
-import interface_adapter.youtube_get.YoutubeGetState;
 import use_case.spotify_get.SpotifyGetOutputBoundary;
 import use_case.spotify_get.SpotifyGetOutputData;
 

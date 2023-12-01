@@ -1,7 +1,6 @@
 package interface_adapter;
 
 import entity.CompletePlaylist;
-import entity.CompleteSong;
 import entity.Playlist;
 import org.json.JSONObject;
 

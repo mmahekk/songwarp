@@ -1,27 +1,16 @@
 package data_access;
 
+import data_access.APIs.YoutubeAPIAdapter;
 import entity.YoutubePlaylist;
 import entity.YoutubeSong;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.youtube_get.YoutubeGetDataAccessInterface;
-
-import java.io.IOException;
-
-import static data_access.APIs.YoutubeAPI.youtubeAPIRequest;
-
 public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface {
     @Override
-    public JSONObject getPlaylistJSON(String youtubePlaylistID) {
-        try {
-            String data = youtubeAPIRequest("getPlaylist", youtubePlaylistID);
-            if (data != null) {
-                return new JSONObject(data);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public JSONObject getPlaylistJSON(YoutubeAPIAdapter api, String youtubePlaylistID) {
+        String response = api.getPlaylist(youtubePlaylistID, null);
+        return new JSONObject(response);
     }
 
     /**
@@ -30,7 +19,7 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
      * @return
      */
     @Override
-    public JSONArray getAllPlaylist(JSONObject jsonObject, String playlistID) {
+    public JSONArray getAllPlaylist(YoutubeAPIAdapter api, JSONObject jsonObject, String playlistID) {
         String nextPageToken;
         if (jsonObject.has("nextPageToken")) {
             nextPageToken = jsonObject.getString("nextPageToken");
@@ -40,30 +29,25 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
         JSONArray firstItems = jsonObject.getJSONArray("items");
         while (nextPageToken != null) {
             System.out.println(nextPageToken);
-            try {
-                String data = youtubeAPIRequest("getPlaylist", playlistID, nextPageToken);
+            String data = api.getPlaylist(playlistID, nextPageToken);
+            if (data != null) {
+                // Parse the JSON response
+                JSONObject nextPage = new JSONObject(data);
+                // get next page token ready for next time
+                if (nextPage.has("nextPageToken")) {
+                    nextPageToken = nextPage.getString("nextPageToken");
+                } else {
+                    nextPageToken = null;
+                    System.out.println("no next page");
+                }
 
-                if (data != null) {
-                    // Parse the JSON response
-                    JSONObject nextPage = new JSONObject(data);
-                    // get next page token ready for next time
-                    if (nextPage.has("nextPageToken")) {
-                        nextPageToken = nextPage.getString("nextPageToken");
-                    } else {
-                        nextPageToken = null;
-                        System.out.println("no next page");
-                    }
-
-                    if (nextPage.has("items")) {
-                        // get items and append them to our JSON array
-                        JSONArray newItems = nextPage.getJSONArray("items");
-                        for (int i = 0; i < newItems.length(); i++) {
-                            firstItems.put(newItems.getJSONObject(i));
-                        }
+                if (nextPage.has("items")) {
+                    // get items and append them to our JSON array
+                    JSONArray newItems = nextPage.getJSONArray("items");
+                    for (int i = 0; i < newItems.length(); i++) {
+                        firstItems.put(newItems.getJSONObject(i));
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
         return firstItems;

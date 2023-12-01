@@ -90,7 +90,7 @@ public class SavePlaylistDataAccessObject implements SavePlaylistDataAccessInter
             String filePath = selectedDirectory + File.separator + fileName + ".SWsave";
 
             // Convert playlist to well-formatted JSON with URLs
-            JSONObject jsonObject = convertPlaylistToJSON((CompletePlaylist) playlist);
+            JSONObject jsonObject = playlist.convertToJSON();
             JSONObject jsonObject2;
             if (incompletePlaylist != null) {
                 jsonObject2 = incompletePlaylist.convertToJSON();

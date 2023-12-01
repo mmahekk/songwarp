@@ -35,9 +35,10 @@ public class GetPlaylistUseCaseFactory {
     public static InitialView create(ViewManagerModel viewManagerModel,
                                      GetPlaylistViewModel getPlaylistViewModel,
                                      ProcessPlaylistViewModel processPlaylistViewModel,
+                                     PutPlaylistViewModel putPlaylistViewModel,
                                      TempFileWriterDataAccessObject fileWriter) {
         try {
-            LoadPlaylistController loadPlaylistController = createLoadPlaylistUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
+            LoadPlaylistController loadPlaylistController = createLoadPlaylistUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, putPlaylistViewModel);
             YoutubeGetController youtubeGetController = createYoutubeGetUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
             SpotifyGetController spotifyGetController = createSpotifyGetUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
             return new InitialView(getPlaylistViewModel, youtubeGetController, spotifyGetController, loadPlaylistController);
@@ -49,12 +50,11 @@ public class GetPlaylistUseCaseFactory {
 
     private static LoadPlaylistController createLoadPlaylistUseCase(
             ViewManagerModel viewManagerModel, GetPlaylistViewModel getPlaylistViewModel,
-            ProcessPlaylistViewModel processPlaylistViewModel, TempFileWriterDataAccessObject fileWriter) throws IOException {
+            ProcessPlaylistViewModel processPlaylistViewModel, PutPlaylistViewModel putPlaylistViewModel) throws IOException {
 
-        //TODO: change the input arguments when methods are done.
-        LoadPlaylistOutputBoundary loadPlaylistOutputBoundary = new LoadPlaylistPresenter(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel);
+        LoadPlaylistOutputBoundary loadPlaylistOutputBoundary = new LoadPlaylistPresenter(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, putPlaylistViewModel);
         LoadPlaylistDataAccessInterface loadPlaylistDataAccessObject = new LoadPlaylistDataAccessObject();
-        LoadPlaylistInputBoundary loadPlaylistInteractor = new LoadPlaylistInteractor(loadPlaylistDataAccessObject,fileWriter, loadPlaylistOutputBoundary);
+        LoadPlaylistInputBoundary loadPlaylistInteractor = new LoadPlaylistInteractor(loadPlaylistDataAccessObject, loadPlaylistOutputBoundary);
 
         return new LoadPlaylistController(loadPlaylistInteractor);
     }

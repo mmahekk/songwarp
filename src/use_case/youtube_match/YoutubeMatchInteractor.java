@@ -1,5 +1,6 @@
 package use_case.youtube_match;
 
+import data_access.APIs.SpotifyAPIAdapter;
 import data_access.TempFileWriterDataAccessObject;
 import data_access.YoutubeMatchDataAccessObject;
 import entity.CompletePlaylist;
@@ -22,12 +23,14 @@ public class YoutubeMatchInteractor implements YoutubeMatchInputBoundary {
 
     @Override
     public void execute(YoutubeMatchInputData youtubeMatchInputData) {
+        SpotifyAPIAdapter api = new SpotifyAPIAdapter();
+
         YoutubePlaylist playlist = youtubeMatchInputData.getPlaylist();
         CompletePlaylist incompletePlaylist = (CompletePlaylist) youtubeMatchInputData.getIncompletePlaylist();
         int songLimit = youtubeMatchInputData.getSongLimit();
 
         YoutubeMatchDataAccessObject.Pair<CompletePlaylist, Boolean> result =
-                youtubeMatchDataAccessObject.buildCompletePlaylist(playlist, incompletePlaylist, songLimit);
+                youtubeMatchDataAccessObject.buildCompletePlaylist(api, playlist, incompletePlaylist, songLimit);
 
         CompletePlaylist matchedPlaylist = result.p();
         Boolean completed = result.completed();
