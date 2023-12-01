@@ -1,12 +1,15 @@
 package app;
 
 import data_access.SavePlaylistDataAccessObject;
+import data_access.SpotifyPutDataAccessObject;
 import data_access.TempFileWriterDataAccessObject;
 import data_access.YoutubePutDataAccessObject;
 import interface_adapter.*;
 import interface_adapter.save_playlist.SavePlaylistController;
 import interface_adapter.save_playlist.SavePlaylistPresenter;
 import interface_adapter.save_playlist.SavePlaylistViewModel;
+import interface_adapter.spotify_put.SpotifyPutController;
+import interface_adapter.spotify_put.SpotifyPutPresenter;
 import interface_adapter.view_traverse.ViewTraverseController;
 import interface_adapter.view_traverse.ViewTraversePresenter;
 import interface_adapter.youtube_put.YoutubePutController;
@@ -15,6 +18,10 @@ import use_case.save_playlist.SavePlaylistDataAccessInterface;
 import use_case.save_playlist.SavePlaylistInputBoundary;
 import use_case.save_playlist.SavePlaylistInteractor;
 import use_case.save_playlist.SavePlaylistOutputBoundary;
+import use_case.spotify_put.SpotifyPutDataAccessInterface;
+import use_case.spotify_put.SpotifyPutInputBoundary;
+import use_case.spotify_put.SpotifyPutInteractor;
+import use_case.spotify_put.SpotifyPutOutputBoundary;
 import use_case.view_traverse.ViewTraverseInteractor;
 import use_case.view_traverse.ViewTraverseOutputBoundary;
 import use_case.view_traverse.ViewTraverseInputBoundary;
@@ -40,7 +47,8 @@ public class PutPlaylistUseCaseFactory {
             SavePlaylistController savePlaylistController = createSavePlaylistUseCase(viewManagerModel, putPlaylistViewModel, fileWriter);
             ViewTraverseController viewTraverseController = createViewTraverseUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, putPlaylistViewModel);
             YoutubePutController youtubePutController = createYoutubePutUseCase(viewManagerModel, putPlaylistViewModel);
-            return new OutputPageView(putPlaylistViewModel, getPlaylistViewModel, savePlaylistController, viewTraverseController, youtubePutController);
+            SpotifyPutController spotifyPutController = createSpotifyPutUseCase(viewManagerModel, putPlaylistViewModel);
+            return new OutputPageView(putPlaylistViewModel, getPlaylistViewModel, savePlaylistController, viewTraverseController, youtubePutController, spotifyPutController);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "could not load initial page");
         }
@@ -76,6 +84,16 @@ public class PutPlaylistUseCaseFactory {
         YoutubePutInputBoundary youtubePutInteractor = new YoutubePutInteractor(youtubePutDataAccessObject, youtubePutPresenter);
 
         return new YoutubePutController(youtubePutInteractor);
+    }
+
+    public static SpotifyPutController createSpotifyPutUseCase(ViewManagerModel viewManagerModel, PutPlaylistViewModel putPlaylistViewModel) {
+
+        SpotifyPutDataAccessInterface spotifyPutDataAccessObject = new SpotifyPutDataAccessObject();
+        SpotifyPutOutputBoundary spotifyPutPresenter = new SpotifyPutPresenter(viewManagerModel, putPlaylistViewModel);
+
+        SpotifyPutInputBoundary spotifyPutInteractor = new SpotifyPutInteractor(spotifyPutDataAccessObject, spotifyPutPresenter);
+
+        return new SpotifyPutController(spotifyPutInteractor);
     }
 }
 

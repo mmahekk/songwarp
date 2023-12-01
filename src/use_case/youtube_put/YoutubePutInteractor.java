@@ -1,11 +1,8 @@
 package use_case.youtube_put;
 
+import data_access.APIs.SpotifyAPIAdapter;
 import entity.CompletePlaylist;
-import use_case.youtube_match.YoutubeMatchOutputData;
-
 import java.io.IOException;
-
-import static data_access.APIs.SpotifyAPI.getUserAuthAccessToken;
 
 public class YoutubePutInteractor implements YoutubePutInputBoundary {
     final YoutubePutDataAccessInterface youtubePutDataAccessObject;
@@ -24,17 +21,18 @@ public class YoutubePutInteractor implements YoutubePutInputBoundary {
         String name = youtubePutInputData.getPlaylistName();
         String url = youtubePutInputData.getYoutubeUrl();
         if (name != null && !name.isEmpty() && name.matches("^.*[a-zA-Z0-9].*$")) {
+            SpotifyAPIAdapter api = new SpotifyAPIAdapter();
             try {
                 // create a user authorized token to be used across all calls in this use case (no worry about 1 hour expiration)
-                String token = youtubePutDataAccessObject.getUserAuthorization();
+                String token = youtubePutDataAccessObject.getUserAuthorization(api);
 
-                String id = youtubePutDataAccessObject.getUserID(token);
+                String id = youtubePutDataAccessObject.getUserID(api, token);
 
-                spotifyPlaylistID = youtubePutDataAccessObject.initializeSpotifyPlaylist(id, name, url, token);
+                spotifyPlaylistID = youtubePutDataAccessObject.initializeSpotifyPlaylist(api, id, name, url, token);
                 playlist.setName(youtubePutInputData.getPlaylistName());
-                playlist.setSpotifyID(spotifyPlaylistID);
                 if (spotifyPlaylistID != null) {
-                    youtubePutDataAccessObject.uploadSongs(spotifyPlaylistID, playlist, token);
+                    playlist.setSpotifyID(spotifyPlaylistID);
+                    youtubePutDataAccessObject.uploadSongs(api, spotifyPlaylistID, playlist, token);
 
                     System.out.println("New playlist: https://open.spotify.com/playlist/" + spotifyPlaylistID);
 

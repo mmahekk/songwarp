@@ -4,6 +4,7 @@ import data_access.TempFileWriterDataAccessObject;
 import entity.*;
 import interface_adapter.*;
 import interface_adapter.save_playlist.SavePlaylistController;
+import interface_adapter.spotify_put.SpotifyPutController;
 import interface_adapter.view_traverse.ViewTraverseController;
 import interface_adapter.youtube_put.YoutubePutController;
 
@@ -22,7 +23,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
     private final PutPlaylistViewModel putPlaylistViewModel;
     private final GetPlaylistViewModel getPlaylistViewModel;
     private final YoutubePutController youtubePutController;
-//    private final SpotifyPutController spotifyPutController;
+    private final SpotifyPutController spotifyPutController;
     private final SavePlaylistController savePlaylistController;
     private final ViewTraverseController viewTraverseController;
 
@@ -30,6 +31,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
     private final JButton spotifyPut;
     private final JButton youtubePut;
     private final JButton viewPlaylist;
+//    private final JButton saveChanges;
     private final JButton restart;
     private final JTextField namePlaylistInputField;
     private final JTextArea playlistView;
@@ -38,13 +40,14 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
     private String[] linkTexts;
 
     public OutputPageView(PutPlaylistViewModel putPlaylistViewModel, GetPlaylistViewModel getPlaylistViewModel,
-                         SavePlaylistController savePlaylistController, ViewTraverseController viewTraverseController,
-                          YoutubePutController youtubePutController) {
+                          SavePlaylistController savePlaylistController, ViewTraverseController viewTraverseController,
+                          YoutubePutController youtubePutController, SpotifyPutController spotifyPutController) {
         this.putPlaylistViewModel = putPlaylistViewModel;
         this.getPlaylistViewModel = getPlaylistViewModel;
         this.savePlaylistController = savePlaylistController;
         this.viewTraverseController = viewTraverseController;
         this.youtubePutController = youtubePutController;
+        this.spotifyPutController = spotifyPutController;
 
         putPlaylistViewModel.addPropertyChangeListener(this);
 
@@ -77,15 +80,20 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
         youtubeLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         links.add(youtubeLink);
 
-        JPanel buttons = new JPanel();
-        viewPlaylist = new JButton(putPlaylistViewModel.VIEW_PLAYLIST_BUTTON_LABEL);
-        viewPlaylist.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JPanel uploadButtons = new JPanel();
         save = new JButton(putPlaylistViewModel.SAVE_PLAYLIST_BUTTON_LABEL);
-        buttons.add(save);
+        uploadButtons.add(save);
         youtubePut = new JButton(putPlaylistViewModel.YOUTUBE_PUT_BUTTON_LABEL);
-        buttons.add(youtubePut);
+        uploadButtons.add(youtubePut);
         spotifyPut = new JButton(putPlaylistViewModel.SPOTIFY_PUT_BUTTON_LABEL);
-        buttons.add(spotifyPut);
+        uploadButtons.add(spotifyPut);
+
+        JPanel viewButtons = new JPanel();
+        viewPlaylist = new JButton(putPlaylistViewModel.VIEW_PLAYLIST_BUTTON_LABEL);
+        viewButtons.add(viewPlaylist);
+//        saveChanges = new JButton(putPlaylistViewModel.SAVE_CHANGES_BUTTON_LABEL);
+//        viewButtons.add(saveChanges);
+
         restart = new JButton(putPlaylistViewModel.RESTART_BUTTON_LABEL);
         restart.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -173,6 +181,22 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
             }
         );
 
+        youtubePut.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        PutPlaylistState currentState = putPlaylistViewModel.getState();
+                        if (e.getSource().equals(youtubePut)) {
+                            Playlist playlist = currentState.getPlaylist();
+                            String name = currentState.getPlaylistName();
+                            if (playlist instanceof CompletePlaylist p) {
+                                OutputPageView.this.spotifyPutController.execute(p, name);
+                            }
+                        }
+                    }
+                }
+        );
+
         namePlaylistInputField.addKeyListener(
             new KeyListener() {
                 @Override
@@ -197,9 +221,10 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
 
         this.add(title);
         this.add(playlistNameInput);
+        this.add(viewButtons);
         this.add(textOutput, BorderLayout.CENTER);
         this.add(links);
-        this.add(buttons);
+        this.add(uploadButtons);
         this.add(restart);
     }
 

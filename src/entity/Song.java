@@ -3,7 +3,6 @@ package entity;
 import org.json.JSONObject;
 
 public abstract class Song implements SongInterface {
-
     private final String name;
     private final String author;
     private final String date;
