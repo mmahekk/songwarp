@@ -1,13 +1,10 @@
 package data_access;
 
-import data_access.APIs.AdapterRequest;
 import data_access.APIs.SpotifyAPIAdapter;
 import entity.*;
 import interface_adapter.ProgressListener;
 import org.json.JSONObject;
 import use_case.youtube_match.YoutubeMatchDataAccessInterface;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

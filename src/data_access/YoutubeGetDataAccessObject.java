@@ -1,15 +1,11 @@
 package data_access;
 
-import data_access.APIs.AdapterRequest;
 import data_access.APIs.YoutubeAPIAdapter;
 import entity.YoutubePlaylist;
 import entity.YoutubeSong;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.youtube_get.YoutubeGetDataAccessInterface;
-
-import java.io.IOException;
-
 public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface {
     @Override
     public JSONObject getPlaylistJSON(YoutubeAPIAdapter api, String youtubePlaylistID) {

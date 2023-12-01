@@ -1,6 +1,5 @@
 package data_access;
 
-import data_access.APIs.AdapterRequest;
 import data_access.APIs.SpotifyAPIAdapter;
 import entity.CompletePlaylist;
 import entity.CompleteSong;
