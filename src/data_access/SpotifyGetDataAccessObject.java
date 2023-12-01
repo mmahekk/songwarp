@@ -1,30 +1,16 @@
 package data_access;
 
-import data_access.APIs.InputAPI;
-import data_access.APIs.SpotifyAPI;
+import data_access.APIs.SpotifyAPIAdapter;
 import entity.SpotifyPlaylist;
 import entity.SpotifySong;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.spotify_get.SpotifyGetDataAccessInterface;
 
-import java.io.IOException;
-
 public class SpotifyGetDataAccessObject implements SpotifyGetDataAccessInterface {
-    public JSONObject getPlaylistJSON(SpotifyAPI api, String spotifyPlaylistID){
-        try {
-            InputAPI info = new InputAPI();
-            info.setApiCall("getPlaylist");
-            info.setItemInfo(new String[]{spotifyPlaylistID});
-            String response = api.request(info);
-            assert response != null;
-            return new JSONObject(response);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-
+    public JSONObject getPlaylistJSON(SpotifyAPIAdapter api, String spotifyPlaylistID){
+        String response = api.getPlaylist(spotifyPlaylistID);
+        return new JSONObject(response);
     }
 
     public SpotifyPlaylist buildSpotifyPlaylist(JSONObject spotifyPlaylistJSON, String playlistId) {

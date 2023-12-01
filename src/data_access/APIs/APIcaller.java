@@ -25,8 +25,6 @@ public abstract class APIcaller {
     public String authCodeUrl;
     public String authTokenExchange;
 
-    public abstract String request(InputAPI input) throws IOException;
-
     public String getUserAuthAccessToken() {
         try {
             // user auth

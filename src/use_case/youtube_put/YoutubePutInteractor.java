@@ -1,6 +1,6 @@
 package use_case.youtube_put;
 
-import data_access.APIs.SpotifyAPI;
+import data_access.APIs.SpotifyAPIAdapter;
 import entity.CompletePlaylist;
 import java.io.IOException;
 
@@ -21,7 +21,7 @@ public class YoutubePutInteractor implements YoutubePutInputBoundary {
         String name = youtubePutInputData.getPlaylistName();
         String url = youtubePutInputData.getYoutubeUrl();
         if (name != null && !name.isEmpty() && name.matches("^.*[a-zA-Z0-9].*$")) {
-            SpotifyAPI api = new SpotifyAPI();
+            SpotifyAPIAdapter api = new SpotifyAPIAdapter();
             try {
                 // create a user authorized token to be used across all calls in this use case (no worry about 1 hour expiration)
                 String token = youtubePutDataAccessObject.getUserAuthorization(api);

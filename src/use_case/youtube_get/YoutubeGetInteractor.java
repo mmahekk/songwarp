@@ -1,6 +1,6 @@
 package use_case.youtube_get;
 
-import data_access.APIs.YoutubeAPI;
+import data_access.APIs.YoutubeAPIAdapter;
 import data_access.TempFileWriterDataAccessObject;
 import entity.YoutubePlaylist;
 import org.json.JSONArray;
@@ -23,7 +23,7 @@ public class YoutubeGetInteractor implements YoutubeGetInputBoundary {
         String id = youtubeGetInputData.getId();
 
         if (id != null) {
-            YoutubeAPI api = new YoutubeAPI();
+            YoutubeAPIAdapter api = new YoutubeAPIAdapter();
             // get json file from youtube api
             JSONObject jsonFile = youtubeGetDataAccessObject.getPlaylistJSON(api, id); // (DAO request 1)
             if (jsonFile != null && jsonFile.has("items")) {
