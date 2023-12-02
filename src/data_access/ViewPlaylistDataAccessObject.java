@@ -3,7 +3,6 @@ package data_access;
 import entity.CompletePlaylist;
 import entity.CompleteSong;
 import entity.Playlist;
-import entity.Song;
 import use_case.view_playlist.ViewPlaylistDataAccessInterface;
 
 import java.util.ArrayList;
