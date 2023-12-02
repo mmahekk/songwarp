@@ -1,48 +1,43 @@
 package data_access;
 
-import data_access.APIs.InputAPI;
-import data_access.APIs.YoutubeAPI;
+import entity.CompletePlaylist;
 import entity.SpotifySong;
 import entity.YoutubeSong;
+import kotlin.Pair;
 import org.json.JSONObject;
+import entity.*;
+import java.util.ArrayList;
+import java.util.Objects;
+import data_access.APIs.YoutubeAPIAdapter;
+import use_case.spotify_match.SpotifyMatchDataAccessInterface;
 
-import java.io.IOException;
-
-import static data_access.APIs.YoutubeAPI.youtubeAPIRequest;
 import static utilities.SearchQueryEncoder.encodeSearchQuery;
 
-public class SpotifyMatchDataAccessObject {
+public class SpotifyMatchDataAccessObject implements SpotifyMatchDataAccessInterface {
 
-    public YoutubeSong findYouTubeSongMatch(SpotifySong song) {
+    public YoutubeSong findYouTubeSongMatch(YoutubeAPIAdapter api, SpotifySong song) {
         String searchQuery = song.getAuthor() + " - " + song.getName();
 
 
-        try {
-            InputAPI info = new InputAPI();
-            info.setApiCall("searchSong");
-            info.setItemInfo(new String[]{encodeSearchQuery(searchQuery)});
+        String data = api.searchSong(searchQuery);
+        System.out.println(data);
+        if (data != null && !data.isEmpty()) {
+            YoutubeSong newSong = buildYouTubeSong(new JSONObject(data));
 
-            String data = youtubeAPIRequest(info);
-            System.out.println(data);
-            if (data != null && !data.isEmpty()) {
-                YoutubeSong newSong = buildYouTubeSong(new JSONObject(data));
-
-                return newSong;
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            return  newSong;
         }
+
         return null;
     }
 
-    @Override
+
     public YoutubeSong buildYouTubeSong(JSONObject data) {
         if (data.has("tracks")) {
             JSONObject topSearchResults = data.getJSONArray("items").getJSONObject(0);
             String id = topSearchResults.getJSONObject("id").getString("videoID");
-            String name = topSearchResults.getString("name");
+            String name = topSearchResults.getString("title");
             JSONObject album = topSearchResults.getJSONObject("album");
-            String date = album.getString("release_date");
+            String date = topSearchResults.getJSONObject("snippet").getString("publishedAt");
             String author = album.getJSONArray("artists").getJSONObject(0).getString("name");
 
             YoutubeSong song = new YoutubeSong(name, author, id, date);
@@ -50,6 +45,50 @@ public class SpotifyMatchDataAccessObject {
             return song;
         }
         return null;
+    }
+
+
+    public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubeAPIAdapter api, SpotifyPlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit){
+
+        ArrayList<SpotifySong> songlist = playlist.getSpotifySongs();
+        CompletePlaylist matchedPlaylist = Objects.requireNonNullElseGet(incompletePlaylist, () ->
+                new CompletePlaylist("unknown name", null, playlist.getSpotifyID(), "unknown"));
+
+        int offset;
+
+        if (matchedPlaylist.getTotal() < songlist.size()) {
+            offset = matchedPlaylist.getTotal();
+        } else {
+            offset = 0;
+        }
+
+        for (int i = offset; i < songlist.size(); i++) {
+            SpotifySong song = songlist.get(i);
+            if (song != null) {
+                if (songLimit != -1 && matchedPlaylist.getTotal() >= songLimit) {
+                    return new Pair<>(matchedPlaylist, false);
+                }
+                YoutubeSong matchedSong = findYouTubeSongMatch(api, song);
+                if (matchedSong != null) {
+                    CompleteSong completeSong = new CompleteSong(
+                            matchedSong.getName(), matchedSong.getAuthor(), matchedSong.getYoutubeID(),
+                            song.getSpotifyID(), matchedSong.getDate(),
+                            song.getName(), song.getAuthor(), 0);
+
+                    matchedPlaylist.addSong(completeSong);
+                } else {  // we got an http error, i.e. ran out of tokens, therefore, it means we stop building and indicate that it wasn't a completed playlist
+                    return new Pair<>(matchedPlaylist, false);
+                }
+            }
+
+        }
+        return new Pair<>(matchedPlaylist, true);
+
+
+
+
+
+
     }
 
 

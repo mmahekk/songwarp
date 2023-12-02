@@ -1,9 +1,8 @@
 package use_case.spotify_match;
 
+import data_access.APIs.YoutubeAPIAdapter;
 import data_access.SpotifyMatchDataAccessObject;
-import entity.CompletePlaylist;
-import entity.SpotifySong;
-import entity.SpotifyPlaylist;
+import entity.*;
 import entity.SpotifySong;
 import interface_adapter.ProgressListener;
 import org.json.JSONObject;
@@ -11,13 +10,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public interface SpotifyMatchDataAccessInterface {
-    SpotifySong findSpotifySongMatch(SpotifySong song) throws IOException, InterruptedException;
+    YoutubeSong findYouTubeSongMatch(YoutubeAPIAdapter api, SpotifySong song) throws IOException, InterruptedException;
 
-    SpotifySong buildSpotifySong(JSONObject data);
+    YoutubeSong buildYouTubeSong(JSONObject data);
 
 
-    public void addProgressListener(ProgressListener listener);
-
-    public void removeProgressListener(ProgressListener listener);
+//    public void addProgressListener(ProgressListener listener);
+//
+//    public void removeProgressListener(ProgressListener listener);
 }
 
