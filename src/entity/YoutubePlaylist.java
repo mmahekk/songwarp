@@ -47,4 +47,17 @@ public class YoutubePlaylist extends Playlist implements YoutubePlaylistInterfac
         jsonObject.append("youtubeID", this.getYoutubeID());
         return jsonObject;
     }
+
+    public static class Builder implements entity.YoutubePlaylistBuilder {
+        private YoutubePlaylist playlist;
+
+        @Override
+        public void Playlist(YoutubePlaylist playlist) {
+            this.playlist = playlist;
+        }
+
+        public YoutubePlaylist build() {
+            return this.playlist;
+        }
+    }
 }

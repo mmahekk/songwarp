@@ -39,14 +39,11 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
     public SpotifySong buildSpotifySong(JSONObject data) {
         if (data.has("tracks")) {
             JSONObject topSearchResults = data.getJSONObject("tracks").getJSONArray("items").getJSONObject(0);
-            String id = topSearchResults.getString("id");
-            String name = topSearchResults.getString("name");
-            int duration = topSearchResults.getInt("duration_ms");
-            JSONObject album = topSearchResults.getJSONObject("album");
-            String date = album.getString("release_date");
-            String author = album.getJSONArray("artists").getJSONObject(0).getString("name");
 
-            SpotifySong song = new SpotifySong(name, author, duration, id, date);
+            SongBuilderDirector director = new SongBuilderDirector();
+            SpotifySongBuilder builder = new SpotifySong.Builder();
+            director.BuildSpotifySong(builder, topSearchResults);
+            SpotifySong song = builder.build();
             System.out.println(song.convertToJSON());
             return song;
         }

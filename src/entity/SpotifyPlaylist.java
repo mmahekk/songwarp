@@ -62,4 +62,16 @@ public class SpotifyPlaylist extends Playlist implements SpotifyPlaylistInterfac
         jsonObject.append("spotifyID", this.getSpotifyID());
         return jsonObject;
     }
+    public static class Builder implements SpotifyPlaylistBuilder {
+        private SpotifyPlaylist playlist;
+
+        @Override
+        public void Playlist(SpotifyPlaylist playlist) {
+            this.playlist = playlist;
+        }
+
+        public SpotifyPlaylist build() {
+            return this.playlist;
+        }
+    }
 }

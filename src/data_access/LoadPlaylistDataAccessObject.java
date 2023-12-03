@@ -14,6 +14,14 @@ import java.util.prefs.Preferences;
 import static data_access.TempFileWriterDataAccessObject.readTempJSON;
 
 public class LoadPlaylistDataAccessObject implements LoadPlaylistDataAccessInterface {
+    private String filepath;
+
+    public void SetFilePath(String filepath) {
+        this.filepath = filepath;
+    }
+    public String FetchFilePath() {
+        return this.filepath;
+    }
 
     public String GetFilePath() {
         JFileChooser fileChooser = new JFileChooser("src");
@@ -46,50 +54,23 @@ public class LoadPlaylistDataAccessObject implements LoadPlaylistDataAccessInter
         return null;
     }
     public YoutubePlaylist LoadYoutubePlaylist(String file) {
-        JSONObject jsonObject = readTempJSON(file, false);
-        assert jsonObject != null;
-        JSONArray songList = jsonObject.getJSONArray("items").getJSONArray(0);
-
-        String youtubeID = jsonObject.getJSONArray("youtubeID").getString(0);
-        YoutubePlaylist youtubePlaylist = new YoutubePlaylist("loaded playlist", null, youtubeID);
-        for (int i = 0; i < songList.length(); i++) {
-            JSONObject entry = songList.getJSONObject(i);
-            String title = entry.getJSONArray("name").getString(0);
-            String author = entry.getJSONArray("author").getString(0);
-            String date = entry.getJSONArray("date").getString(0);
-            String id = entry.getJSONArray("youtubeID").getString(0);
-
-            YoutubeSong song = new YoutubeSong(title, author, id, date);
-            youtubePlaylist.addSong(song);
-        }
-        return youtubePlaylist;
+        PlaylistBuilderDirector director = new PlaylistBuilderDirector();
+        YoutubePlaylistBuilder builder = new YoutubePlaylist.Builder();
+        director.BuildYoutubePlaylist(builder, file);
+        return builder.build();
     }
 
     public SpotifyPlaylist LoadSpotifyPlaylist(String file) {
-        JSONObject jsonObject = readTempJSON(file, false);
-        assert jsonObject != null;
-        JSONArray songList = jsonObject.getJSONArray("items").getJSONArray(0);
-
-        String spotifyID = jsonObject.getJSONArray("spotifyID").getString(0);
-        SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist("loaded playlist", null, spotifyID);
-        for (int i = 0; i < songList.length(); i++) {
-            JSONObject entry = songList.getJSONObject(i);
-            String title = entry.getJSONArray("name").getString(0);
-            String author = entry.getJSONArray("author").getString(0);
-            String date = entry.getJSONArray("date").getString(0);
-            String id = entry.getJSONArray("spotifyID").getString(0);
-            int duration = entry.getJSONArray("duration").getInt(0);
-
-            SpotifySong song = new SpotifySong(title, author, duration, id, date);
-            spotifyPlaylist.addSong(song);
-        }
-        return spotifyPlaylist;
+        PlaylistBuilderDirector director = new PlaylistBuilderDirector();
+        SpotifyPlaylistBuilder builder = new SpotifyPlaylist.Builder();
+        director.BuildSpotifyPlaylist(builder, file);
+        return builder.build();
     }
 
     public CompletePlaylist LoadCompletePlaylist(String file) {
         JSONObject jsonObject = readTempJSON(file, false);
         assert jsonObject != null;
-        if (jsonObject.has("type") && jsonObject.has("type")) {
+        if (jsonObject.has("type")) {
             JSONArray songList = jsonObject.getJSONArray("items").getJSONArray(0);
             String youtubeID = jsonObject.getJSONArray("youtubeID").getString(0);
             String spotifyID = jsonObject.getJSONArray("spotifyID").getString(0);
@@ -116,7 +97,7 @@ public class LoadPlaylistDataAccessObject implements LoadPlaylistDataAccessInter
     public Playlist LoadPlaylist(String file) {
         JSONObject jsonObject = readTempJSON(file, false);
         assert jsonObject != null;
-        if (jsonObject.has("type") && jsonObject.has("type")) {
+        if (jsonObject.has("type")) {
             String type = (String) jsonObject.getJSONArray("type").get(0);
             switch (type) {
                 case "entity.YoutubePlaylist" -> this.LoadYoutubePlaylist(file);
