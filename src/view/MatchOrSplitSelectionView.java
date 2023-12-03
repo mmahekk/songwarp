@@ -9,7 +9,7 @@ import interface_adapter.ProcessPlaylistViewModel;
 import interface_adapter.save_playlist.SavePlaylistController;
 import interface_adapter.view_traverse.ViewTraverseController;
 import interface_adapter.youtube_match.YoutubeMatchController;
-
+import interface_adapter.spotify_match.SpotifyMatchController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -24,7 +24,7 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
     public final String viewName = "page 2";
     private final ProcessPlaylistViewModel processPlaylistViewModel;
 
-//    private final SpotifyMatchController spotifyMatchController;
+    private final SpotifyMatchController spotifyMatchController;
 //    private final SpotifyGenresplitController spotifyGenresplitController;
     private final YoutubeMatchController youtubeMatchController;
 //    private final CompleteYearSplitController completeYearSplitController;
@@ -37,16 +37,18 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
     private final JProgressBar progress;
 
     public MatchOrSplitSelectionView(ProcessPlaylistViewModel processPlaylistViewModel,
-                                     // SpotifyMatchController spotifyMatchController,
                                      // CompleteYearSplitController completeYearSplitController,
                                      YoutubeMatchController youtubeMatchController,
+                                     SpotifyMatchController spotifyMatchController,
                                      SavePlaylistController savePlaylistController, ViewTraverseController viewTraverseController) {
         this.processPlaylistViewModel = processPlaylistViewModel;
-        // this.spotifyMatchController = spotifyMatchController;
+        this.spotifyMatchController = spotifyMatchController;
         // this.completeYearSplitController = completeYearSplitController;
         this.youtubeMatchController = youtubeMatchController;
         this.savePlaylistController = savePlaylistController;
         this.viewTraverseController = viewTraverseController;
+
+
 
 
         processPlaylistViewModel.addPropertyChangeListener(this);
@@ -78,7 +80,12 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
                                 youtubeMatchController.execute(playlist, incompletePlaylist, true);
                             }
                         } else if (currentState.getPlaylist() instanceof SpotifyPlaylist playlist) {
-                            // spotifyMatchController.execute(playlist, true);
+                            Playlist incompletePlaylist = currentState.getIncompletePlaylist();
+                            if (incompletePlaylist == null) {
+                                spotifyMatchController.execute(playlist, true);
+                            } else {
+                                spotifyMatchController.execute(playlist, incompletePlaylist, true);
+                            }
                         }
                     }
                 }

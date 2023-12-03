@@ -24,7 +24,7 @@ public class TestSpotifyGet {
         TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("temp.json");
         SpotifyGetDataAccessInterface dataAccessObject = new SpotifyGetDataAccessObject();
         SpotifyGetOutputBoundary outputBoundary = new SpotifyGetPresenter(viewManagerModel, viewModel, nextViewModel);
-        testUrl = "https://open.spotify.com/playlist/6BHIpWRDOIznQi7HiVvlpZ";
+        testUrl = "https://open.spotify.com/playlist/3KCldEqu9GltmYYTGybH5T";
         SpotifyGetInteractor interactor = new SpotifyGetInteractor(dataAccessObject, fileWriter, outputBoundary);
         controller = new SpotifyGetController(interactor);
     }

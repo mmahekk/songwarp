@@ -12,11 +12,11 @@ public class SpotifyMatchPresenter implements SpotifyMatchOutputBoundary {
     private ViewManagerModel viewManagerModel;
 
     public SpotifyMatchPresenter(ViewManagerModel viewManagerModel,
-                                 ProcessPlaylistViewModel youtubeMatchViewModel,
+                                 ProcessPlaylistViewModel spotifyMatchViewModel,
                                  PutPlaylistViewModel putPlaylistViewModel
     ) {
         this.viewManagerModel = viewManagerModel;
-        this.spotifyMatchViewModel = youtubeMatchViewModel;
+        this.spotifyMatchViewModel = spotifyMatchViewModel;
         this.putPlaylistViewModel = putPlaylistViewModel;
     }
 

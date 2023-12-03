@@ -14,6 +14,8 @@ public interface SpotifyMatchDataAccessInterface {
 
     YoutubeSong buildYouTubeSong(JSONObject data);
 
+    SpotifyMatchDataAccessObject.Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubeAPIAdapter api, SpotifyPlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit);
+
 
 //    public void addProgressListener(ProgressListener listener);
 //
