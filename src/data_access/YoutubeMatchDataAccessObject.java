@@ -16,7 +16,8 @@ import static utilities.YoutubeTitleInfoExtract.youtubeTitleInfoExtract;
 
 public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInterface {
     @Override
-    public SpotifySong findSpotifySongMatch(SpotifyAPIAdapter api, YoutubeSong song) {
+    public SpotifySong findSpotifySongMatch(YoutubeSong song) {
+        SpotifyAPIAdapter api = new SpotifyAPIAdapter();
         String[] nameAndAuthor = youtubeTitleInfoExtract(song.getName(), song.getAuthor());
         String firstTryQuery = nameAndAuthor[0] + " " + nameAndAuthor[1];
         String secondTryQuery = (nameAndAuthor[2] + " " + nameAndAuthor[3]).replaceAll("null", "");
@@ -50,9 +51,8 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
         return null;
     }
 
-
     @Override
-    public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(SpotifyAPIAdapter api, YoutubePlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit) {
+    public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubePlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit) {
         ArrayList<YoutubeSong> songList = playlist.getYoutubeSongs();
         CompletePlaylist matchedPlaylist = Objects.requireNonNullElseGet(incompletePlaylist, () ->
                 new CompletePlaylist("unknown name", null, playlist.getYoutubeID(), "unknown"));
@@ -70,7 +70,7 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
                 if (songLimit != -1 && matchedPlaylist.getTotal() >= songLimit) {
                     return new Pair<>(matchedPlaylist, false);
                 }
-                SpotifySong matchedSong = findSpotifySongMatch(api, song);
+                SpotifySong matchedSong = findSpotifySongMatch(song);
                 if (matchedSong != null) {
                     CompleteSong completeSong = new CompleteSong(
                             matchedSong.getName(), matchedSong.getAuthor(), matchedSong.getSpotifyID(),

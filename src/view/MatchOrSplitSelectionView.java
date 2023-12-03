@@ -1,6 +1,5 @@
 package view;
 
-import entity.CompletePlaylist;
 import entity.Playlist;
 import entity.SpotifyPlaylist;
 import entity.YoutubePlaylist;

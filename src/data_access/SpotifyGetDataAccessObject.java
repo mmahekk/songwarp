@@ -5,9 +5,9 @@ import org.json.JSONObject;
 import use_case.spotify_get.SpotifyGetDataAccessInterface;
 
 public class SpotifyGetDataAccessObject implements SpotifyGetDataAccessInterface {
-    public JSONObject getPlaylistJSON(SpotifyAPIAdapter api, String spotifyPlaylistID){
+    public JSONObject getPlaylistJSON(String spotifyPlaylistID){
+        SpotifyAPIAdapter api = new SpotifyAPIAdapter();
         String response = api.getPlaylist(spotifyPlaylistID);
         return new JSONObject(response);
     }
-
 }

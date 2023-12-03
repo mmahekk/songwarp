@@ -11,12 +11,14 @@ import java.io.IOException;
 
 public class SpotifyPutDataAccessObject implements SpotifyPutDataAccessInterface {
     @Override
-    public String getUserAuthorization(YoutubeAPIAdapter api) {
+    public String getUserAuthorization() {
+        YoutubeAPIAdapter api = new YoutubeAPIAdapter();
         return api.getUserAuthAccessToken();
     }
 
     @Override
-    public String initializeYoutubePlaylist(YoutubeAPIAdapter api, String playlistName, String spotifyUrl, String token) throws IOException, InterruptedException {
+    public String initializeYoutubePlaylist(String playlistName, String spotifyUrl, String token) throws IOException, InterruptedException {
+        YoutubeAPIAdapter api = new YoutubeAPIAdapter();
         String response = api.createPlaylist(playlistName, spotifyUrl, token);
         if (response != null) {
             JSONObject jsonObject = new JSONObject(response);
@@ -28,7 +30,8 @@ public class SpotifyPutDataAccessObject implements SpotifyPutDataAccessInterface
     }
 
     @Override
-    public void uploadSongs(YoutubeAPIAdapter api, String youtubePlaylistID, CompletePlaylist playlist, String token, int offset) {
+    public void uploadSongs(String youtubePlaylistID, CompletePlaylist playlist, String token, int offset) {
+        YoutubeAPIAdapter api = new YoutubeAPIAdapter();
         for (int i = offset; i < playlist.getTotal(); i++) {  // because request can only handle up to 100 songs at a time
             CompleteSong song = playlist.getCompleteSongs().get(i);
             String songID = song.getYoutubeId();
@@ -37,7 +40,8 @@ public class SpotifyPutDataAccessObject implements SpotifyPutDataAccessInterface
     }
 
     @Override
-    public int getExistingPlaylistOffset(YoutubeAPIAdapter api, String youtubePlaylistID) {
+    public int getExistingPlaylistOffset(String youtubePlaylistID) {
+        YoutubeAPIAdapter api = new YoutubeAPIAdapter();
         String data = api.getPlaylist(youtubePlaylistID, null);
         JSONObject response = new JSONObject(data);
         if (response.has("items")) {
