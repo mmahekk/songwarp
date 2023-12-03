@@ -1,7 +1,6 @@
 package use_case.save_playlist;
 
 import data_access.TempFileWriterDataAccessObject;
-import entity.Playlist;
 
 public class SavePlaylistInteractor implements SavePlaylistInputBoundary {
     private final SavePlaylistDataAccessInterface savePlaylistDataAccess;

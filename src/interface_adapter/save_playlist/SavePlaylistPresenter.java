@@ -5,8 +5,6 @@ import interface_adapter.ViewManagerModel;
 import use_case.save_playlist.SavePlaylistOutputBoundary;
 import use_case.save_playlist.SavePlaylistOutputData;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 public class SavePlaylistPresenter implements SavePlaylistOutputBoundary {
     private final SavePlaylistViewModel savePlaylistViewModel;
@@ -37,7 +35,6 @@ public class SavePlaylistPresenter implements SavePlaylistOutputBoundary {
         putPlaylistViewModel.getState().setError(error);
 
         System.out.println(savePlaylistState.getError());
-        // savePlaylistViewModel.setState(currentState);
         putPlaylistViewModel.firePropertyChanged();
     }
 }
