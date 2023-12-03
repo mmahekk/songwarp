@@ -1,20 +1,13 @@
-
 import data_access.ViewPlaylistDataAccessObject;
 import data_access.TempFileWriterDataAccessObject;
 import entity.CompletePlaylist;
-import entity.CompleteSong;
 import entity.Playlist;
-import entity.YoutubePlaylist;
-import entity.SpotifyPlaylist;
-import interface_adapter.GetPlaylistViewModel;
 import interface_adapter.PutPlaylistState;
 import interface_adapter.PutPlaylistViewModel;
 import interface_adapter.view_playlist.ViewPlaylistController;
 import interface_adapter.view_playlist.ViewPlaylistPresenter;
 import use_case.view_playlist.ViewPlaylistInteractor;
 import use_case.view_playlist.ViewPlaylistOutputBoundary;
-import use_case.view_playlist.ViewPlaylistInputData;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 

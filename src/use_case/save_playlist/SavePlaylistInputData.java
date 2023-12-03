@@ -1,6 +1,5 @@
 package use_case.save_playlist;
 
-import entity.CompletePlaylist;
 import entity.Playlist;
 
 public class SavePlaylistInputData {

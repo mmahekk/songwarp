@@ -1,6 +1,5 @@
 package interface_adapter.save_playlist;
 
-import interface_adapter.GetPlaylistState;
 import interface_adapter.ViewModel;
 
 import java.beans.PropertyChangeSupport;
