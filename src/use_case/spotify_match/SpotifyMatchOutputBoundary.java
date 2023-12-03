@@ -1,15 +1,15 @@
 package use_case.spotify_match;
 
 import entity.CompletePlaylist;
-import entity.YoutubePlaylist;
-import use_case.youtube_match.YoutubeMatchOutputData;
+import entity.SpotifyPlaylist;
+import use_case.spotify_match.SpotifyMatchOutputData;
 
 public interface SpotifyMatchOutputBoundary {
 
-    void prepareSuccessView(YoutubeMatchOutputData youtubeMatchOutputData, Boolean gotoNextView);
+    void prepareSuccessView(SpotifyMatchOutputData spotifyMatchOutputData, Boolean gotoNextView);
 
     void prepareFailView(String error);
 
-    void failSaveExit(YoutubePlaylist playlist, CompletePlaylist matchedPlaylist, String error);
+    void failSaveExit(SpotifyPlaylist playlist, CompletePlaylist matchedPlaylist, String error);
 
 }
