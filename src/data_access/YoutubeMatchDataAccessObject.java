@@ -5,11 +5,13 @@ import entity.*;
 import interface_adapter.ProgressListener;
 import org.json.JSONObject;
 import use_case.youtube_match.YoutubeMatchDataAccessInterface;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static utilities.SearchQueryEncoder.encodeSearchQuery;
 import static utilities.YoutubeTitleInfoExtract.youtubeTitleInfoExtract;
 
 public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInterface {
@@ -19,11 +21,11 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
         String firstTryQuery = nameAndAuthor[0] + " " + nameAndAuthor[1];
         String secondTryQuery = (nameAndAuthor[2] + " " + nameAndAuthor[3]).replaceAll("null", "");
         System.out.println(firstTryQuery);
-        String data = api.searchSong(encodeSearchQuery(firstTryQuery));
+        String data = api.searchSong(URLEncoder.encode(firstTryQuery, StandardCharsets.UTF_8));
         if (data != null && !data.isEmpty()) {
             SpotifySong newSong = buildSpotifySong(new JSONObject(data));
             if (!firstTryQuery.contains(newSong.getAuthor().toLowerCase())) {
-                String secondData = api.searchSong(encodeSearchQuery(firstTryQuery + " " + secondTryQuery));
+                String secondData = api.searchSong(URLEncoder.encode(firstTryQuery + " " + secondTryQuery, StandardCharsets.UTF_8));
                 if (secondData != null) {
                     newSong = buildSpotifySong(new JSONObject(secondData));
                 }

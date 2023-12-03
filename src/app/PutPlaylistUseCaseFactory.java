@@ -1,15 +1,14 @@
 package app;
 
-import data_access.SavePlaylistDataAccessObject;
-import data_access.SpotifyPutDataAccessObject;
-import data_access.TempFileWriterDataAccessObject;
-import data_access.YoutubePutDataAccessObject;
+import data_access.*;
 import interface_adapter.*;
 import interface_adapter.save_playlist.SavePlaylistController;
 import interface_adapter.save_playlist.SavePlaylistPresenter;
 import interface_adapter.save_playlist.SavePlaylistViewModel;
 import interface_adapter.spotify_put.SpotifyPutController;
 import interface_adapter.spotify_put.SpotifyPutPresenter;
+import interface_adapter.view_playlist.ViewPlaylistController;
+import interface_adapter.view_playlist.ViewPlaylistPresenter;
 import interface_adapter.view_traverse.ViewTraverseController;
 import interface_adapter.view_traverse.ViewTraversePresenter;
 import interface_adapter.youtube_put.YoutubePutController;
@@ -22,6 +21,10 @@ import use_case.spotify_put.SpotifyPutDataAccessInterface;
 import use_case.spotify_put.SpotifyPutInputBoundary;
 import use_case.spotify_put.SpotifyPutInteractor;
 import use_case.spotify_put.SpotifyPutOutputBoundary;
+import use_case.view_playlist.ViewPlaylistDataAccessInterface;
+import use_case.view_playlist.ViewPlaylistInputBoundary;
+import use_case.view_playlist.ViewPlaylistInteractor;
+import use_case.view_playlist.ViewPlaylistOutputBoundary;
 import use_case.view_traverse.ViewTraverseInteractor;
 import use_case.view_traverse.ViewTraverseOutputBoundary;
 import use_case.view_traverse.ViewTraverseInputBoundary;
@@ -32,6 +35,7 @@ import use_case.youtube_put.YoutubePutOutputBoundary;
 import view.OutputPageView;
 
 import javax.swing.*;
+import javax.swing.text.View;
 import java.io.IOException;
 
 public class PutPlaylistUseCaseFactory {
@@ -48,7 +52,8 @@ public class PutPlaylistUseCaseFactory {
             ViewTraverseController viewTraverseController = createViewTraverseUseCase(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, putPlaylistViewModel);
             YoutubePutController youtubePutController = createYoutubePutUseCase(viewManagerModel, putPlaylistViewModel);
             SpotifyPutController spotifyPutController = createSpotifyPutUseCase(viewManagerModel, putPlaylistViewModel);
-            return new OutputPageView(putPlaylistViewModel, getPlaylistViewModel, savePlaylistController, viewTraverseController, youtubePutController, spotifyPutController);
+            ViewPlaylistController viewPlaylistController = createViewPlaylistUseCase(putPlaylistViewModel);
+            return new OutputPageView(putPlaylistViewModel, getPlaylistViewModel, savePlaylistController, viewTraverseController, youtubePutController, spotifyPutController, viewPlaylistController);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "could not load initial page");
         }
@@ -94,6 +99,16 @@ public class PutPlaylistUseCaseFactory {
         SpotifyPutInputBoundary spotifyPutInteractor = new SpotifyPutInteractor(spotifyPutDataAccessObject, spotifyPutPresenter);
 
         return new SpotifyPutController(spotifyPutInteractor);
+    }
+
+    public static ViewPlaylistController createViewPlaylistUseCase(PutPlaylistViewModel putPlaylistViewModel) {
+
+        ViewPlaylistDataAccessInterface viewPlaylistDataAccessObject = new ViewPlaylistDataAccessObject();
+        ViewPlaylistOutputBoundary viewPlaylistPresenter = new ViewPlaylistPresenter(putPlaylistViewModel);
+
+        ViewPlaylistInputBoundary viewPlaylistInteractor = new ViewPlaylistInteractor(viewPlaylistDataAccessObject, viewPlaylistPresenter);
+
+        return new ViewPlaylistController(viewPlaylistInteractor);
     }
 }
 

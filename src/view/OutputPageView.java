@@ -5,6 +5,7 @@ import entity.*;
 import interface_adapter.*;
 import interface_adapter.save_playlist.SavePlaylistController;
 import interface_adapter.spotify_put.SpotifyPutController;
+import interface_adapter.view_playlist.ViewPlaylistController;
 import interface_adapter.view_traverse.ViewTraverseController;
 import interface_adapter.youtube_put.YoutubePutController;
 
@@ -26,6 +27,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
     private final SpotifyPutController spotifyPutController;
     private final SavePlaylistController savePlaylistController;
     private final ViewTraverseController viewTraverseController;
+    private final ViewPlaylistController viewPlaylistController;
 
     private final JButton save;
     private final JButton spotifyPut;
@@ -41,13 +43,14 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
 
     public OutputPageView(PutPlaylistViewModel putPlaylistViewModel, GetPlaylistViewModel getPlaylistViewModel,
                           SavePlaylistController savePlaylistController, ViewTraverseController viewTraverseController,
-                          YoutubePutController youtubePutController, SpotifyPutController spotifyPutController) {
+                          YoutubePutController youtubePutController, SpotifyPutController spotifyPutController, ViewPlaylistController viewPlaylistController) {
         this.putPlaylistViewModel = putPlaylistViewModel;
         this.getPlaylistViewModel = getPlaylistViewModel;
         this.savePlaylistController = savePlaylistController;
         this.viewTraverseController = viewTraverseController;
         this.youtubePutController = youtubePutController;
         this.spotifyPutController = spotifyPutController;
+        this.viewPlaylistController = viewPlaylistController;
 
         putPlaylistViewModel.addPropertyChangeListener(this);
 
@@ -154,6 +157,19 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
             }
         );
 
+        viewPlaylist.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        PutPlaylistState currentState = putPlaylistViewModel.getState();
+                        if (e.getSource().equals(viewPlaylist)) {
+                            Playlist playlist = currentState.getPlaylist();
+                            viewPlaylistController.execute(playlist);
+                        }
+                    }
+                }
+        );
+
         restart.addActionListener(
             new ActionListener() {
                 @Override
@@ -174,7 +190,14 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
                         Playlist playlist = currentState.getPlaylist();
                         String name = currentState.getPlaylistName();
                         if (playlist instanceof CompletePlaylist p) {
-                            youtubePutController.execute(p, name);
+                            if (p.getIDs()[1].equals("unknown")) {
+                                youtubePutController.execute(p, name);
+                            } else {
+                                int confirm = JOptionPane.showConfirmDialog(null, "This playlist already exists on Spotify. Do you wish to proceed anyway?");
+                                if (confirm == 0) {
+                                    youtubePutController.execute(p, name);
+                                }
+                            }
                         }
                     }
                 }
@@ -190,7 +213,14 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
                             Playlist playlist = currentState.getPlaylist();
                             String name = currentState.getPlaylistName();
                             if (playlist instanceof CompletePlaylist p) {
-                                OutputPageView.this.spotifyPutController.execute(p, name);
+                                if (p.getIDs()[0].equals("unknown")) {
+                                    spotifyPutController.execute(p, name);
+                                } else {
+                                    int confirm = JOptionPane.showConfirmDialog(null, "This playlist already exists on YouTube. Do you wish to proceed anyway?");
+                                    if (confirm == 0) {
+                                        spotifyPutController.execute(p, name);
+                                    }
+                                }
                             }
                         }
                     }
@@ -250,6 +280,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
                     spotifyLink.setText("See playlist on Spotify");
                 }
             }
+            this.playlistView.setText(state.getOutputTextView());
         }
     }
 
