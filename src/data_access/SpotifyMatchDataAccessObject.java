@@ -13,8 +13,6 @@ import java.util.Objects;
 import data_access.APIs.YoutubeAPIAdapter;
 import use_case.spotify_match.SpotifyMatchDataAccessInterface;
 
-import static utilities.SearchQueryEncoder.encodeSearchQuery;
-
 
 public class SpotifyMatchDataAccessObject implements SpotifyMatchDataAccessInterface {
 
