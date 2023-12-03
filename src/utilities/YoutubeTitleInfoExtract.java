@@ -116,7 +116,7 @@ public class YoutubeTitleInfoExtract {
         String remixAuthor = null;
         String[] excessStrings = {
                 "lyrics", " 4k ", "hd", "lyrical", "audio", "version", "animated", "edit", "release",
-                "lyric", "ost", "feat. ", "ft.", "music video", "official", "video", "soundtrack"};
+                "lyric", " ost", "feat. ", "ft.", "music video", "official", "video", "soundtrack"};
         for (String str: excessStrings) {
             title = title.replace(str, "");
         }

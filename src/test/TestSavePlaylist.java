@@ -9,7 +9,6 @@ import interface_adapter.PutPlaylistViewModel;
 import interface_adapter.save_playlist.SavePlaylistController;
 import interface_adapter.save_playlist.SavePlaylistPresenter;
 import interface_adapter.save_playlist.SavePlaylistViewModel;
-import interface_adapter.save_playlist.SavePlaylistState;
 import interface_adapter.ViewManagerModel;
 import use_case.save_playlist.SavePlaylistInteractor;
 import use_case.save_playlist.SavePlaylistOutputBoundary;

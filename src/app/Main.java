@@ -12,6 +12,7 @@ import view.ViewManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 public class Main {
     public static void main(String[] args) {
@@ -19,7 +20,9 @@ public class Main {
         // various cards, and the layout, and stitch them together.
 
         // The main application window.
-        JFrame application = new JFrame("Program Test");
+        JFrame application = new JFrame("SongWarp - A YouTube-Spotify Playlist converter");
+        ImageIcon icon = new ImageIcon("songwarpLogo2.png");
+        application.setIconImage(icon.getImage());
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         CardLayout cardLayout = new CardLayout();
@@ -43,7 +46,7 @@ public class Main {
 
         // create the views
         InitialView initialView = GetPlaylistUseCaseFactory.create(
-                viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, fileWriter);
+                viewManagerModel, getPlaylistViewModel, processPlaylistViewModel, putPlaylistViewModel, fileWriter);
         assert initialView != null;
         views.add(initialView, initialView.viewName);  // viewName is "page 1"
 
@@ -60,6 +63,11 @@ public class Main {
 
         viewManagerModel.setActiveView(initialView.viewName);
         viewManagerModel.firePropertyChanged();
+//        try {
+//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         application.pack();
         application.setVisible(true);

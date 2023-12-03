@@ -2,11 +2,10 @@ package data_access.APIs;
 
 import org.json.JSONArray;
 
-public class InputSpotifyAPI {
+public class AdapterRequest {
     private String apiCall;
     private String[] itemInfo;
     private JSONArray listInfo;
-
     private String premadeToken;
 
     public String getApiCall() {

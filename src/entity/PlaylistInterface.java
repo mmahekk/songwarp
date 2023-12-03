@@ -1,7 +1,6 @@
 package entity;
 
 import java.util.ArrayList;
-import entity.Song;
 
 interface PlaylistInterface {
      ArrayList<Song> getList(); // Returns a list of songs
