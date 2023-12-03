@@ -14,6 +14,14 @@ import java.util.prefs.Preferences;
 import static data_access.TempFileWriterDataAccessObject.readTempJSON;
 
 public class LoadPlaylistDataAccessObject implements LoadPlaylistDataAccessInterface {
+    private String filepath;
+
+    public void SetFilePath(String filepath) {
+        this.filepath = filepath;
+    }
+    public String FetchFilePath() {
+        return this.filepath;
+    }
 
     public String GetFilePath() {
         JFileChooser fileChooser = new JFileChooser("src");
@@ -89,7 +97,7 @@ public class LoadPlaylistDataAccessObject implements LoadPlaylistDataAccessInter
     public CompletePlaylist LoadCompletePlaylist(String file) {
         JSONObject jsonObject = readTempJSON(file, false);
         assert jsonObject != null;
-        if (jsonObject.has("type") && jsonObject.has("type")) {
+        if (jsonObject.has("type")) {
             JSONArray songList = jsonObject.getJSONArray("items").getJSONArray(0);
             String youtubeID = jsonObject.getJSONArray("youtubeID").getString(0);
             String spotifyID = jsonObject.getJSONArray("spotifyID").getString(0);
@@ -116,7 +124,7 @@ public class LoadPlaylistDataAccessObject implements LoadPlaylistDataAccessInter
     public Playlist LoadPlaylist(String file) {
         JSONObject jsonObject = readTempJSON(file, false);
         assert jsonObject != null;
-        if (jsonObject.has("type") && jsonObject.has("type")) {
+        if (jsonObject.has("type")) {
             String type = (String) jsonObject.getJSONArray("type").get(0);
             switch (type) {
                 case "entity.YoutubePlaylist" -> this.LoadYoutubePlaylist(file);
