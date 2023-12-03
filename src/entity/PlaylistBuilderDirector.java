@@ -3,6 +3,8 @@ package entity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import static data_access.TempFileWriterDataAccessObject.readTempJSON;
+
 public class PlaylistBuilderDirector {
 
     public void BuildSpotifyPlaylist(SpotifyPlaylistBuilder builder, JSONObject spotifyPlaylistJSON, String playlistId) {
@@ -13,23 +15,32 @@ public class PlaylistBuilderDirector {
         for (int i = 0; i < songlist.length(); i++) {
             JSONObject entry = songlist.getJSONObject(i);
             JSONObject snippet = entry.getJSONObject("track");
-
             if (snippet.has("album")) {
-                JSONObject snippet2 = snippet.getJSONObject("album");
-                String title = snippet.getString("name");
-                String author = snippet2.getJSONArray("artists").getJSONObject(0).getString("name");
-                String date = snippet2.getString("release_date");
-                Integer duration = snippet.getInt("duration_ms");
-                String id = snippet.getString("id");
-
                 SongBuilderDirector director = new SongBuilderDirector();
                 SpotifySongBuilder songBuilder = new SpotifySong.Builder();
-                director.BuildSpotifySong(songBuilder, title, author, duration, id, date);
+                director.BuildSpotifySong(songBuilder, snippet);
                 SpotifySong song = songBuilder.build();
                 spotifyPlaylist.addSong(song);
             } else {
                 System.out.println("Deleted.");
             }
+        }
+        builder.Playlist(spotifyPlaylist);
+    }
+    public void BuildSpotifyPlaylist(SpotifyPlaylistBuilder builder, String file) {
+        JSONObject jsonObject = readTempJSON(file, false);
+        assert jsonObject != null;
+        JSONArray songList = jsonObject.getJSONArray("items").getJSONArray(0);
+
+        String spotifyID = jsonObject.getJSONArray("spotifyID").getString(0);
+        SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist("loaded playlist", null, spotifyID);
+        for (int i = 0; i < songList.length(); i++) {
+
+            SongBuilderDirector director = new SongBuilderDirector();
+            SpotifySongBuilder spotifySongBuilder = new SpotifySong.Builder();
+            director.BuildSpotifySong(spotifySongBuilder, songList, i);
+            SpotifySong song = spotifySongBuilder.build();
+            spotifyPlaylist.addSong(song);
         }
         builder.Playlist(spotifyPlaylist);
     }
@@ -42,16 +53,10 @@ public class PlaylistBuilderDirector {
             JSONObject snippet = entry.getJSONObject("snippet");
 
             if (snippet.has("videoOwnerChannelTitle")) {
-                String title = snippet.getString("title");
-                String author = snippet.getString("videoOwnerChannelTitle");
-                String date = snippet.getString("publishedAt");
-                JSONObject extraInfo = snippet.getJSONObject("resourceId");
-                String id = extraInfo.getString("videoId");
-
 
                 SongBuilderDirector director = new SongBuilderDirector();
                 YoutubeSongBuilder youtubeSongBuilder = new YoutubeSong.Builder();
-                director.BuildYoutubeSong(youtubeSongBuilder, title, author, id, date);
+                director.BuildYoutubeSong(youtubeSongBuilder, snippet);
                 YoutubeSong song = youtubeSongBuilder.build();
                 youtubePlaylist.addSong(song);
             } else {
@@ -60,5 +65,20 @@ public class PlaylistBuilderDirector {
         }
         builder.Playlist(youtubePlaylist);
     }
+    public void BuildYoutubePlaylist(YoutubePlaylistBuilder builder, String file) {
+        JSONObject jsonObject = readTempJSON(file, false);
+        assert jsonObject != null;
+        JSONArray songList = jsonObject.getJSONArray("items").getJSONArray(0);
 
+        String youtubeID = jsonObject.getJSONArray("youtubeID").getString(0);
+        YoutubePlaylist youtubePlaylist = new YoutubePlaylist("loaded playlist", null, youtubeID);
+        for (int i = 0; i < songList.length(); i++) {
+            SongBuilderDirector director = new SongBuilderDirector();
+            YoutubeSongBuilder youtubeSongBuilder = new YoutubeSong.Builder();
+            director.BuildYoutubeSong(youtubeSongBuilder, songList, i);
+            YoutubeSong song = youtubeSongBuilder.build();
+            youtubePlaylist.addSong(song);
+        }
+        builder.Playlist(youtubePlaylist);
+    }
 }

@@ -6,7 +6,7 @@ public class YoutubeSong extends Song implements YoutubeSongInterface {
 
     private final String youtubeID;
 
-    private YoutubeSong(String title, String author, String youtubeID, String date) {
+    public YoutubeSong(String title, String author, String youtubeID, String date) {
         super(title, author, date);
         this.youtubeID = youtubeID;
     }

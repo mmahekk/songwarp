@@ -5,7 +5,7 @@ import org.json.JSONObject;
 public class SpotifySong extends Song implements SpotifySongInterface {
     private final int duration;
     private final String spotifyID;
-    private SpotifySong(String title, String author, int duration, String spotifyID, String date) {
+    public SpotifySong(String title, String author, int duration, String spotifyID, String date) {
         super(title, author, date);
         this.duration = duration;
         this.spotifyID = spotifyID;

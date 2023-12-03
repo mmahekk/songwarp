@@ -66,42 +66,16 @@ public class TempFileWriterDataAccessObject {
                 JSONArray songList = jsonObject.getJSONArray("items").getJSONArray(0);
                 switch (type) {
                     case "entity.YoutubePlaylist" -> {
-                        String youtubeID = jsonObject.getJSONArray("youtubeID").getString(0);
-                        YoutubePlaylist youtubePlaylist = new YoutubePlaylist("loaded playlist", null, youtubeID);
-                        for (int i = 0; i < songList.length(); i++) {
-                            JSONObject entry = songList.getJSONObject(i);
-                            String title = entry.getJSONArray("name").getString(0);
-                            String author = entry.getJSONArray("author").getString(0);
-                            String date = entry.getJSONArray("date").getString(0);
-                            String id = entry.getJSONArray("youtubeID").getString(0);
-
-                            SongBuilderDirector director = new SongBuilderDirector();
-                            YoutubeSongBuilder builder = new YoutubeSong.Builder();
-                            director.BuildYoutubeSong(builder, title, author, id, date);
-                            YoutubeSong song = builder.build();
-                            youtubePlaylist.addSong(song);
-                        }
-                        return youtubePlaylist;
+                        PlaylistBuilderDirector director = new PlaylistBuilderDirector();
+                        YoutubePlaylistBuilder builder = new YoutubePlaylist.Builder();
+                        director.BuildYoutubePlaylist(builder, file);
+                        return builder.build();
                     }
                     case "entity.SpotifyPlaylist" -> {
-                        String spotifyID = jsonObject.getJSONArray("spotifyID").getString(0);
-                        SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist("loaded playlist", null, spotifyID);
-                        for (int i = 0; i < songList.length(); i++) {
-                            JSONObject entry = songList.getJSONObject(i);
-                            String title = entry.getJSONArray("name").getString(0);
-                            String author = entry.getJSONArray("author").getString(0);
-                            String date = entry.getJSONArray("date").getString(0);
-                            String id = entry.getJSONArray("spotifyID").getString(0);
-                            int duration = entry.getJSONArray("duration").getInt(0);
-
-                            SongBuilderDirector director = new SongBuilderDirector();
-                            SpotifySongBuilder builder = new SpotifySong.Builder();
-                            director.BuildSpotifySong(builder, title, author, duration, id, date);
-                            SpotifySong song = builder.build();
-                            spotifyPlaylist.addSong(song);
-                            spotifyPlaylist.addSong(song);
-                        }
-                        return spotifyPlaylist;
+                        PlaylistBuilderDirector director = new PlaylistBuilderDirector();
+                        SpotifyPlaylistBuilder builder = new SpotifyPlaylist.Builder();
+                        director.BuildSpotifyPlaylist(builder, file);
+                        return builder.build();
                     }
                     case "entity.CompletePlaylist" -> {
                         String youtubeID = jsonObject.getJSONArray("youtubeID").getString(0);
