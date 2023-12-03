@@ -3,7 +3,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class GetPlaylistViewModel extends ViewModel {
-    public final String TITLE_LABEL = "Input playlist view";
+    public final String TITLE_LABEL = "Start page";
     public final String URL_LABEL = "Enter playlist url";
     public final String YOUTUBEGET_BUTTON_LABEL = "From Youtube Url";
     public final String SPOTIFYGET_BUTTON_LABEL = "From Spotify Url";

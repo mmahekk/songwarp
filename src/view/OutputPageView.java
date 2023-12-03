@@ -5,6 +5,7 @@ import entity.*;
 import interface_adapter.*;
 import interface_adapter.save_playlist.SavePlaylistController;
 import interface_adapter.spotify_put.SpotifyPutController;
+import interface_adapter.view_playlist.ViewPlaylistController;
 import interface_adapter.view_traverse.ViewTraverseController;
 import interface_adapter.youtube_put.YoutubePutController;
 
@@ -26,6 +27,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
     private final SpotifyPutController spotifyPutController;
     private final SavePlaylistController savePlaylistController;
     private final ViewTraverseController viewTraverseController;
+    private final ViewPlaylistController viewPlaylistController;
 
     private final JButton save;
     private final JButton spotifyPut;
@@ -41,13 +43,14 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
 
     public OutputPageView(PutPlaylistViewModel putPlaylistViewModel, GetPlaylistViewModel getPlaylistViewModel,
                           SavePlaylistController savePlaylistController, ViewTraverseController viewTraverseController,
-                          YoutubePutController youtubePutController, SpotifyPutController spotifyPutController) {
+                          YoutubePutController youtubePutController, SpotifyPutController spotifyPutController, ViewPlaylistController viewPlaylistController) {
         this.putPlaylistViewModel = putPlaylistViewModel;
         this.getPlaylistViewModel = getPlaylistViewModel;
         this.savePlaylistController = savePlaylistController;
         this.viewTraverseController = viewTraverseController;
         this.youtubePutController = youtubePutController;
         this.spotifyPutController = spotifyPutController;
+        this.viewPlaylistController = viewPlaylistController;
 
         putPlaylistViewModel.addPropertyChangeListener(this);
 
@@ -152,6 +155,19 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
                     }
                 }
             }
+        );
+
+        viewPlaylist.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        PutPlaylistState currentState = putPlaylistViewModel.getState();
+                        if (e.getSource().equals(viewPlaylist)) {
+                            Playlist playlist = currentState.getPlaylist();
+                            viewPlaylistController.execute(playlist);
+                        }
+                    }
+                }
         );
 
         restart.addActionListener(
@@ -264,6 +280,7 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
                     spotifyLink.setText("See playlist on Spotify");
                 }
             }
+            this.playlistView.setText(state.getOutputTextView());
         }
     }
 

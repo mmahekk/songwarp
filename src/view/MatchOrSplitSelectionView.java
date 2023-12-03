@@ -33,8 +33,8 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
     private final ViewTraverseController viewTraverseController;
 
     private final JButton match;
-    private final JButton split;
-    private final JProgressBar progress;
+//    private final JButton split;
+//    private final JProgressBar progress;
 
     public MatchOrSplitSelectionView(ProcessPlaylistViewModel processPlaylistViewModel,
                                      // CompleteYearSplitController completeYearSplitController,
@@ -56,15 +56,15 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
         JLabel title = new JLabel(processPlaylistViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        progress = new JProgressBar();
-        progress.setStringPainted(true);
-        progress.setValue(0);
+//        progress = new JProgressBar();
+//        progress.setStringPainted(true);
+//        progress.setValue(0);
 
         JPanel buttons = new JPanel();
         match = new JButton(processPlaylistViewModel.MATCH_BUTTON_LABEL);
         buttons.add(match);
-        split = new JButton(processPlaylistViewModel.GENRESPLIT_BUTTON_LABEL);
-        buttons.add(split);
+//        split = new JButton(processPlaylistViewModel.GENRESPLIT_BUTTON_LABEL);
+//        buttons.add(split);
 
         match.addActionListener(
             new ActionListener() {
@@ -92,31 +92,31 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
             }
         );
 
-        split.addActionListener(
-            new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ProcessPlaylistState currentState = processPlaylistViewModel.getState();
-                    if (e.getSource().equals(split)) {
-                        if (currentState.getPlaylist() instanceof YoutubePlaylist playlist) {
-                            // youtubeMatchController.execute(playlist, false);
-                        } else if (currentState.getPlaylist() instanceof SpotifyPlaylist playlist) {
-                            // spotifyMatchController.execute(playlist, false);
-                        }
-                        if (currentState.getPlaylist() instanceof CompletePlaylist playlist) {
-                            // completeYearSplitController.execute(playlist)
-                        }
-                    }
-                }
-            }
-        );
+//        split.addActionListener(
+//            new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+//                    ProcessPlaylistState currentState = processPlaylistViewModel.getState();
+//                    if (e.getSource().equals(split)) {
+//                        if (currentState.getPlaylist() instanceof YoutubePlaylist playlist) {
+//                            // youtubeMatchController.execute(playlist, false);
+//                        } else if (currentState.getPlaylist() instanceof SpotifyPlaylist playlist) {
+//                            // spotifyMatchController.execute(playlist, false);
+//                        }
+//                        if (currentState.getPlaylist() instanceof CompletePlaylist playlist) {
+//                            // completeYearSplitController.execute(playlist)
+//                        }
+//                    }
+//                }
+//            }
+//        );
 
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.add(title);
         this.add(buttons);
-        this.add(progress, BorderLayout.CENTER);
+//        this.add(progress, BorderLayout.CENTER);
     }
 
     public void actionPerformed(ActionEvent evt) {
@@ -139,8 +139,8 @@ public class MatchOrSplitSelectionView extends JPanel implements ActionListener,
 
             }
             System.out.println(state.getProgress());
-            progress.setValue(state.getProgress());
-            progress.repaint();
+//            progress.setValue(state.getProgress());
+//            progress.repaint();
         }
     }
 }
