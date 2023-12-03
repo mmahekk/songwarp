@@ -1,7 +1,6 @@
 package use_case.view_playlist;
 
 import entity.Playlist;
-import entity.Song;
 
 import java.util.List;
 
