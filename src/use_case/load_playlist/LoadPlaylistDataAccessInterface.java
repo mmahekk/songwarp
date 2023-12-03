@@ -7,6 +7,8 @@ import entity.YoutubePlaylist;
 
 public interface LoadPlaylistDataAccessInterface {
 
+    void SetFilePath(String filePath);
+    String FetchFilePath();
     String GetFilePath();
     Playlist LoadPlaylist(String file);
     YoutubePlaylist LoadYoutubePlaylist(String file);
