@@ -7,7 +7,8 @@
 - Mahek Cheema
 
 ## Our Project
-A Music playlist manager that can convert a YouTube playlist to a Spotify playlist and vice versa, plus additional playlist manager features.
+Do you have a music playlist on YouTube you want on Spotify? Or a Spotify playlist you want on YouTube? 
+This YouTube-Spotify Playlist converter has got you covered!
 
 ## Software Specification
 - Uses YouTube and Spotify APIs to build song instances with as much attributes as possible. This is done by
