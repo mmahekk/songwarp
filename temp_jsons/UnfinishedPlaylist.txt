@@ -1,0 +1,80 @@
+{
+  "youtubeID": ["PLQ6xshOf41NlhTT3bPQgcaOCn1wkwClya"],
+  "type": ["entity.YoutubePlaylist"],
+  "items": [[
+    {
+      "date": ["2023-11-17T20:17:43Z"],
+      "author": ["AdeleVEVO"],
+      "name": ["Adele - Rolling in the Deep (Official Music Video)"],
+      "youtubeID": ["rYEDA3JcQqw"],
+      "type": ["YoutubeSong"]
+    },
+    {
+      "date": ["2023-11-17T20:21:38Z"],
+      "author": ["Loku"],
+      "name": ["Pitbull - Timber (Lyrics) ft. Ke$ha"],
+      "youtubeID": ["pzeGGTT69A4"],
+      "type": ["YoutubeSong"]
+    },
+    {
+      "date": ["2023-11-17T20:21:48Z"],
+      "author": ["MarkRonsonVEVO"],
+      "name": ["Mark Ronson - Uptown Funk (Official Video) ft. Bruno Mars"],
+      "youtubeID": ["OPf0YbXqDm0"],
+      "type": ["YoutubeSong"]
+    },
+    {
+      "date": ["2023-11-17T20:21:57Z"],
+      "author": ["TheBeatlesVEVO"],
+      "name": ["The Beatles - Help!"],
+      "youtubeID": ["2Q_ZzBGPdqE"],
+      "type": ["YoutubeSong"]
+    },
+    {
+      "date": ["2023-11-17T20:22:08Z"],
+      "author": ["Movieclips"],
+      "name": ["The Blues Brothers (1980) - Everybody Needs Somebody to Love Scene (6/9) | Movieclips"],
+      "youtubeID": ["EHV0zs0kVGg"],
+      "type": ["YoutubeSong"]
+    }
+  ]]
+}{
+  "youtubeID": ["PLQ6xshOf41NlhTT3bPQgcaOCn1wkwClya"],
+  "spotifyID": ["unknown"],
+  "type": ["entity.CompletePlaylist"],
+  "items": [[
+    {
+      "date": ["2011-01-24"],
+      "duration": [228093],
+      "youtubeChannel": ["AdeleVEVO"],
+      "author": ["Adele"],
+      "name": ["Rolling in the Deep"],
+      "spotifyID": ["1c8gk2PeTE04A1pIDH9YMk"],
+      "youtubeID": ["rYEDA3JcQqw"],
+      "type": ["CompleteSong"],
+      "youtubeTitle": ["Adele - Rolling in the Deep (Official Music Video)"]
+    },
+    {
+      "date": ["2012"],
+      "duration": [204160],
+      "youtubeChannel": ["Loku"],
+      "author": ["Pitbull"],
+      "name": ["Timber (feat. Ke$ha)"],
+      "spotifyID": ["3cHyrEgdyYRjgJKSOiOtcS"],
+      "youtubeID": ["pzeGGTT69A4"],
+      "type": ["CompleteSong"],
+      "youtubeTitle": ["Pitbull - Timber (Lyrics) ft. Ke$ha"]
+    },
+    {
+      "date": ["2015-01-12"],
+      "duration": [269666],
+      "youtubeChannel": ["MarkRonsonVEVO"],
+      "author": ["Mark Ronson"],
+      "name": ["Uptown Funk (feat. Bruno Mars)"],
+      "spotifyID": ["32OlwWuMpZ6b0aN2RZOeMS"],
+      "youtubeID": ["OPf0YbXqDm0"],
+      "type": ["CompleteSong"],
+      "youtubeTitle": ["Mark Ronson - Uptown Funk (Official Video) ft. Bruno Mars"]
+    }
+  ]]
+}

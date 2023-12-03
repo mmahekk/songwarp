@@ -1,0 +1,95 @@
+{
+  "youtubeID": ["PLMo3ROURjiWzd3duafQhTwZH-23aInNz6"],
+  "spotifyID": ["unknown"],
+  "type": ["entity.CompletePlaylist"],
+  "items": [[
+    {
+      "date": ["2019-02-01"],
+      "duration": [229360],
+      "youtubeChannel": ["LuisFonsiVEVO"],
+      "author": ["Luis Fonsi"],
+      "name": ["Despacito"],
+      "spotifyID": ["6habFhsOp2NvshLv26DqMb"],
+      "youtubeID": ["kJQP7kiw5Fk"],
+      "type": ["CompleteSong"],
+      "youtubeTitle": ["Luis Fonsi - Despacito ft. Daddy Yankee"]
+    },
+    {
+      "date": ["2003-07-22"],
+      "duration": [90426],
+      "youtubeChannel": ["Sunderbraze"],
+      "author": ["Klaus Badelt"],
+      "name": ["He's a Pirate"],
+      "spotifyID": ["08QaHlMPWuO5PUxjl61bXn"],
+      "youtubeID": ["yRh-dzrI4Z4"],
+      "type": ["CompleteSong"],
+      "youtubeTitle": ["Pirates of the Caribbean - He's a Pirate (Extended)"]
+    },
+    {
+      "date": ["2003-07-22"],
+      "duration": [90426],
+      "youtubeChannel": ["Jarrod Radnich"],
+      "author": ["Klaus Badelt"],
+      "name": ["He's a Pirate"],
+      "spotifyID": ["08QaHlMPWuO5PUxjl61bXn"],
+      "youtubeID": ["n4JD-3-UAzM"],
+      "type": ["CompleteSong"],
+      "youtubeTitle": ["Jarrod Radnich - Pirates of the Caribbean Medley [Virtuosic Piano Solo - Movement 3]"]
+    },
+    {
+      "date": ["2022-12-05"],
+      "duration": [109186],
+      "youtubeChannel": ["Animenz Piano Sheets"],
+      "author": ["Drowsy Yui"],
+      "name": ["Unravel | Opening 1 (From \"Tokyo Ghoul\") - Piano Version"],
+      "spotifyID": ["3MWmoDYruRcJu8tkhbkbD2"],
+      "youtubeID": ["sEQf5lcnj_o"],
+      "type": ["CompleteSong"],
+      "youtubeTitle": ["Unravel - Tokyo Ghoul OP [Piano]"]
+    },
+    {
+      "date": ["2004-07-28"],
+      "duration": [189906],
+      "youtubeChannel": ["Toms Mucenieks"],
+      "author": ["Scott Joplin"],
+      "name": ["Maple Leaf Rag"],
+      "spotifyID": ["4AE032Y0x1WPOi5CsmggnU"],
+      "youtubeID": ["rBInnwV21DM"],
+      "type": ["CompleteSong"],
+      "youtubeTitle": ["Scott Joplin - Maple Leaf Rag"]
+    },
+    {
+      "date": ["2021-02-01"],
+      "duration": [324216],
+      "youtubeChannel": ["Chibi Muzik"],
+      "author": ["Sentimental Music Box"],
+      "name": ["Homura (Cover) - Music Box"],
+      "spotifyID": ["0jYX6UKx9VO5ikCRRSoER2"],
+      "youtubeID": ["Z3R-LToXcZc"],
+      "type": ["CompleteSong"],
+      "youtubeTitle": ["My Top Japanese Songs in Tik Tok (Best Japanese Song Playlist) - Japanese Songs Collection"]
+    },
+    {
+      "date": ["2020-08-29"],
+      "duration": [245876],
+      "youtubeChannel": ["ghesai TV"],
+      "author": ["LilyPichu"],
+      "name": ["dreamy night"],
+      "spotifyID": ["3NyxWuYU0s2GA6oZgDRQep"],
+      "youtubeID": ["DtIA3eAGa_w"],
+      "type": ["CompleteSong"],
+      "youtubeTitle": ["LILYPICHU X CORPSE HUSBAND - ðŸŒ§ï¸? ð?˜¢ð?˜¨ð?˜°ð?˜³ð?˜¢ð?˜±ð?˜©ð?˜°ð?˜£ð?˜ªð?˜¤ ðŸŒ§ï¸? DREAMY NIGHT (LYRICS) | WITH PEWDIEPIE VIBES"]
+    },
+    {
+      "date": ["1974-01-01"],
+      "duration": [153120],
+      "youtubeChannel": ["0000MATINA"],
+      "author": ["Carlos Gardel"],
+      "name": ["Por Una Cabeza"],
+      "spotifyID": ["4UOt0ObZ4Oqi7LSU1Gzzkq"],
+      "youtubeID": ["Gcxv7i02lXc"],
+      "type": ["CompleteSong"],
+      "youtubeTitle": ["Por una Cabeza - Carlos Gardel"]
+    }
+  ]]
+}
