@@ -2,7 +2,9 @@ package use_case.youtube_get;
 
 import data_access.APIs.YoutubeAPIAdapter;
 import data_access.TempFileWriterDataAccessObject;
+import entity.PlaylistBuilderDirector;
 import entity.YoutubePlaylist;
+import entity.YoutubePlaylistBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -31,7 +33,10 @@ public class YoutubeGetInteractor implements YoutubeGetInputBoundary {
                 JSONArray jsonArray = youtubeGetDataAccessObject.getAllPlaylist(api, jsonFile, id);
 
                 // build youtubePlaylist object from json (DAO request 2)
-                YoutubePlaylist youtubePlaylist = new YoutubePlaylist.YoutubePlaylistBuilder(jsonArray, id).build();
+                PlaylistBuilderDirector director = new PlaylistBuilderDirector();
+                YoutubePlaylistBuilder builder = new YoutubePlaylist.Builder();
+                director.BuildYoutubePlaylist(builder, jsonArray, id);
+                YoutubePlaylist youtubePlaylist = builder.build();
 
                 // store instance in project temp save file (DAO request 3)
                 fileWriter.writePlaylistFile(youtubePlaylist);

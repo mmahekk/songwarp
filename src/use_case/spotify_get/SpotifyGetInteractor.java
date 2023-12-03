@@ -2,7 +2,9 @@ package use_case.spotify_get;
 
 import data_access.APIs.SpotifyAPIAdapter;
 import data_access.TempFileWriterDataAccessObject;
+import entity.PlaylistBuilderDirector;
 import entity.SpotifyPlaylist;
+import entity.SpotifyPlaylistBuilder;
 import org.json.JSONObject;
 
 
@@ -32,7 +34,10 @@ public class SpotifyGetInteractor implements SpotifyGetInputBoundary {
             if (!jsonFile.has("error")) {
                 System.out.println(jsonFile);
                 // build youtubePlaylist object from static builder class in entity
-                SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist.SpotifyPlaylistBuilder(jsonFile, id).build();
+                PlaylistBuilderDirector director = new PlaylistBuilderDirector();
+                SpotifyPlaylistBuilder builder = new SpotifyPlaylist.Builder();
+                director.BuildSpotifyPlaylist(builder, jsonFile, id);
+                SpotifyPlaylist spotifyPlaylist = builder.build();
 
                 // store instance in project temp save file (DAO request 3)
                 fileWriter.writePlaylistFile(spotifyPlaylist);

@@ -75,7 +75,10 @@ public class TempFileWriterDataAccessObject {
                             String date = entry.getJSONArray("date").getString(0);
                             String id = entry.getJSONArray("youtubeID").getString(0);
 
-                            YoutubeSong song = new YoutubeSong(title, author, id, date);
+                            SongBuilderDirector director = new SongBuilderDirector();
+                            YoutubeSongBuilder builder = new YoutubeSong.Builder();
+                            director.BuildYoutubeSong(builder, title, author, id, date);
+                            YoutubeSong song = builder.build();
                             youtubePlaylist.addSong(song);
                         }
                         return youtubePlaylist;
@@ -91,7 +94,11 @@ public class TempFileWriterDataAccessObject {
                             String id = entry.getJSONArray("spotifyID").getString(0);
                             int duration = entry.getJSONArray("duration").getInt(0);
 
-                            SpotifySong song = new SpotifySong(title, author, duration, id, date);
+                            SongBuilderDirector director = new SongBuilderDirector();
+                            SpotifySongBuilder builder = new SpotifySong.Builder();
+                            director.BuildSpotifySong(builder, title, author, duration, id, date);
+                            SpotifySong song = builder.build();
+                            spotifyPlaylist.addSong(song);
                             spotifyPlaylist.addSong(song);
                         }
                         return spotifyPlaylist;
