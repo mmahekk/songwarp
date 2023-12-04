@@ -11,11 +11,6 @@ public class SpotifyGetInputData {
         this.id = this.extractId(url);
     }
 
-
-    public String getUrl() {
-        return url;
-    }
-
     public String getId() {
         return id;
     }

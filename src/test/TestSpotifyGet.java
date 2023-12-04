@@ -1,3 +1,5 @@
+import data_access.APIs.SpotifyAPIAdapter;
+import data_access.APIs.SpotifyAPIAdapterInterface;
 import data_access.SpotifyGetDataAccessObject;
 import interface_adapter.GetPlaylistViewModel;
 import interface_adapter.ProcessPlaylistViewModel;
@@ -21,8 +23,9 @@ public class TestSpotifyGet {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         GetPlaylistViewModel viewModel = new GetPlaylistViewModel();
         ProcessPlaylistViewModel nextViewModel = new ProcessPlaylistViewModel();
-        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("temp.json");
-        SpotifyGetDataAccessInterface dataAccessObject = new SpotifyGetDataAccessObject();
+        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("spotifyGetOutput.json");
+        SpotifyAPIAdapterInterface api = new SpotifyAPIAdapter();
+        SpotifyGetDataAccessInterface dataAccessObject = new SpotifyGetDataAccessObject(api);
         SpotifyGetOutputBoundary outputBoundary = new SpotifyGetPresenter(viewManagerModel, viewModel, nextViewModel);
         testUrl = "https://open.spotify.com/playlist/3KCldEqu9GltmYYTGybH5T";
         SpotifyGetInteractor interactor = new SpotifyGetInteractor(dataAccessObject, fileWriter, outputBoundary);
@@ -30,7 +33,12 @@ public class TestSpotifyGet {
     }
 
     @Test
-    public void testPresenterBehavior() {
+    public void testSpotifyGetOutput() {
         controller.execute(testUrl);
+    }
+
+    @Test
+    public void testBadInput() {
+        controller.execute("badUrlExample");
     }
 }

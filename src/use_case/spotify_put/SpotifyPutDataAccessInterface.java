@@ -11,5 +11,5 @@ public interface SpotifyPutDataAccessInterface {
 
     void uploadSongs(String youtubePlaylistID, CompletePlaylist playlist, String token, int offset) throws IOException, InterruptedException;
 
-    int getExistingPlaylistOffset(String youtubePlaylistID) throws IOException;
+    // int getExistingPlaylistOffset(String youtubePlaylistID) throws IOException;
 }

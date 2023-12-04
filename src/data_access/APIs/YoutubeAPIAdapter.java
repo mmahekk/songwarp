@@ -73,9 +73,7 @@ public class YoutubeAPIAdapter extends APIcaller implements YoutubeAPIAdapterInt
             URL url = null;
             try {
                 url = new URL(apiUrl);
-            } catch (MalformedURLException e) {
-                return null;
-            }
+            } catch (MalformedURLException e) {return null;}
 
             try {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -108,12 +106,8 @@ public class YoutubeAPIAdapter extends APIcaller implements YoutubeAPIAdapterInt
                     System.out.println("FAILED HTTP request with response code: " + responseCode);
                     return null;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        } else {
-            return null;
+            } catch (IOException e) {}
         }
+        return null;
     }
 }

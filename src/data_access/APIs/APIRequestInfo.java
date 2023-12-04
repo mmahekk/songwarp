@@ -17,31 +17,15 @@ public class APIRequestInfo {
         return uri;
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
     public String getCallMethod() {
         return callMethod;
-    }
-
-    public void setCallMethod(String callMethod) {
-        this.callMethod = callMethod;
     }
 
     public String getKey() {
         return key;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
     public String getData() {
         return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
     }
 }

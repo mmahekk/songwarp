@@ -1,3 +1,5 @@
+import data_access.APIs.YoutubeAPIAdapter;
+import data_access.APIs.YoutubeAPIAdapterInterface;
 import data_access.YoutubeGetDataAccessObject;
 import interface_adapter.GetPlaylistViewModel;
 import interface_adapter.ProcessPlaylistViewModel;
@@ -15,22 +17,34 @@ import use_case.youtube_get.YoutubeGetOutputBoundary;
 public class TestYoutubeGet {
     private YoutubeGetController controller;
     private String testUrl;
+    private String testUrlLong;
 
     @Before
     public void setup() {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         GetPlaylistViewModel viewModel = new GetPlaylistViewModel();
-        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("temp.json");
-        YoutubeGetDataAccessInterface dataAccessObject = new YoutubeGetDataAccessObject();
+        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("youtubeGetOutput.json");
+        YoutubeAPIAdapterInterface api = new YoutubeAPIAdapter();
+        YoutubeGetDataAccessInterface dataAccessObject = new YoutubeGetDataAccessObject(api);
         YoutubeGetOutputBoundary outputBoundary = new YoutubeGetPresenter(viewManagerModel, viewModel, new ProcessPlaylistViewModel());
-        // testUrl = "https://www.youtube.com/playlist?list=PLQ6xshOf41Nk3Ff_D9GyOpVCBZ7zc8NN5";
+        testUrlLong = "https://www.youtube.com/playlist?list=PLQ6xshOf41Nk3Ff_D9GyOpVCBZ7zc8NN5";
         testUrl = "https://www.youtube.com/playlist?list=PLQ6xshOf41NlhTT3bPQgcaOCn1wkwClya";
         YoutubeGetInteractor interactor = new YoutubeGetInteractor(dataAccessObject, fileWriter, outputBoundary);
         controller = new YoutubeGetController(interactor);
     }
 
     @Test
-    public void testPresenterBehavior() {
+    public void testYoutubeGet() {
         controller.execute(testUrl);
+    }
+
+    @Test
+    public void testBadInput() {
+        controller.execute("badUrlExample");
+    }
+
+    @Test
+    public void testYoutubeGetForlongPlaylist() {
+        controller.execute(testUrlLong);
     }
 }

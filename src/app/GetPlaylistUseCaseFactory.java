@@ -1,5 +1,9 @@
 package app;
 
+import data_access.APIs.SpotifyAPIAdapter;
+import data_access.APIs.SpotifyAPIAdapterInterface;
+import data_access.APIs.YoutubeAPIAdapter;
+import data_access.APIs.YoutubeAPIAdapterInterface;
 import data_access.LoadPlaylistDataAccessObject;
 import data_access.SpotifyGetDataAccessObject;
 import data_access.TempFileWriterDataAccessObject;
@@ -65,7 +69,8 @@ public class GetPlaylistUseCaseFactory {
 
         YoutubeGetOutputBoundary youtubeGetOutputBoundary = new YoutubeGetPresenter(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel);
 
-        YoutubeGetDataAccessInterface youtubeGetDataAccessObject = new YoutubeGetDataAccessObject();
+        YoutubeAPIAdapterInterface api = new YoutubeAPIAdapter();
+        YoutubeGetDataAccessInterface youtubeGetDataAccessObject = new YoutubeGetDataAccessObject(api);
 
         YoutubeGetInputBoundary youtubeGetInteractor = new YoutubeGetInteractor(youtubeGetDataAccessObject,
                 fileWriter, youtubeGetOutputBoundary);
@@ -77,7 +82,8 @@ public class GetPlaylistUseCaseFactory {
             ViewManagerModel viewManagerModel, GetPlaylistViewModel getPlaylistViewModel,
             ProcessPlaylistViewModel processPlaylistViewModel, TempFileWriterDataAccessObject fileWriter) throws IOException{
 
-        SpotifyGetDataAccessInterface spotifyGetDataAccessObject = new SpotifyGetDataAccessObject();
+        SpotifyAPIAdapterInterface api = new SpotifyAPIAdapter();
+        SpotifyGetDataAccessInterface spotifyGetDataAccessObject = new SpotifyGetDataAccessObject(api);
         SpotifyGetOutputBoundary spotifyGetOutputBoundary = new SpotifyGetPresenter(viewManagerModel, getPlaylistViewModel, processPlaylistViewModel);
 
         SpotifyGetInputBoundary spotifyGetInteractor = new SpotifyGetInteractor(spotifyGetDataAccessObject, fileWriter, spotifyGetOutputBoundary);

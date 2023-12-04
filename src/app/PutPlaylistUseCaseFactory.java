@@ -1,6 +1,10 @@
 package app;
 
 import data_access.*;
+import data_access.APIs.SpotifyAPIAdapter;
+import data_access.APIs.SpotifyAPIAdapterInterface;
+import data_access.APIs.YoutubeAPIAdapter;
+import data_access.APIs.YoutubeAPIAdapterInterface;
 import interface_adapter.*;
 import interface_adapter.save_playlist.SavePlaylistController;
 import interface_adapter.save_playlist.SavePlaylistPresenter;
@@ -35,7 +39,6 @@ import use_case.youtube_put.YoutubePutOutputBoundary;
 import view.OutputPageView;
 
 import javax.swing.*;
-import javax.swing.text.View;
 import java.io.IOException;
 
 public class PutPlaylistUseCaseFactory {
@@ -82,8 +85,9 @@ public class PutPlaylistUseCaseFactory {
     }
 
     public static YoutubePutController createYoutubePutUseCase(ViewManagerModel viewManagerModel, PutPlaylistViewModel putPlaylistViewModel) {
+        SpotifyAPIAdapterInterface api = new SpotifyAPIAdapter();
 
-        YoutubePutDataAccessInterface youtubePutDataAccessObject = new YoutubePutDataAccessObject();
+        YoutubePutDataAccessInterface youtubePutDataAccessObject = new YoutubePutDataAccessObject(api);
         YoutubePutOutputBoundary youtubePutPresenter = new YoutubePutPresenter(viewManagerModel, putPlaylistViewModel);
 
         YoutubePutInputBoundary youtubePutInteractor = new YoutubePutInteractor(youtubePutDataAccessObject, youtubePutPresenter);
@@ -92,8 +96,9 @@ public class PutPlaylistUseCaseFactory {
     }
 
     public static SpotifyPutController createSpotifyPutUseCase(ViewManagerModel viewManagerModel, PutPlaylistViewModel putPlaylistViewModel) {
+        YoutubeAPIAdapterInterface api = new YoutubeAPIAdapter();
 
-        SpotifyPutDataAccessInterface spotifyPutDataAccessObject = new SpotifyPutDataAccessObject();
+        SpotifyPutDataAccessInterface spotifyPutDataAccessObject = new SpotifyPutDataAccessObject(api);
         SpotifyPutOutputBoundary spotifyPutPresenter = new SpotifyPutPresenter(viewManagerModel, putPlaylistViewModel);
 
         SpotifyPutInputBoundary spotifyPutInteractor = new SpotifyPutInteractor(spotifyPutDataAccessObject, spotifyPutPresenter);

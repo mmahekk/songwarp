@@ -34,11 +34,7 @@ public class ViewPlaylistInteractor implements ViewPlaylistInputBoundary {
                 // Invoke presenter with fail view and error message
                 viewPlaylistPresenter.prepareFailView("Please input a valid playlist");
             }
-        } catch (Exception e) {
-            // Invoke presenter with fail view and error message
-            viewPlaylistPresenter.prepareFailView("Failed to display playlist");
-
-        }
+        } catch (Exception e) {viewPlaylistPresenter.prepareFailView("Failed to display playlist");}
 
     }
 

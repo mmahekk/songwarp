@@ -93,9 +93,7 @@ public class SpotifyAPIAdapter extends APIcaller implements SpotifyAPIAdapterInt
                         HttpResponse.BodyHandlers.ofString());
                 return response.body();
             }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException | InterruptedException e) {}
         return null;
     }
 
@@ -111,9 +109,6 @@ public class SpotifyAPIAdapter extends APIcaller implements SpotifyAPIAdapterInt
             // Parse the JSON response
             JSONObject jsonResponse = new JSONObject(response.body());
             return jsonResponse.getString("access_token");
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        } catch (IOException | InterruptedException e) {return null;}
     }
 }

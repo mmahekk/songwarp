@@ -94,19 +94,19 @@ public class LoadPlaylistDataAccessObject implements LoadPlaylistDataAccessInter
         return null;
     }
 
-    public Playlist LoadPlaylist(String file) {
-        JSONObject jsonObject = readTempJSON(file, false);
-        assert jsonObject != null;
-        if (jsonObject.has("type")) {
-            String type = (String) jsonObject.getJSONArray("type").get(0);
-            switch (type) {
-                case "entity.YoutubePlaylist" -> this.LoadYoutubePlaylist(file);
-                case "entity.SpotifyPlaylist" -> this.LoadSpotifyPlaylist(file);
-                case "entity.CompletePlaylist" -> this.LoadCompletePlaylist(file);
-            }
-        }
-        return null;
-    }
+//    public Playlist LoadPlaylist(String file) {
+//        JSONObject jsonObject = readTempJSON(file, false);
+//        assert jsonObject != null;
+//        if (jsonObject.has("type")) {
+//            String type = (String) jsonObject.getJSONArray("type").get(0);
+//            switch (type) {
+//                case "entity.YoutubePlaylist" -> this.LoadYoutubePlaylist(file);
+//                case "entity.SpotifyPlaylist" -> this.LoadSpotifyPlaylist(file);
+//                case "entity.CompletePlaylist" -> this.LoadCompletePlaylist(file);
+//            }
+//        }
+//        return null;
+//    }
     public String Type(String file) {
         JSONObject jsonObject = readTempJSON(file, false);
         assert jsonObject != null;

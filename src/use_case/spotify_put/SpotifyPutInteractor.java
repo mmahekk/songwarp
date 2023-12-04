@@ -29,9 +29,9 @@ public class SpotifyPutInteractor implements SpotifyPutInputBoundary {
                 } else {
                     int offset = 0;
                     youtubePlaylistID = playlist.getIDs()[0];
-                    if (!youtubePlaylistID.equals("unknown")) { // so it already exists... hmm. So let's add to it
-                        offset = spotifyPutDataAccessObject.getExistingPlaylistOffset(youtubePlaylistID);
-                    }
+//                    if (!youtubePlaylistID.equals("unknown")) { // so it already exists... hmm. So let's add to it
+//                        offset = spotifyPutDataAccessObject.getExistingPlaylistOffset(youtubePlaylistID);
+//                    }
                     if (offset == 0) {  // either because this is a new playlist or the supposed playlist doesn't exist
                         youtubePlaylistID = spotifyPutDataAccessObject.initializeYoutubePlaylist(name, url, premadeToken);
                         playlist.setName(spotifyPutInputData.getPlaylistName());

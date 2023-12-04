@@ -1,3 +1,5 @@
+import data_access.APIs.YoutubeAPIAdapter;
+import data_access.APIs.YoutubeAPIAdapterInterface;
 import data_access.SpotifyMatchDataAccessObject;
 import data_access.TempFileWriterDataAccessObject;
 import entity.CompletePlaylist;
@@ -17,26 +19,30 @@ import use_case.spotify_match.SpotifyMatchOutputBoundary;
 public class TestSpotifyMatch {
     private SpotifyMatchController controller;
     private Playlist mainPlaylist;
-    private Playlist otherPlaylist;
+    private Playlist backup;
+    private Playlist progress;
 
     @Before
     public void setup() {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         ProcessPlaylistViewModel viewModel = new ProcessPlaylistViewModel();
-        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("temp.json");
-        TempFileWriterDataAccessObject backupFileWriter = new TempFileWriterDataAccessObject("backup.json");
-        SpotifyMatchDataAccessInterface dataAccessObject = new SpotifyMatchDataAccessObject();
+        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("spotifyMatchOutputMain.json");
+        TempFileWriterDataAccessObject backupFileWriter = new TempFileWriterDataAccessObject("spotifyMatchOutputBackup.json");
+        TempFileWriterDataAccessObject reader = new TempFileWriterDataAccessObject("spotifyPlaylist.json");
+        YoutubeAPIAdapterInterface api = new YoutubeAPIAdapter();
+        SpotifyMatchDataAccessInterface dataAccessObject = new SpotifyMatchDataAccessObject(api);
         SpotifyMatchOutputBoundary outputBoundary = new SpotifyMatchPresenter(viewManagerModel, viewModel, new PutPlaylistViewModel());
 
-        mainPlaylist = fileWriter.readPlaylistJSON();
-        otherPlaylist = backupFileWriter.readPlaylistJSON();
+        mainPlaylist = reader.readPlaylistJSON();
+        backup = backupFileWriter.readPlaylistJSON();
+        progress = fileWriter.readPlaylistJSON();
 
         SpotifyMatchInteractor interactor = new SpotifyMatchInteractor(dataAccessObject, fileWriter, backupFileWriter, outputBoundary);
         controller = new SpotifyMatchController(interactor);
     }
 
     @Test
-    public void testPresenterBehavior() {
+    public void testSpotifyMatchNormal() {
         if (mainPlaylist instanceof SpotifyPlaylist) {
             controller.execute((SpotifyPlaylist) mainPlaylist, false);
         } else {
@@ -46,9 +52,19 @@ public class TestSpotifyMatch {
     }
 
     @Test
+    public void testViewMover() {
+        if (mainPlaylist instanceof SpotifyPlaylist) {
+            controller.execute((SpotifyPlaylist) mainPlaylist, true);
+        } else {
+            System.out.println("The test exited safely without running, since the playlist stored in temp.json was not a Youtube playlist.");
+            System.out.println("To effectively test this, try running TestYoutubeGet first.");
+        }
+    }
+
+    @Test
     public void testEarlyExitPresenter() {
         if (mainPlaylist instanceof SpotifyPlaylist) {
-            controller.execute((SpotifyPlaylist) mainPlaylist, null, false, 3);
+            controller.execute((SpotifyPlaylist) mainPlaylist, null, false, 1);
         } else {
             System.out.println("The test exited safely without running, since the playlist stored in temp.json was not a Youtube playlist.");
             System.out.println("To effectively test this, try running TestYoutubeGet first. Also, ideally, the playlist should have 4 or more songs");
@@ -57,8 +73,8 @@ public class TestSpotifyMatch {
 
     @Test
     public void testHandlesIncompletePlaylist() {
-        if (otherPlaylist instanceof SpotifyPlaylist && mainPlaylist instanceof CompletePlaylist) {
-            controller.execute((SpotifyPlaylist) otherPlaylist, mainPlaylist, false);
+        if (backup instanceof SpotifyPlaylist && progress instanceof CompletePlaylist) {
+            controller.execute((SpotifyPlaylist) backup, progress, false);
         } else {
             System.out.println("The test exited safely without running, since eiher backup.json has no incomplete complete playlist or also temp.json is not a youtube playlist.");
             System.out.println("To effectively test this, try running testEarlyExitPresenter first, on a playlist of more than 3 songs (try YoutubeGet first if this still doesn't work).");

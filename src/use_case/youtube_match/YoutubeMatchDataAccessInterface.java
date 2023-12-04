@@ -17,8 +17,8 @@ public interface YoutubeMatchDataAccessInterface {
 
     YoutubeMatchDataAccessObject.Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubePlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit);
 
-    public void addProgressListener(ProgressListener listener);
-
-    public void removeProgressListener(ProgressListener listener);
+//    public void addProgressListener(ProgressListener listener);
+//
+//    public void removeProgressListener(ProgressListener listener);
 }
 

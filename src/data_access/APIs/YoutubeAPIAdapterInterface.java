@@ -6,4 +6,5 @@ public interface YoutubeAPIAdapterInterface {
     String searchSong(String query);
     String createPlaylist(String name, String relatedUrl, String authKey);
     void addSongToPlaylist(String playlistID, String songID, String authKey);
+    String getUserAuthAccessToken();
 }

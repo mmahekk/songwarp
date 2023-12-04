@@ -1,5 +1,6 @@
 package data_access;
 
+import data_access.APIs.YoutubeAPIAdapterInterface;
 import entity.CompletePlaylist;
 import entity.SpotifySong;
 import entity.YoutubeSong;
@@ -10,13 +11,17 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Objects;
-import data_access.APIs.YoutubeAPIAdapter;
 import use_case.spotify_match.SpotifyMatchDataAccessInterface;
 
 
 public class SpotifyMatchDataAccessObject implements SpotifyMatchDataAccessInterface {
+    final YoutubeAPIAdapterInterface api;
+
+    public SpotifyMatchDataAccessObject(YoutubeAPIAdapterInterface api) {
+        this.api = api;
+    }
+
     public YoutubeSong findYouTubeSongMatch(SpotifySong song) {
-        YoutubeAPIAdapter api = new YoutubeAPIAdapter();
         String searchQuery = song.getAuthor() + " - " + song.getName();
 
         String data;

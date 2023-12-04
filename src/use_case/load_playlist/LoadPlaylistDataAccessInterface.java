@@ -10,7 +10,7 @@ public interface LoadPlaylistDataAccessInterface {
     void SetFilePath(String filePath);
     String FetchFilePath();
     String GetFilePath();
-    Playlist LoadPlaylist(String file);
+//    Playlist LoadPlaylist(String file);
     YoutubePlaylist LoadYoutubePlaylist(String file);
     SpotifyPlaylist LoadSpotifyPlaylist(String file);
     CompletePlaylist LoadCompletePlaylist(String file);

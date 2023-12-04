@@ -18,7 +18,6 @@ public class LoadPlaylistInteractor implements LoadPlaylistInputBoundary {
         this.loadPlaylistPresenter = loadPlaylistPresenter;
     }
 
-
     @Override
     public void execute() {
         try {
@@ -37,21 +36,14 @@ public class LoadPlaylistInteractor implements LoadPlaylistInputBoundary {
                 else if (Objects.equals(loadPlaylistDataAccess.Type("CompletePlaylist.json"), "SpotifyPlaylist")) {
                     SpotifyPlaylist spotifyPlaylist = loadPlaylistDataAccess.LoadSpotifyPlaylist("CompletePlaylist.json");
                     completePlaylist.setPlaylist(spotifyPlaylist);
-                }
-                else {
-                    loadPlaylistPresenter.prepareFailView("Failed to load playlist");
-                }
+                } else {loadPlaylistPresenter.prepareFailView("Failed to load playlist");}
+                loadPlaylistPresenter.prepareSuccessView(completePlaylist);
+            } else {
+                CompletePlaylist playlist = loadPlaylistDataAccess.LoadCompletePlaylist(filepath);
+                LoadPlaylistOutputData completePlaylist = new LoadPlaylistOutputData();
+                completePlaylist.setCompletePlaylist(playlist);
                 loadPlaylistPresenter.prepareSuccessView(completePlaylist);
             }
-            else {
-                CompletePlaylist playlist = loadPlaylistDataAccess.LoadCompletePlaylist(filepath);
-                LoadPlaylistOutputData CompletePlaylist = new LoadPlaylistOutputData();
-                CompletePlaylist.setCompletePlaylist(playlist);
-                loadPlaylistPresenter.prepareSuccessView(CompletePlaylist);
-            }
-
-        } catch (Exception e) {
-            loadPlaylistPresenter.prepareFailView("Failed to load playlist");
-        }
+        } catch (Exception e) {loadPlaylistPresenter.prepareFailView("Failed to load playlist");}
     }
 }
