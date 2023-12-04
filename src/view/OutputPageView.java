@@ -190,13 +190,14 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
                         Playlist playlist = currentState.getPlaylist();
                         String name = currentState.getPlaylistName();
                         if (playlist instanceof CompletePlaylist p) {
+                            int confirm;
                             if (p.getIDs()[1].equals("unknown")) {
-                                youtubePutController.execute(p, name);
+                                confirm = 0;
                             } else {
-                                int confirm = JOptionPane.showConfirmDialog(null, "This playlist already exists on Spotify. Do you wish to proceed anyway?");
-                                if (confirm == 0) {
-                                    youtubePutController.execute(p, name);
-                                }
+                                confirm = JOptionPane.showConfirmDialog(null, "This playlist already exists on Spotify. Do you wish to proceed anyway?");
+                            }
+                            if (confirm == 0) {
+                                youtubePutController.execute(p, name);
                             }
                         }
                     }
@@ -213,13 +214,14 @@ public class OutputPageView extends JPanel implements ActionListener, PropertyCh
                             Playlist playlist = currentState.getPlaylist();
                             String name = currentState.getPlaylistName();
                             if (playlist instanceof CompletePlaylist p) {
+                                int confirm;
                                 if (p.getIDs()[0].equals("unknown")) {
-                                    spotifyPutController.execute(p, name);
+                                    confirm = 0;
                                 } else {
-                                    int confirm = JOptionPane.showConfirmDialog(null, "This playlist already exists on YouTube. Do you wish to proceed anyway?");
-                                    if (confirm == 0) {
-                                        spotifyPutController.execute(p, name);
-                                    }
+                                    confirm = JOptionPane.showConfirmDialog(null, "This playlist already exists on YouTube. Do you wish to proceed anyway?");
+                                }
+                                if (confirm == 0) {
+                                    spotifyPutController.execute(p, name);
                                 }
                             }
                         }

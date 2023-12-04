@@ -1,6 +1,6 @@
 package data_access;
 
-import data_access.APIs.SpotifyAPIAdapter;
+import data_access.APIs.SpotifyAPIAdapterInterface;
 import entity.*;
 import interface_adapter.ProgressListener;
 import org.json.JSONObject;
@@ -15,8 +15,14 @@ import java.util.Objects;
 import static utilities.YoutubeTitleInfoExtract.youtubeTitleInfoExtract;
 
 public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInterface {
+    final SpotifyAPIAdapterInterface api;
+
+    public YoutubeMatchDataAccessObject(SpotifyAPIAdapterInterface api) {
+        this.api = api;
+    }
+
     @Override
-    public SpotifySong findSpotifySongMatch(SpotifyAPIAdapter api, YoutubeSong song) {
+    public SpotifySong findSpotifySongMatch(YoutubeSong song) {
         String[] nameAndAuthor = youtubeTitleInfoExtract(song.getName(), song.getAuthor());
         String firstTryQuery = nameAndAuthor[0] + " " + nameAndAuthor[1];
         String secondTryQuery = (nameAndAuthor[2] + " " + nameAndAuthor[3]).replaceAll("null", "");
@@ -50,9 +56,8 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
         return null;
     }
 
-
     @Override
-    public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(SpotifyAPIAdapter api, YoutubePlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit) {
+    public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubePlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit) {
         ArrayList<YoutubeSong> songList = playlist.getYoutubeSongs();
         CompletePlaylist matchedPlaylist = Objects.requireNonNullElseGet(incompletePlaylist, () ->
                 new CompletePlaylist("unknown name", null, playlist.getYoutubeID(), "unknown"));
@@ -70,7 +75,7 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
                 if (songLimit != -1 && matchedPlaylist.getTotal() >= songLimit) {
                     return new Pair<>(matchedPlaylist, false);
                 }
-                SpotifySong matchedSong = findSpotifySongMatch(api, song);
+                SpotifySong matchedSong = findSpotifySongMatch(song);
                 if (matchedSong != null) {
                     CompleteSong completeSong = new CompleteSong(
                             matchedSong.getName(), matchedSong.getAuthor(), matchedSong.getSpotifyID(),
@@ -82,9 +87,9 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
                     return new Pair<>(matchedPlaylist, false);
                 }
             }
-            for (ProgressListener listener : progressListeners) {
-                listener.onProgressUpdated(Math.min(100, (i * 100) / songList.size()));
-            }
+//            for (ProgressListener listener : progressListeners) {
+//                listener.onProgressUpdated(Math.min(100, (i * 100) / songList.size()));
+//            }
         }
         return new Pair<>(matchedPlaylist, true);
     }
@@ -93,13 +98,13 @@ public class YoutubeMatchDataAccessObject implements YoutubeMatchDataAccessInter
 
     private final List<ProgressListener> progressListeners = new ArrayList<>();
 
-    public void addProgressListener(ProgressListener listener) {
-        progressListeners.add(listener);
-    }
-
-    public void removeProgressListener(ProgressListener listener) {
-        progressListeners.remove(listener);
-    }
+//    public void addProgressListener(ProgressListener listener) {
+//        progressListeners.add(listener);
+//    }
+//
+//    public void removeProgressListener(ProgressListener listener) {
+//        progressListeners.remove(listener);
+//    }
 }
 
 

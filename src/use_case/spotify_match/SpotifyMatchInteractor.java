@@ -28,15 +28,12 @@ public class SpotifyMatchInteractor implements SpotifyMatchInputBoundary {
 
     @Override
     public void execute(SpotifyMatchInputData spotifyMatchInputData) {
-
-        YoutubeAPIAdapter api = new YoutubeAPIAdapter();
-
         SpotifyPlaylist playlist = spotifyMatchInputData.getPlaylist();
         CompletePlaylist incompletePlaylist = (CompletePlaylist) spotifyMatchInputData.getIncompletePlaylist();
         int songLimit = spotifyMatchInputData.getSongLimit();
 
        SpotifyMatchDataAccessObject.Pair<CompletePlaylist, Boolean> result =
-                spotifyMatchDataAccessObject.buildCompletePlaylist(api, playlist, incompletePlaylist, songLimit);
+                spotifyMatchDataAccessObject.buildCompletePlaylist(playlist, incompletePlaylist, songLimit);
 
         CompletePlaylist matchedPlaylist = result.p();
         Boolean completed = result.completed();

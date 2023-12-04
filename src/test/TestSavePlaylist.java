@@ -42,13 +42,13 @@ public class TestSavePlaylist {
         SavePlaylistDataAccessObject dataAccessObject = new SavePlaylistDataAccessObject();
         SavePlaylistOutputBoundary outputBoundary = new SavePlaylistPresenter(viewManagerModel, viewModel,
                 putPlaylistViewModel);
-        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("temp.json");
+        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("completePlaylist.json");
         TempFileWriterDataAccessObject backupFileWriter = new TempFileWriterDataAccessObject("backup.json");
 
         // Read playlists from JSON file
-        mainPlaylist2 = backupFileWriter.readPlaylistJSON();
+        mainPlaylist2 = fileWriter.readPlaylistJSON();
 
-        incompletePlaylist2 = fileWriter.readPlaylistJSON();
+        incompletePlaylist2 = backupFileWriter.readPlaylistJSON();
 
         // Create a sample playlist for testing
         mainPlaylist = new CompletePlaylist("Test Playlist", "Test Genre", "YoutubeID",
@@ -85,9 +85,7 @@ public class TestSavePlaylist {
 
     @Test
     public void testSavePlaylistWithFileReading() {
-        if ((mainPlaylist2 instanceof CompletePlaylist ||
-                mainPlaylist2 instanceof YoutubePlaylist ||
-                mainPlaylist2 instanceof SpotifyPlaylist) &&
+        if ((mainPlaylist2 instanceof YoutubePlaylist || mainPlaylist2 instanceof SpotifyPlaylist || mainPlaylist2 instanceof CompletePlaylist) &&
                 (incompletePlaylist2 instanceof CompletePlaylist || incompletePlaylist2 == null)) {
             // Execute the save playlist use case by reading the json files
             // Note, the file should be removed manually once the test is finished running

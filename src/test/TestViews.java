@@ -1,10 +1,12 @@
-package app;
-
+import app.GetPlaylistUseCaseFactory;
+import app.ProcessPlaylistUseCaseFactory;
+import app.PutPlaylistUseCaseFactory;
 import data_access.TempFileWriterDataAccessObject;
 import interface_adapter.GetPlaylistViewModel;
 import interface_adapter.ProcessPlaylistViewModel;
 import interface_adapter.PutPlaylistViewModel;
 import interface_adapter.ViewManagerModel;
+import org.junit.Test;
 import view.InitialView;
 import view.MatchOrSplitSelectionView;
 import view.OutputPageView;
@@ -12,26 +14,24 @@ import view.ViewManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 
-public class Main {
-    public static void main(String[] args) {
-        // Build the main program window, the main panel containing the
-        // various cards, and the layout, and stitch them together.
+import static data_access.TempFileWriterDataAccessObject.readTempJSON;
+import static utilities.YoutubeTitleInfoExtract.youtubeTitleInfoExtract;
 
-        // The main application window.
+public class TestViews {
+    @Test
+    public void testViews() {
         JFrame application = new JFrame("SongWarp - A YouTube-Spotify Playlist converter");
         ImageIcon icon = new ImageIcon("songwarpLogo2.png");
         application.setIconImage(icon.getImage());
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         CardLayout cardLayout = new CardLayout();
-
-        // The various View objects. Only one view is visible at a time.
         JPanel views = new JPanel(cardLayout);
         application.add(views);
 
-        // This keeps track of and manages which view is currently showing.
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         new ViewManager(views, cardLayout, viewManagerModel);
 
@@ -63,16 +63,34 @@ public class Main {
 
         viewManagerModel.setActiveView(initialView.viewName);
         viewManagerModel.firePropertyChanged();
-//        try {
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
 
         application.pack();
         application.setVisible(true);
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        viewManagerModel.setActiveView(matchOrSplitSelectionView.viewName);
+        viewManagerModel.firePropertyChanged();
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        viewManagerModel.setActiveView(outputPageView.viewName);
+        viewManagerModel.firePropertyChanged();
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("worked");
+
     }
 }
-
-// https://open.spotify.com/playlist/4MeaVhfLmmKL6UuN3mX79A
-// https://www.youtube.com/playlist?list=PLQ6xshOf41NmoFsKO3NcHZN-Ipel3a6-X

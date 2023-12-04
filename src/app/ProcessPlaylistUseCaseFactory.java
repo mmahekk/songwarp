@@ -1,6 +1,10 @@
 package app;
 
 import data_access.*;
+import data_access.APIs.SpotifyAPIAdapter;
+import data_access.APIs.SpotifyAPIAdapterInterface;
+import data_access.APIs.YoutubeAPIAdapter;
+import data_access.APIs.YoutubeAPIAdapterInterface;
 import interface_adapter.ProcessPlaylistViewModel;
 import interface_adapter.PutPlaylistViewModel;
 import interface_adapter.ViewManagerModel;
@@ -48,7 +52,8 @@ public class ProcessPlaylistUseCaseFactory {
 
         YoutubeMatchOutputBoundary presenter = new YoutubeMatchPresenter(viewManagerModel, processPlaylistViewModel, putPlaylistViewModel);
 
-        YoutubeMatchDataAccessInterface dataAccessObject = new YoutubeMatchDataAccessObject();
+        SpotifyAPIAdapterInterface api = new SpotifyAPIAdapter();
+        YoutubeMatchDataAccessInterface dataAccessObject = new YoutubeMatchDataAccessObject(api);
 
         YoutubeMatchInputBoundary interactor = new YoutubeMatchInteractor(dataAccessObject, fileWriter, backupFileWriter, presenter);
 
@@ -62,7 +67,8 @@ public class ProcessPlaylistUseCaseFactory {
 
         SpotifyMatchOutputBoundary presenter = new SpotifyMatchPresenter(viewManagerModel, processPlaylistViewModel, putPlaylistViewModel);
 
-        SpotifyMatchDataAccessInterface dataAccessObject = new SpotifyMatchDataAccessObject();
+        YoutubeAPIAdapterInterface api = new YoutubeAPIAdapter();
+        SpotifyMatchDataAccessInterface dataAccessObject = new SpotifyMatchDataAccessObject(api);
 
         SpotifyMatchInputBoundary interactor = new SpotifyMatchInteractor(dataAccessObject, fileWriter, backupFileWriter, presenter);
 

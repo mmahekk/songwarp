@@ -1,6 +1,7 @@
 package data_access;
 
 import data_access.APIs.SpotifyAPIAdapter;
+import data_access.APIs.SpotifyAPIAdapterInterface;
 import entity.CompletePlaylist;
 import entity.CompleteSong;
 import org.json.JSONArray;
@@ -13,21 +14,29 @@ import java.util.List;
 import static java.lang.Math.min;
 
 public class YoutubePutDataAccessObject implements YoutubePutDataAccessInterface {
+    final SpotifyAPIAdapterInterface api;
+
+    public YoutubePutDataAccessObject(SpotifyAPIAdapterInterface api) {
+        this.api = api;
+    }
 
     @Override
-    public String getUserAuthorization(SpotifyAPIAdapter api) {
+    public String getUserAuthorization() {
         return api.getUserAuthAccessToken();
     }
 
     @Override
-    public String getUserID(SpotifyAPIAdapter api, String token) {
+    public String getUserID(String token) {
         String response = api.getUser(token);
         JSONObject jsonObject = new JSONObject(response);
-        return jsonObject.getString("id");
+        if (jsonObject.has("id")) {
+            return jsonObject.getString("id");
+        }
+        return null;
     }
 
     @Override
-    public String initializeSpotifyPlaylist(SpotifyAPIAdapter api, String userID, String playlistName, String youtubeUrl, String token) {
+    public String initializeSpotifyPlaylist(String userID, String playlistName, String youtubeUrl, String token) {
         String response = api.createPlaylist(userID, playlistName, youtubeUrl, token);
         if (response != null) {
             JSONObject jsonObject = new JSONObject(response);
@@ -40,7 +49,7 @@ public class YoutubePutDataAccessObject implements YoutubePutDataAccessInterface
     }
 
     @Override
-    public void uploadSongs(SpotifyAPIAdapter api, String spotifyPlaylistID, CompletePlaylist playlist, String token) throws IOException, InterruptedException {
+    public void uploadSongs(String spotifyPlaylistID, CompletePlaylist playlist, String token) throws IOException, InterruptedException {
         for (int i = 0; i < Math.ceil((double) playlist.getTotal() / 100); i++) {  // because request can only handle up to 100 songs at a time
             List<CompleteSong> songs = playlist.getCompleteSongs().subList(i * 100, min(playlist.getTotal(), (i + 1) * 100));
             ArrayList<String> batch = new ArrayList<>();

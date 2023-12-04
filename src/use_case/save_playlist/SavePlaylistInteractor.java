@@ -32,9 +32,6 @@ public class SavePlaylistInteractor implements SavePlaylistInputBoundary {
                 savePlaylistPresenter.prepareFailView("Please enter a playlist name first");
             }
 
-        } catch (Exception e) {
-            // Invoke presenter with fail view and error message
-            savePlaylistPresenter.prepareFailView("Failed to save playlist: " + e.getMessage());
-        }
+        } catch (Exception e) {savePlaylistPresenter.prepareFailView("Failed to save playlist: " + e.getMessage());}
     }
 }

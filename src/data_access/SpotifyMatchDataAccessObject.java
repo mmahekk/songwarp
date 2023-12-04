@@ -1,5 +1,6 @@
 package data_access;
 
+import data_access.APIs.YoutubeAPIAdapterInterface;
 import entity.CompletePlaylist;
 import entity.SpotifySong;
 import entity.YoutubeSong;
@@ -10,33 +11,31 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Objects;
-import data_access.APIs.YoutubeAPIAdapter;
 import use_case.spotify_match.SpotifyMatchDataAccessInterface;
 
 
 public class SpotifyMatchDataAccessObject implements SpotifyMatchDataAccessInterface {
+    final YoutubeAPIAdapterInterface api;
 
-    public YoutubeSong findYouTubeSongMatch(YoutubeAPIAdapter api, SpotifySong song) {
+    public SpotifyMatchDataAccessObject(YoutubeAPIAdapterInterface api) {
+        this.api = api;
+    }
+
+    public YoutubeSong findYouTubeSongMatch(SpotifySong song) {
         String searchQuery = song.getAuthor() + " - " + song.getName();
 
-
-        String data = null;
+        String data;
         try {
             data = api.searchSong(URLEncoder.encode(searchQuery, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             data = null;
         }
 
-
         if (data != null && !data.isEmpty()) {
-            YoutubeSong newSong = buildYouTubeSong(new JSONObject(data));
-
-            return  newSong;
+            return buildYouTubeSong(new JSONObject(data));
         }
-
         return null;
     }
-
 
     public YoutubeSong buildYouTubeSong(JSONObject data) {
         if (data.has("items")) {
@@ -48,15 +47,13 @@ public class SpotifyMatchDataAccessObject implements SpotifyMatchDataAccessInter
             String date = snippet.getString("publishedAt");
             String author = snippet.getString("channelTitle");
 
-            YoutubeSong song = new YoutubeSong(name, author, id, date);
-            return song;
+            return new YoutubeSong(name, author, id, date);
         }
         return null;
     }
 
 
-    public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubeAPIAdapter api, SpotifyPlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit){
-
+    public Pair<CompletePlaylist, Boolean> buildCompletePlaylist(SpotifyPlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit){
         ArrayList<SpotifySong> songlist = playlist.getSpotifySongs();
         CompletePlaylist matchedPlaylist = Objects.requireNonNullElseGet(incompletePlaylist, () ->
                 new CompletePlaylist("unknown name", null, "unknown", playlist.getSpotifyID()));
@@ -75,7 +72,7 @@ public class SpotifyMatchDataAccessObject implements SpotifyMatchDataAccessInter
                 if (songLimit != -1 && matchedPlaylist.getTotal() >= songLimit) {
                     return new Pair<>(matchedPlaylist, false);
                 }
-                YoutubeSong matchedSong = findYouTubeSongMatch(api, song);
+                YoutubeSong matchedSong = findYouTubeSongMatch(song);
                 if (matchedSong != null) {
                     CompleteSong completeSong = new CompleteSong(song.getName(), song.getAuthor()
                             , song.getSpotifyID()
@@ -90,15 +87,8 @@ public class SpotifyMatchDataAccessObject implements SpotifyMatchDataAccessInter
 
         }
         return new Pair<>(matchedPlaylist, true);
-
-
-
-
     }
 
     public record Pair<CompletePlaylist, Boolean>(CompletePlaylist p, Boolean completed) {}
-
-
-
 }
 

@@ -1,13 +1,21 @@
 package data_access;
 
-import data_access.APIs.YoutubeAPIAdapter;
+import data_access.APIs.YoutubeAPIAdapterInterface;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.youtube_get.YoutubeGetDataAccessInterface;
+
 public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface {
+    final YoutubeAPIAdapterInterface api;
+
+    public YoutubeGetDataAccessObject(YoutubeAPIAdapterInterface api) {
+        this.api = api;
+    }
+
     @Override
-    public JSONObject getPlaylistJSON(YoutubeAPIAdapter api, String youtubePlaylistID) {
+    public JSONObject getPlaylistJSON(String youtubePlaylistID) {
         String response = api.getPlaylist(youtubePlaylistID, null);
+        if (response == null) {return null;}
         return new JSONObject(response);
     }
 
@@ -17,7 +25,7 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
      * @return
      */
     @Override
-    public JSONArray getAllPlaylist(YoutubeAPIAdapter api, JSONObject jsonObject, String playlistID) {
+    public JSONArray getAllPlaylist(JSONObject jsonObject, String playlistID) {
         String nextPageToken;
         if (jsonObject.has("nextPageToken")) {
             nextPageToken = jsonObject.getString("nextPageToken");

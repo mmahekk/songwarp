@@ -10,7 +10,6 @@ public class LoadPlaylistController {
     }
 
     public void execute() {
-
         loadPlaylistUseCaseInteractor.execute();
     }
 }

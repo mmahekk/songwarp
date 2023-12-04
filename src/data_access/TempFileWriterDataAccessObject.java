@@ -21,9 +21,7 @@ public class TempFileWriterDataAccessObject {
             try {
                 Files.createFile(path);
                 System.out.println("File created successfully.");
-            } catch (IOException e) {
-                System.err.println("Error creating the file: " + e.getMessage());
-            }
+            } catch (IOException e) {System.err.println("Error creating the file: " + e.getMessage());}
         }
         this.file = filePath;
     }

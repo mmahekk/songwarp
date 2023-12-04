@@ -28,7 +28,7 @@ public class TestViewPlaylist {
 
         ViewPlaylistDataAccessObject dataAccessObject = new ViewPlaylistDataAccessObject();
         ViewPlaylistOutputBoundary outputBoundary = new ViewPlaylistPresenter(viewPlaylistViewModel);
-        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("temp.json");
+        TempFileWriterDataAccessObject fileWriter = new TempFileWriterDataAccessObject("completePlaylist.json");
 
         // Read playlists from JSON file
         completePlaylist = fileWriter.readPlaylistJSON();

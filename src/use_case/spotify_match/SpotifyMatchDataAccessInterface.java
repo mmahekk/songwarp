@@ -1,20 +1,18 @@
 package use_case.spotify_match;
 
-import data_access.APIs.YoutubeAPIAdapter;
 import data_access.SpotifyMatchDataAccessObject;
 import entity.*;
 import entity.SpotifySong;
-import interface_adapter.ProgressListener;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
 public interface SpotifyMatchDataAccessInterface {
-    YoutubeSong findYouTubeSongMatch(YoutubeAPIAdapter api, SpotifySong song) throws IOException, InterruptedException;
+    YoutubeSong findYouTubeSongMatch(SpotifySong song) throws IOException, InterruptedException;
 
     YoutubeSong buildYouTubeSong(JSONObject data);
 
-    SpotifyMatchDataAccessObject.Pair<CompletePlaylist, Boolean> buildCompletePlaylist(YoutubeAPIAdapter api, SpotifyPlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit);
+    SpotifyMatchDataAccessObject.Pair<CompletePlaylist, Boolean> buildCompletePlaylist(SpotifyPlaylist playlist, CompletePlaylist incompletePlaylist, int songLimit);
 
 
 //    public void addProgressListener(ProgressListener listener);

@@ -25,12 +25,11 @@ public class YoutubeGetInteractor implements YoutubeGetInputBoundary {
         String id = youtubeGetInputData.getId();
 
         if (id != null) {
-            YoutubeAPIAdapter api = new YoutubeAPIAdapter();
             // get json file from youtube api
-            JSONObject jsonFile = youtubeGetDataAccessObject.getPlaylistJSON(api, id); // (DAO request 1)
+            JSONObject jsonFile = youtubeGetDataAccessObject.getPlaylistJSON(id); // (DAO request 1)
             if (jsonFile != null && jsonFile.has("items")) {
                 // get rest of pages via nextPageToken
-                JSONArray jsonArray = youtubeGetDataAccessObject.getAllPlaylist(api, jsonFile, id);
+                JSONArray jsonArray = youtubeGetDataAccessObject.getAllPlaylist(jsonFile, id);
 
                 // build youtubePlaylist object from json (DAO request 2)
                 PlaylistBuilderDirector director = new PlaylistBuilderDirector();
