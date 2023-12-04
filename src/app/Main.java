@@ -73,3 +73,6 @@ public class Main {
         application.setVisible(true);
     }
 }
+
+// https://open.spotify.com/playlist/4MeaVhfLmmKL6UuN3mX79A
+// https://www.youtube.com/playlist?list=PLQ6xshOf41NmoFsKO3NcHZN-Ipel3a6-X

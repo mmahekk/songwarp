@@ -15,6 +15,7 @@ public class YoutubeGetDataAccessObject implements YoutubeGetDataAccessInterface
     @Override
     public JSONObject getPlaylistJSON(String youtubePlaylistID) {
         String response = api.getPlaylist(youtubePlaylistID, null);
+        if (response == null) {return null;}
         return new JSONObject(response);
     }
 

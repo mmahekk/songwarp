@@ -1,0 +1,5 @@
+The TestLoadPlayist requires specific files to exist for the tests to work,
+but we opted to gitignore them, so if you want to run the tests, use the program to generate save files and then use those
+
+The test folder can be run all at once, but if you run it out of order, sometimes tests won't run properly,
+since they depend on previous test outputs, assuming you haven't run any test yet

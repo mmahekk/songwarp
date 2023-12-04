@@ -13,10 +13,10 @@ public class YoutubeAPIAdapter extends APIcaller implements YoutubeAPIAdapterInt
     private final String apiKey;
 
     public YoutubeAPIAdapter() {
-        this.apiKey = "AIzaSyDSuUFqX_f7v1LI8OTYjvkCjTbzzOfj4b4";
+        this.apiKey = "AIzaSyDBBye718R0GFZp0Q09jmisniArShBFInI";
         this.apiMainUrl = "https://www.googleapis.com/youtube/v3/";
-        this.clientID = "792243017341-0f3m3ejt4u27smegq429ubsmanf10reh.apps.googleusercontent.com";
-        this.clientSecret = "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";
+        this.clientID = "548458776002-b2jqss6dcls5rinb8or5fc7nbbuaijum.apps.googleusercontent.com";
+        this.clientSecret = "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";
         this.scope = "https://www.googleapis.com/auth/youtube";
         this.authCodeUrl = "https://accounts.google.com/o/oauth2/v2/auth?";
         this.authTokenExchange = "https://oauth2.googleapis.com/token";
