@@ -8,6 +8,7 @@
 
 ## Our Project
 A Music playlist manager that can convert a YouTube playlist to a Spotify playlist and vice versa, plus additional playlist manager features.
+![image](https://github.com/mmahekk/songwarp/assets/96924464/58080877-4b47-4d82-af64-3e423d2bee1a)
 
 ## Software Specification
 - Uses YouTube and Spotify APIs to build song instances with as much attributes as possible. This is done by
